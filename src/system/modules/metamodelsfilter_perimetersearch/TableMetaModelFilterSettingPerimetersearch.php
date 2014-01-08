@@ -15,6 +15,8 @@
  * @filesource
  */
 
+use MetaModels\Dca\Filter;
+
 /**
  * This class is used from DCA tl_metamodel_filtersetting for various callbacks.
  *
@@ -22,7 +24,7 @@
  * @subpackage PerimeterSearch
  * @author	   Stefan Heimes <stefan_heimes@hotmail.com>
  */
-class TableMetaModelFilterSettingPerimetersearch extends TableMetaModelFilterSetting
+class TableMetaModelFilterSettingPerimetersearch extends Filter
 {
 	/**
 	 * @var MetaPalettes
@@ -57,7 +59,7 @@ class TableMetaModelFilterSettingPerimetersearch extends TableMetaModelFilterSet
 		$this->objectsFromUrl($objDC);
 
 		$arrResult		 = array();
-		$arrData		 = $objDC->getCurrentModel()->getPropertiesAsArray();
+		$arrData		 = $objDC->getEnvironment()->getCurrentModel()->getPropertiesAsArray();
 		$stringDataMode	 = $arrData['datamode'];
 
 		if (!$this->objMetaModel)
@@ -67,7 +69,7 @@ class TableMetaModelFilterSettingPerimetersearch extends TableMetaModelFilterSet
 
 		$objMetaModel = $this->objMetaModel;
 
-		$arrTypeFilter = $GLOBALS['METAMODELS']['filters'][$objDC->getCurrentModel()->getProperty('type')]['attr_filter'];
+		$arrTypeFilter = $GLOBALS['METAMODELS']['filters'][$objDC->getEnvironment()->getCurrentModel()->getProperty('type')]['attr_filter'];
 
 		if(!isset($arrTypeFilter[$stringDataMode]))
 		{

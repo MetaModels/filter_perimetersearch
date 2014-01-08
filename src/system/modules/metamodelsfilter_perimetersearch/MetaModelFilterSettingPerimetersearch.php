@@ -15,6 +15,10 @@
  * @filesource
  */
 
+
+use MetaModels\Filter\Setting\SimpleLookup;
+use MetaModels\Filter\Rules\StaticIdList;
+
 /**
  * Filter "select field" for FE-filtering, based on filters by the meta models team.
  *
@@ -22,7 +26,7 @@
  * @subpackage PerimeterSearch
  * @author     Stefan Heimes <stefan_heimes@hotmail.com>
  */
-class MetaModelFilterSettingPerimetersearch extends MetaModelFilterSettingSimpleLookup
+class MetaModelFilterSettingPerimetersearch extends SimpleLookup
 {
 
 	/**
@@ -337,12 +341,12 @@ class MetaModelFilterSettingPerimetersearch extends MetaModelFilterSettingSimple
 		// Nothing found add empty list.
 		if ($objResult->numRows == 0)
 		{
-			$objFilter->addFilterRule(new MetaModelFilterRuleStaticIdList(array()));
+			$objFilter->addFilterRule(new StaticIdList(array()));
 		}
 		// Add the found id to the list.
 		else
 		{
-			$objFilter->addFilterRule(new MetaModelFilterRuleStaticIdList($objResult->fetchEach('item_id')));
+			$objFilter->addFilterRule(new StaticIdList($objResult->fetchEach('item_id')));
 		}
 	}
 
@@ -377,12 +381,12 @@ class MetaModelFilterSettingPerimetersearch extends MetaModelFilterSettingSimple
 		// Nothing found add empty list.
 		if ($objResult->numRows == 0)
 		{
-			$objFilter->addFilterRule(new MetaModelFilterRuleStaticIdList(array()));
+			$objFilter->addFilterRule(new StaticIdList(array()));
 		}
 		// Add the found id to the list.
 		else
 		{
-			$objFilter->addFilterRule(new MetaModelFilterRuleStaticIdList($objResult->fetchEach('id')));
+			$objFilter->addFilterRule(new StaticIdList($objResult->fetchEach('id')));
 		}
 	}
 
