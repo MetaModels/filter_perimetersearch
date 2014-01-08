@@ -1,0 +1,66 @@
+{
+	"name":"metamodels/filter_perimetersearch",
+	"description":"MetaModels perimeter search",
+	"keywords":["contao", "metamodels", "perimeter", "search", "filter"],
+	"type":"contao-module",
+	"homepage":"http://now.metamodel.me/",
+	"license":"LGPL-3.0+",
+	"authors":[
+		{
+			"name":"Christian Schiffler",
+			"email":"c.schiffler@cyberspectrum.de",
+			"homepage":"http://www.cyberspectrum.de",
+			"role":"Developer"
+		},
+		{
+			"name":"Andreas Isaak",
+			"email":"info@andreas-isaak.de",
+			"homepage":"http://www.andreas-isaak.de",
+			"role":"Developer"
+		},
+		{
+			"name":"Stefan Heimes",
+			"email":"stefan_heimes@hotmail.com",
+			"role":"Developer"
+		},
+		{
+			"name":"Christian de la Haye",
+			"email":"service@delahaye.de",
+			"homepage":"http://www.delahaye.de/",
+			"role":"Developer"
+		}
+	],
+	"support":{
+		"email":"mail@metamodel.me",
+		"issues":"https://github.com/MetaModels/filter_perimetersearch/issues",
+		"wiki":"http://de.contaowiki.org/MetaModels",
+		"irc":"irc://irc.freenode.org/contao.mm",
+		"source":"https://github.com/MetaModels/filter_perimetersearch"
+	},
+	"require":{
+		"php":">=5.3",
+		"contao/core":"~2.11",
+		"contao-community-alliance/composer-installer": "*",
+		"metamodels/core":"~1"
+	},
+	"require-dev": {
+		"metamodels/php-coding-standard":"dev-master",
+		"cyberspectrum/contao-toolbox": "dev-master"
+	},
+	"extra":{
+		"contao": {
+			"symlinks":{
+				"src/system/modules/metamodelsfilter_perimetersearch":"system/modules/metamodelsfilter_perimetersearch"
+			},
+			"transifex": {
+				"project": "metamodels",
+				"prefix": "filter_perimetersearch-",
+				"languages_cto": "src/system/modules/metamodelsfilter_perimetersearch/languages",
+				"languages_tx": ".tx"
+			}
+		},
+		"branch-alias": {
+			"dev-master": "1.0.x-dev"
+		}
+	}
+}
