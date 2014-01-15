@@ -26,6 +26,7 @@ $GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['fefilter_legend']    = 'Front
  * Fields
  */
 $GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['datamode']        = array('Datamode', 'Here you can choose if you have one single attribute or two attributes.');
+$GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['single_attr_id']  = array('Attribute', 'Choose the attribute with the latitude and longitude values.');
 $GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['first_attr_id']   = array('Attribute - Latitude', 'Choose the attribute for the latitude values.');
 $GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['second_attr_id']  = array('Attribute - Longitude', 'Choose the attribute for the longitude values.');
 $GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['rangemode']       = array('Rangemode', 'Here you can choose how the range will be displayed.');

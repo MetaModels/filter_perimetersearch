@@ -31,7 +31,7 @@ $GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['metapalettes']['perimetersearc
 $GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['metapalettes']['perimetersearch extends default']['+geolocation'][] = 'lookupservice';
 
 // Subpalettes.
-$GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['metasubselectpalettes']['datamode']['single']		 = array('attr_id');
+$GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['metasubselectpalettes']['datamode']['single']		 = array('single_attr_id');
 $GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['metasubselectpalettes']['datamode']['multi']		 = array('first_attr_id', 'second_attr_id');
 $GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['metasubselectpalettes']['rangemode']['preset']	 = array('range_preset');
 $GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['metasubselectpalettes']['rangemode']['selection']	 = array('range_selection');
@@ -169,6 +169,26 @@ $GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['fields']['lookupservice'] = ar
 			),
 		),
 	)
+);
+
+$GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['fields']['single_attr_id'] = array
+(
+	'label'                   => &$GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['single_attr_id'],
+	'exclude'                 => true,
+	'inputType'               => 'select',
+	'options_callback'        => array('TableMetaModelFilterSettingPerimetersearch', 'getAttributeNames'),
+	'eval'                    => array
+	(
+		'doNotSaveEmpty'      => true,
+		'alwaysSave'          => true,
+		'submitOnChange'      => true,
+		'includeBlankOption'  => true,
+		'mandatory'           => true,
+		'tl_class'            => 'w50',
+		'chosen'              => true
+	),
+	'load_callback'           => array(array('TableMetaModelFilterSetting', 'attrIdToName')),
+	'save_callback'           => array(array('TableMetaModelFilterSetting', 'nameToAttrId')),
 );
 
 $GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['fields']['first_attr_id'] = array

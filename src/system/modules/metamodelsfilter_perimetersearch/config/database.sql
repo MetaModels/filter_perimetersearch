@@ -15,6 +15,7 @@
 --
 
 CREATE TABLE `tl_metamodel_filtersetting` (
+  `single_attr_id` int(10) unsigned NOT NULL default '0',
   `first_attr_id` int(10) unsigned NOT NULL default '0',
   `second_attr_id` int(10) unsigned NOT NULL default '0',
   `datamode` varchar(255) NOT NULL default '',
