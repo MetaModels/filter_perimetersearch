@@ -81,7 +81,7 @@ class MetaModelFilterSettingPerimetersearch extends SimpleLookup
 		// Single mode search.
 		if ($this->get('datamode') == 'single')
 		{
-			$objAttribute = $this->getMetaModel()->getAttributeById($this->get('attr_id'));
+			$objAttribute = $this->getMetaModel()->getAttributeById($this->get('single_attr_id'));
 		}
 		// Multi mode search.
 		else if ($this->get('datamode') == 'multi')
@@ -145,7 +145,7 @@ class MetaModelFilterSettingPerimetersearch extends SimpleLookup
 		if ($this->get('datamode') == 'single')
 		{
 			// Get the attribute.
-			$objAttribute = $objMetaModel->getAttributeById($this->get('attr_id'));
+			$objAttribute = $objMetaModel->getAttributeById($this->get('single_attr_id'));
 
 			// Search for the geolocation attribute.
 			if ($objAttribute->get('type') == 'geolocation')
@@ -283,7 +283,7 @@ class MetaModelFilterSettingPerimetersearch extends SimpleLookup
 	{
 		if (($strParamName = $this->getParamName()) && $this->get('datamode') == 'single')
 		{
-			return $this->getMetaModel()->getAttributeById($this->get('attr_id'))->getColname();
+			return $this->getMetaModel()->getAttributeById($this->get('single_attr_id'))->getColname();
 		}
 		else if (($strParamName = $this->getParamName()) && $this->get('datamode') == 'multi')
 		{
@@ -300,7 +300,7 @@ class MetaModelFilterSettingPerimetersearch extends SimpleLookup
 	{
 		if (($strParamName = $this->getParamName()) && $this->get('datamode') == 'single')
 		{
-			return$this->getMetaModel()->getAttributeById($this->get('attr_id'))->getName();
+			return$this->getMetaModel()->getAttributeById($this->get('single_attr_id'))->getName();
 		}
 		else if (($strParamName = $this->getParamName()) && $this->get('datamode') == 'multi')
 		{
@@ -336,7 +336,7 @@ class MetaModelFilterSettingPerimetersearch extends SimpleLookup
 
 		$objResult = Database::getInstance()
 				->prepare($strSelect)
-				->execute($this->get('attr_id'));
+				->execute($this->get('single_attr_id'));
 
 		// Nothing found add empty list.
 		if ($objResult->numRows == 0)
