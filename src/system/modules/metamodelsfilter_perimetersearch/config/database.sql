@@ -24,6 +24,6 @@ CREATE TABLE `tl_metamodel_filtersetting` (
   `range_preset` int(10) unsigned NOT NULL default '0',
   `range_selection` text NULL,
   `range_label` blob NULL,
-  `range_template` varchar(64) NOT NULL default '',
+  `range_template` varchar(64) NOT NULL default ''
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
