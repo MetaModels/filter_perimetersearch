@@ -1,7 +1,13 @@
 {
 	"name":"metamodels/filter_perimetersearch",
 	"description":"MetaModels perimeter search",
-	"keywords":["contao", "metamodels", "perimeter", "search", "filter"],
+	"keywords": [
+		"contao", 
+		"metamodels", 
+		"perimeter", 
+		"search", 
+		"filter"
+	],
 	"type":"contao-module",
 	"homepage":"http://now.metamodel.me/",
 	"license":"LGPL-3.0+",
@@ -39,35 +45,38 @@
 	},
 	"require":{
 		"php":">=5.3",
-		"contao/core": ">=2.11,<4.0",
-		"contao-community-alliance/composer-installer": "*",
-		"metamodels/core":"~1"
+		"contao/core": ">=3.2,<3.5",
+		"contao-community-alliance/composer-plugin": "~2.0",
+		"metamodels/core": "~2.0"
 	},
 	"require-dev": {
-		"metamodels/php-coding-standard":"dev-master",
-		"cyberspectrum/contao-toolbox": "dev-master"
+		"cyberspectrum/contao-toolbox": "~0.6",
+		"phpcq/all-tasks": "~1.0"
 	},
 	"conflict": {
-		"contao/core": "3.0.*"
+		"contao/core": "3.4.0"
 	},
 	"autoload": {
-		"classmap": ["src"]
+		"psr-0": {
+			"MetaModels": "src"
+		}
 	},
-	"extra":{
+	"extra": {
 		"contao": {
-			"symlinks":{
-				"src/system/modules/metamodelsfilter_perimetersearch":"system/modules/metamodelsfilter_perimetersearch"
+			"symlinks": {
+				"contao": "system/modules/metamodelsfilter_perimetersearch"
 			},
 			"transifex": {
 				"project": "metamodels",
 				"prefix": "filter_perimetersearch-",
-				"languages_cto": "src/system/modules/metamodelsfilter_perimetersearch/languages",
+				"languages_cto": "contao/languages",
 				"languages_tx": ".tx"
 			}
 		},
 		"branch-alias": {
-			"dev-master": "1.0.x-dev",
-			"dev-contao3": "1.1.x-dev"
+			"dev-tng": "2.0.x-dev"
 		}
-	}
+	},
+	"minimum-stability": "dev",
+	"prefer-stable": true
 }
