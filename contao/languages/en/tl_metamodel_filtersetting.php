@@ -53,4 +53,4 @@ $GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['typenames']['perimetersearch'
 /**
  * Lookup names
  */
-$GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['perimetersearch']['PerimetersearchLookUpGoogleMaps'] = 'GoogleMaps Lookup';
+$GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['perimetersearch']['google_maps'] = 'GoogleMaps Lookup';
