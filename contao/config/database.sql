@@ -15,12 +15,12 @@
 --
 
 CREATE TABLE `tl_metamodel_filtersetting` (
-  `single_attr_id` int(10) unsigned NOT NULL default '0',
-  `first_attr_id` int(10) unsigned NOT NULL default '0',
-  `second_attr_id` int(10) unsigned NOT NULL default '0',
+  `single_attr_id` varchar(255) NOT NULL default '',
+  `first_attr_id` varchar(255) NOT NULL default '',
+  `second_attr_id` varchar(255) NOT NULL default '',
   `datamode` varchar(255) NOT NULL default '',
   `lookupservice` text NULL,
-  `rangemode` varchar(255) NOT NULL default '', 
+  `rangemode` varchar(255) NOT NULL default '',
   `range_preset` int(10) unsigned NOT NULL default '0',
   `range_selection` text NULL,
   `range_label` blob NULL,

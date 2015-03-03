@@ -79,7 +79,7 @@ $GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['fields']['range_selection'] = 
 	'exclude'                 => true,
 	'inputType'               => 'multiColumnWizard',
 	'eval'                    => array
-	(	
+	(
 		'tl_class'            => 'clr',
 		'columnFields' => array
 		(
@@ -116,7 +116,6 @@ $GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['fields']['range_template'] = a
 	'default'                 => 'mm_filteritem_default',
 	'exclude'                 => true,
 	'inputType'               => 'select',
-	'options_callback'        => array('TableMetaModelFilterSetting', 'getSubTemplates'),
 	'eval'                    => array
 	(
 		'tl_class'            => 'w50',
@@ -149,7 +148,7 @@ $GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['fields']['lookupservice'] = ar
 	'exclude'                 => true,
 	'inputType'               => 'multiColumnWizard',
 	'eval'                    => array
-	(	
+	(
 		'tl_class'            => 'w50 w50x',
 		'columnFields' => array
 		(
@@ -158,7 +157,6 @@ $GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['fields']['lookupservice'] = ar
 				'label'             => &$GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['lookupservice'],
 				'exclude'           => true,
 				'inputType'         => 'select',
-				'options_callback'  => array('TableMetaModelFilterSettingPerimetersearch', 'getResolverClass'),
 				'eval'              => array
 				(
 					'includeBlankOption'  => true,
@@ -176,7 +174,6 @@ $GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['fields']['single_attr_id'] = a
 	'label'                   => &$GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['single_attr_id'],
 	'exclude'                 => true,
 	'inputType'               => 'select',
-	'options_callback'        => array('TableMetaModelFilterSettingPerimetersearch', 'getAttributeNames'),
 	'eval'                    => array
 	(
 		'doNotSaveEmpty'      => true,
@@ -186,9 +183,7 @@ $GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['fields']['single_attr_id'] = a
 		'mandatory'           => true,
 		'tl_class'            => 'w50',
 		'chosen'              => true
-	),
-	'load_callback'           => array(array('TableMetaModelFilterSetting', 'attrIdToName')),
-	'save_callback'           => array(array('TableMetaModelFilterSetting', 'nameToAttrId')),
+	)
 );
 
 $GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['fields']['first_attr_id'] = array
@@ -196,7 +191,6 @@ $GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['fields']['first_attr_id'] = ar
 	'label'                   => &$GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['first_attr_id'],
 	'exclude'                 => true,
 	'inputType'               => 'select',
-	'options_callback'        => array('TableMetaModelFilterSettingPerimetersearch', 'getAttributeNames'),
 	'eval'                    => array
 	(
 		'doNotSaveEmpty'      => true,
@@ -206,9 +200,7 @@ $GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['fields']['first_attr_id'] = ar
 		'mandatory'           => true,
 		'tl_class'            => 'w50',
 		'chosen'              => true
-	),
-	'load_callback'           => array(array('TableMetaModelFilterSetting', 'attrIdToName')),
-	'save_callback'           => array(array('TableMetaModelFilterSetting', 'nameToAttrId')),
+	)
 );
 
 $GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['fields']['second_attr_id'] = array
@@ -216,7 +208,6 @@ $GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['fields']['second_attr_id'] = a
 	'label'                   => &$GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['second_attr_id'],
 	'exclude'                 => true,
 	'inputType'               => 'select',
-	'options_callback'        => array('TableMetaModelFilterSettingPerimetersearch', 'getAttributeNames'),
 	'eval'                    => array
 	(
 		'doNotSaveEmpty'      => true,
@@ -226,7 +217,5 @@ $GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['fields']['second_attr_id'] = a
 		'mandatory'           => true,
 		'tl_class'            => 'w50',
 		'chosen'              => true
-	),
-	'load_callback'           => array(array('TableMetaModelFilterSetting', 'attrIdToName')),
-	'save_callback'           => array(array('TableMetaModelFilterSetting', 'nameToAttrId')),
+	)
 );
