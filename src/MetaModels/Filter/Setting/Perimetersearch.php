@@ -7,454 +7,420 @@
  * data in each collection.
  *
  * PHP version 5
- * @package	   MetaModels
- * @subpackage PerimeterSearch
- * @author     Stefan Heimes <stefan_heimes@hotmail.com>
- * @copyright  The MetaModels team.
- * @license    LGPL.
+ *
+ * @package       MetaModels
+ * @subpackage    PerimeterSearch
+ * @author        Stefan Heimes <stefan_heimes@hotmail.com>
+ * @copyright     The MetaModels team.
+ * @license       LGPL.
  * @filesource
  */
 
+namespace MetaModels\Filter\Setting;
 
-use MetaModels\Filter\Setting\SimpleLookup;
+use MetaModels\Attribute\IAttribute;
+use MetaModels\Filter\Helper\Perimetersearch\LookUp\Provider\Container;
+use MetaModels\Filter\IFilter;
 use MetaModels\Filter\Rules\StaticIdList;
+use MetaModels\FrontendIntegration\FrontendFilterOptions;
 
 /**
  * Filter "select field" for FE-filtering, based on filters by the meta models team.
  *
- * @package	   MetaModels
- * @subpackage PerimeterSearch
- * @author     Stefan Heimes <stefan_heimes@hotmail.com>
+ * @package       MetaModels
+ * @subpackage    PerimeterSearch
+ * @author        Stefan Heimes <stefan_heimes@hotmail.com>
  */
-class MetaModelFilterSettingPerimetersearch extends SimpleLookup
+class Perimetersearch extends SimpleLookup
 {
+    /**
+     * Overrides the parent implementation to always return true, as this setting is always optional.
+     *
+     * @return bool true if all matches shall be returned, false otherwise.
+     */
+    public function allowEmpty()
+    {
+        return true;
+    }
 
-	/**
-	 * Instace of MetaModel
-	 * 
-	 * @var IMetaModel
-	 */
-	protected $objMM = null;
+    /**
+     * Overrides the parent implementation to always return true, as this setting is always available for FE filtering.
+     *
+     * @return bool true as this setting is always available.
+     */
+    public function enableFEFilterWidget()
+    {
+        return true;
+    }
 
-	/**
-	 * Constructor - initialize the object and store the parameters.
-	 *
-	 * @param IMetaModelFilterSettings $objFilterSetting The parenting filter settings object.
-	 *
-	 * @param array                    $arrData          The attributes for this filter setting.
-	 */
-	public function __construct($objFilterSetting, $arrData)
-	{
-		parent::__construct($objFilterSetting, $arrData);
-	}
+    /**
+     * {@inheritdoc}
+     */
+    protected function getParamName()
+    {
+        if ($this->get('urlparam')) {
+            return $this->get('urlparam');
+        }
 
-	/**
-	 * Overrides the parent implementation to always return true, as this setting is always optional.
-	 *
-	 * @return bool true if all matches shall be returned, false otherwise.
-	 */
-	public function allowEmpty()
-	{
-		return true;
-	}
+        if ($this->get('datamode') == 'single') {
+            $objAttribute = $this
+                ->getMetaModel()
+                ->getAttribute($this->get('single_attr_id'));
+        } else if ($this->get('datamode') == 'multi') {
+            $objAttribute = $this
+                ->getMetaModel()
+                ->getAttribute($this->get('first_attr_id'));
+        } else {
+            return '';
+        }
 
-	/**
-	 * Overrides the parent implementation to always return true, as this setting is always available for FE filtering.
-	 *
-	 * @return bool true as this setting is always available.
-	 */
-	public function enableFEFilterWidget()
-	{
-		return true;
-	}
+        // Return name if we have a result.
+        return $objAttribute->getColName();
+    }
 
-	/**
-	 * retrieve the filter param to react on.
-	 */
-	protected function getParamName()
-	{
-		if ($this->get('urlparam'))
-		{
-			return $this->get('urlparam');
-		}
+    /**
+     * Get the param name for the range.
+     *
+     * @return string
+     */
+    protected function getParamNameRange()
+    {
+        return $this->getParamName() . '_range';
+    }
 
-		// Single mode search.
-		if ($this->get('datamode') == 'single')
-		{
-			$objAttribute = $this->getMetaModel()->getAttributeById($this->get('single_attr_id'));
-		}
-		// Multi mode search.
-		else if ($this->get('datamode') == 'multi')
-		{
-			$objAttribute = $this->getMetaModel()->getAttributeById($this->get('first_attr_id'));
-		}
+    /**
+     * {@inheritdoc}
+     */
+    public function prepareRules(IFilter $objFilter, $arrFilterUrl)
+    {
+        $objMetaModel      = $this->getMetaModel();
+        $strParamName      = $this->getParamName();
+        $strParamNameRange = $this->getParamNameRange();
+        $strParamValue     = $arrFilterUrl[$strParamName];
+        $intDist           = intval($arrFilterUrl[$strParamNameRange]);
 
-		// Return name if we have a result.
-		if ($objAttribute)
-		{
-			return $objAttribute->getColName();
-		}
-	}
+        // Check if we have a value.
+        if (empty($strParamValue)) {
+            return;
+        }
 
-	/**
-	 * Get the param name for the range.
-	 * 
-	 * @return string
-	 */
-	protected function getParamNameRange()
-	{
-		return $this->getParamName() . '_range';
-	}
+        // If range mode is preset use this value.
+        if ($this->get('rangemode') == 'preset') {
+            $intDist = intval($this->get('range_preset'));
+        }
 
-	/**
-	 * {@inheritdoc}
-	 */
-	public function prepareRules(IMetaModelFilter $objFilter, $arrFilterUrl)
-	{
-		$objMetaModel        = $this->getMetaModel();
-		$strParamName        = $this->getParamName();
-		$strParamNameRange   = $this->getParamNameRange();
-		$strParamValue       = $arrFilterUrl[$strParamName];
-		$intDist             = intval($arrFilterUrl[$strParamNameRange]);
+        // Search for the geolocation.
+        $objContainer = $this->lookupGeo($strParamValue);
 
-		// Check if we have a value.
-		if (empty($strParamValue))
-		{
-			return;
-		}
+        // Okay we cant find a entry. So search for nothing.
+        if ($objContainer == null || $objContainer->hasError()) {
+            return;
+        }
 
-		// If range mode is preset use this value.
-		if ($this->get('rangemode') == 'preset')
-		{
-			$intDist = intval($this->get('range_preset'));
-		}
+        // Set the distance for the search.
+        $objContainer->setDistance($intDist);
 
-		// Search for the geolocation.
-		$objContainer = $this->lookupGeo($strParamValue);
+        // Single mode search.
+        if ($this->get('datamode') == 'single') {
+            // Get the attribute.
+            $objAttribute = $objMetaModel->getAttribute($this->get('single_attr_id'));
 
-		// Okay we cant find a entry. So search for nothing.
-		if ($objContainer == false)
-		{
-			return;
-		}
+            // Search for the geolocation attribute.
+            if ($objAttribute->get('type') == 'geolocation') {
+                $this->doSearchForAttGeolocation($objContainer, $objFilter, $objAttribute);
+            }
+        } // Multi mode search.
+        else if ($this->get('datamode') == 'multi') {
+            // Get the attributes.
+            $objFirstAttribute  = $objMetaModel->getAttribute($this->get('first_attr_id'));
+            $objSecondAttribute = $objMetaModel->getAttribute($this->get('second_attr_id'));
 
-		// Set the distance for the search.
-		$objContainer->setDistance($intDist);
+            // Search for two simple attributes.
+            $this->doSearchForTwoSimpleAtt($objContainer, $objFilter, $objFirstAttribute, $objSecondAttribute);
+        }
+    }
 
-		// Single mode search.
-		if ($this->get('datamode') == 'single')
-		{
-			// Get the attribute.
-			$objAttribute = $objMetaModel->getAttributeById($this->get('single_attr_id'));
+    public function getParameterFilterNames()
+    {
+        if (($strParamName = $this->getParamName())) {
+            return array(
+                $strParamName              => ($this->get('label') ? $this->get('label') : $this->getAttributeName()),
+                $this->getParamNameRange() => ($this->get('label') ? $this->get('label') : $this->getAttributeName()) . ' - Range'
+            );
+        } else {
+            return array();
+        }
+    }
 
-			// Search for the geolocation attribute.
-			if ($objAttribute->get('type') == 'geolocation')
-			{
-				$this->doSearchForAttGeolocation($objContainer, $objFilter, $objAttribute);
-			}
-		}
-		// Multi mode search.
-		else if ($this->get('datamode') == 'multi')
-		{
-			// Get the attributes.
-			$objFirstAttribute	 = $objMetaModel->getAttributeById($this->get('first_attr_id'));
-			$objSecondAttribute	 = $objMetaModel->getAttributeById($this->get('second_attr_id'));
+    /**
+     * {@inheritdoc}
+     */
+    public function getParameterDCA()
+    {
+        return array();
+    }
 
-			// Search for two simple attributes.
-			$this->doSearchForTwoSimpleAtt($objContainer, $objFilter, $objFirstAttribute, $objSecondAttribute);
-		}
-	}
+    /**
+     * {@inheritdoc}
+     *
+     * @SuppressWarnings(PHPMD.Superglobals)
+     * @SuppressWarnings(PHPMD.CamelCaseVariableName)
+     */
+    public function getParameterFilterWidgets(
+        $arrIds,
+        $arrFilterUrl,
+        $arrJumpTo,
+        FrontendFilterOptions $objFrontendFilterOptions
+    ) {
+        // If defined as static, return nothing as not to be manipulated via editors.
+        if (!$this->enableFEFilterWidget()) {
+            return array();
+        }
 
-	public function getParameterFilterNames()
-	{
-		if (($strParamName = $this->getParamName()))
-		{
-			return array(
-				$strParamName => ($this->get('label') ? $this->get('label') : $this->getAttributeName()),
-				$this->getParamNameRange() => ($this->get('label') ? $this->get('label') : $this->getAttributeName()) . ' - Range'
-			);
-		}
-		else
-		{
-			return array();
-		}
-	}
+        $arrReturn                     = array();
+        $GLOBALS['MM_FILTER_PARAMS'][] = $this->getParamName();
+        $GLOBALS['MM_FILTER_PARAMS'][] = $this->getParamNameRange();
 
-	/**
-	 * {@inheritdoc}
-	 */
-	public function getParameterDCA()
-	{
-		return array();
-	}
+        // Address search.
+        $arrCount  = array();
+        $arrWidget = array(
+            'label'     => array(
+                // TODO: make this multilingual.
+                ($this->get('label') ? $this->get('label') : $this->getAttributeName()),
+                'GET: ' . $this->getParamName()
+            ),
+            'inputType' => 'text',
+            'count'     => $arrCount,
+            'showCount' => $objFrontendFilterOptions->isShowCountValues(),
+            'eval'      => array(
+                'colname'  => $this->getColname(),
+                'urlparam' => $this->getParamName(),
+                'template' => $this->get('template'),
+            )
+        );
 
-	public function getParameterFilterWidgets($arrIds, $arrFilterUrl, $arrJumpTo, \MetaModelFrontendFilterOptions $objFrontendFilterOptions)
-	{
-		// If defined as static, return nothing as not to be manipulated via editors.
-		if (!$this->enableFEFilterWidget())
-		{
-			return array();
-		}
+        // Range filter with selection.
+        if ($this->get('rangemode') == 'selection') {
+            // Get all range options.
+            $arrRangeOptions = array();
+            foreach (deserialize($this->get('range_selection'), true) as $arrRange) {
+                $arrRangeOptions[$arrRange['range']] = $arrRange['range'] . 'km';
+            }
 
-		$arrReturn                       = array();
-		$GLOBALS['MM_FILTER_PARAMS'][]   = $this->getParamName();
-		$GLOBALS['MM_FILTER_PARAMS'][]   = $this->getParamNameRange();
+            $arrRangeWidget = array(
+                'label'     => array(
+                    // TODO: make this multilingual.
+                    ($this->get('range_label') ? $this->get('range_label') : $this->getAttributeName() . ' Range '),
+                    'GET: ' . $this->getParamNameRange()
+                ),
+                'inputType' => 'select',
+                'options'   => $arrRangeOptions,
+                'eval'      => array(
+                    'includeBlankOption' => true,
+                    'colname'            => $this->getColname(),
+                    'urlparam'           => $this->getParamNameRange(),
+                    'template'           => $this->get('range_template'),
+                )
+            );
+        } // Range filter with free input.
+        else if ($this->get('rangemode') == 'free') {
+            $arrRangeWidget = array(
+                'label'     => array(
+                    // TODO: make this multilingual.
+                    ($this->get('range_label') ? $this->get('range_label') : $this->getAttributeName() . ' Range '),
+                    'GET: ' . $this->getParamNameRange()
+                ),
+                'inputType' => 'text',
+                'eval'      => array(
+                    'colname'  => $this->getColname(),
+                    'urlparam' => $this->getParamNameRange(),
+                    'template' => $this->get('range_template'),
+                )
+            );
+        }
 
-		// Address search.
-		$arrCount    = array();
-		$arrWidget   = array(
-			'label' => array(
-				// TODO: make this multilingual.
-				($this->get('label') ? $this->get('label') : $this->getAttributeName()),
-				'GET: ' . $this->getParamName()
-			),
-			'inputType' => 'text',
-			'count' => $arrCount,
-			'showCount' => $objFrontendFilterOptions->isShowCountValues(),
-			'eval' => array(
-				'colname' => $this->getColname(),
-				'urlparam' => $this->getParamName(),
-				'template' => $this->get('template'),
-			)
-		);
+        // Add filter.
+        $arrReturn[$this->getParamName()] = $this->prepareFrontendFilterWidget($arrWidget, $arrFilterUrl, $arrJumpTo,
+            $objFrontendFilterOptions);
 
-		// Range filter with selection.
-		if ($this->get('rangemode') == 'selection')
-		{
-			// Get all range options.
-			$arrRangeOptions = array();
-			foreach (deserialize($this->get('range_selection'), true) as $arrRange)
-			{
-				$arrRangeOptions[$arrRange['range']] = $arrRange['range'] . 'km';
-			}
+        // Add range filter if we have one.
+        if ($arrRangeWidget) {
+            $arrReturn[$this->getParamNameRange()] = $this->prepareFrontendFilterWidget($arrRangeWidget, $arrFilterUrl,
+                $arrJumpTo, $objFrontendFilterOptions);
+        }
 
-			$arrRangeWidget = array(
-				'label' => array(
-					// TODO: make this multilingual.
-					($this->get('range_label') ? $this->get('range_label') : $this->getAttributeName() . ' Range '),
-					'GET: ' . $this->getParamNameRange()
-				),
-				'inputType' => 'select',
-				'options' => $arrRangeOptions,
-				'eval' => array(
-					'includeBlankOption' => true,
-					'colname' => $this->getColname(),
-					'urlparam' => $this->getParamNameRange(),
-					'template' => $this->get('range_template'),
-				)
-			);
-		}
-		// Range filter with free input.
-		else if ($this->get('rangemode') == 'free')
-		{
-			$arrRangeWidget = array(
-				'label' => array(
-					// TODO: make this multilingual.
-					($this->get('range_label') ? $this->get('range_label') : $this->getAttributeName() . ' Range '),
-					'GET: ' . $this->getParamNameRange()
-				),
-				'inputType' => 'text',
-				'eval' => array(
-					'colname' => $this->getColname(),
-					'urlparam' => $this->getParamNameRange(),
-					'template' => $this->get('range_template'),
-				)
-			);
-		}
+        return $arrReturn;
+    }
 
-		// Add filter.
-		$arrReturn[$this->getParamName()] = $this->prepareFrontendFilterWidget($arrWidget, $arrFilterUrl, $arrJumpTo, $objFrontendFilterOptions);
+    /**
+     * Get the attribute name/s.
+     *
+     * @return String
+     */
+    protected function getColname()
+    {
+        if (($strParamName = $this->getParamName()) && $this->get('datamode') == 'single') {
+            return $this->getMetaModel()->getAttribute($this->get('single_attr_id'))->getColname();
+        } else if (($strParamName = $this->getParamName()) && $this->get('datamode') == 'multi') {
+            return $this->getMetaModel()->getAttribute($this->get('first_attr_id'))->getColname();
+        }
+    }
 
-		// Add range filter if we have one.
-		if ($arrRangeWidget)
-		{
-			$arrReturn[$this->getParamNameRange()] = $this->prepareFrontendFilterWidget($arrRangeWidget, $arrFilterUrl, $arrJumpTo, $objFrontendFilterOptions);
-		}
+    /**
+     * Get the attribute name/s.
+     *
+     * @return String
+     */
+    protected function getAttributeName()
+    {
+        if (($strParamName = $this->getParamName()) && $this->get('datamode') == 'single') {
+            return $this->getMetaModel()->getAttribute($this->get('single_attr_id'))->getName();
+        } else if (($strParamName = $this->getParamName()) && $this->get('datamode') == 'multi') {
 
-		return $arrReturn;
-	}
+            $objFirstAttribute  = $this->getMetaModel()->getAttribute($this->get('first_attr_id'));
+            $objSecondAttribute = $this->getMetaModel()->getAttribute($this->get('second_attr_id'));
 
-	/**
-	 * Get the attribute name/s.
-	 * 
-	 * @return String
-	 */
-	protected function getColname()
-	{
-		if (($strParamName = $this->getParamName()) && $this->get('datamode') == 'single')
-		{
-			return $this->getMetaModel()->getAttributeById($this->get('single_attr_id'))->getColname();
-		}
-		else if (($strParamName = $this->getParamName()) && $this->get('datamode') == 'multi')
-		{
-			return $this->getMetaModel()->getAttributeById($this->get('first_attr_id'))->getColname();
-		}
-	}
+            $strLatName = $objFirstAttribute->getName();
+            $strLngName = $objSecondAttribute->getName();
 
-	/**
-	 * Get the attribute name/s.
-	 * 
-	 * @return String
-	 */
-	protected function getAttributeName()
-	{
-		if (($strParamName = $this->getParamName()) && $this->get('datamode') == 'single')
-		{
-			return$this->getMetaModel()->getAttributeById($this->get('single_attr_id'))->getName();
-		}
-		else if (($strParamName = $this->getParamName()) && $this->get('datamode') == 'multi')
-		{
-			$objFirstAttribute	 = $this->getMetaModel()->getAttributeById($this->get('first_attr_id'));
-			$objSecondAttribute	 = $this->getMetaModel()->getAttributeById($this->get('second_attr_id'));
+            return $strLatName . '/' . $strLngName;
+        }
+    }
 
-			$strLatName	 = $objFirstAttribute->getName();
-			$strLngName	 = $objSecondAttribute->getName();
+    /**
+     * Run the search for the complex attribute geolocation.
+     *
+     * @param Container  $objContainer
+     *
+     * @param IFilter    $objFilter
+     *
+     * @param IAttribute $objAttribute
+     */
+    protected function doSearchForAttGeolocation($objContainer, $objFilter, $objAttribute)
+    {
+        // Get location.y
+        $lat     = $objContainer->getLatitude();
+        $lng     = $objContainer->getLongitude();
+        $intDist = $objContainer->getDistance();
 
-			return $strLatName . '/' . $strLngName;
-		}
-	}
+        $strSelect = "SELECT item_id "
+                     . "FROM tl_metamodel_geolocation "
+                     . "WHERE round(sqrt( power(2 * pi() / 360 * ($lat - latitude) * 6371,2) + power(2 * pi() / 360 * ($lng - longitude) * 6371 *  COS( 2 * pi() / 360 * ($lat + latitude) * 0.5 ),2))) <= $intDist "
+                     . "AND att_id=? "
+                     . "ORDER BY round(sqrt( power(2 * pi() / 360 * ($lat - latitude) * 6371,2) + power(2 * pi() / 360 * ($lng - longitude) * 6371 *  COS( 2 * pi() / 360 * ($lat + latitude) * 0.5 ),2)))";
 
-	/**
-	 * Run the search for the complex attribute geolocation.
-	 * 
-	 * @param type $objContainer
-	 * @param type $objFilter
-	 * @param type $objAttribute
-	 */
-	protected function doSearchForAttGeolocation($objContainer, $objFilter, $objAttribute)
-	{
-		// Get location.y
-		$lat     = $objContainer->getLatitude();
-		$lng     = $objContainer->getLongitude();
-		$intDist = $objContainer->getDistance();
+        $objResult = \Database::getInstance()
+            ->prepare($strSelect)
+            ->execute($this->get('single_attr_id'));
 
-		$strSelect = "SELECT item_id "
-				. "FROM tl_metamodel_geolocation "
-				. "WHERE round(sqrt( power(2 * pi() / 360 * ($lat - latitude) * 6371,2) + power(2 * pi() / 360 * ($lng - longitude) * 6371 *  COS( 2 * pi() / 360 * ($lat + latitude) * 0.5 ),2))) <= $intDist "
-				. "AND att_id=? "
-				. "ORDER BY round(sqrt( power(2 * pi() / 360 * ($lat - latitude) * 6371,2) + power(2 * pi() / 360 * ($lng - longitude) * 6371 *  COS( 2 * pi() / 360 * ($lat + latitude) * 0.5 ),2)))";
+        // Nothing found add empty list.
+        if ($objResult->numRows == 0) {
+            $objFilter->addFilterRule(new StaticIdList(array()));
+        } // Add the found id to the list.
+        else {
+            $objFilter->addFilterRule(new StaticIdList($objResult->fetchEach('item_id')));
+        }
+    }
 
-		$objResult = Database::getInstance()
-				->prepare($strSelect)
-				->execute($this->get('single_attr_id'));
+    /**
+     * Run search for two simple attributes.
+     *
+     * @param Container  $objContainer The Container with all information.
+     *
+     * @param IFilter    $objFilter
+     *
+     * @param IAttribute $objFirstAttribute
+     *
+     * @param IAttribute $objSecondAttribute
+     */
+    protected function doSearchForTwoSimpleAtt($objContainer, $objFilter, $objFirstAttribute, $objSecondAttribute)
+    {
+        $strFieldLat = $objFirstAttribute->getColName();
+        $strFieldLng = $objSecondAttribute->getColName();
+        $strTable    = $this->getMetaModel()->getTableName();
 
-		// Nothing found add empty list.
-		if ($objResult->numRows == 0)
-		{
-			$objFilter->addFilterRule(new StaticIdList(array()));
-		}
-		// Add the found id to the list.
-		else
-		{
-			$objFilter->addFilterRule(new StaticIdList($objResult->fetchEach('item_id')));
-		}
-	}
+        // Get location.
+        $lat     = $objContainer->getLatitude();
+        $lng     = $objContainer->getLongitude();
+        $intDist = $objContainer->getDistance();
 
-	/**
-	 * Run search for two simple attributes.
-	 * 
-	 * @param PerimetersearchLookUpInterface $objContainer
-	 * @param type $objFilter
-	 * @param type $objFirstAttribute
-	 * @param type $objSecondAttribute
-	 */
-	protected function doSearchForTwoSimpleAtt($objContainer, $objFilter, $objFirstAttribute, $objSecondAttribute)
-	{
-		$strFieldLat = $objFirstAttribute->getColName();
-		$strFieldLng = $objSecondAttribute->getColName();
-		$strTable    = $this->getMetaModel()->getTableName();
+        $strSelect = "SELECT id "
+                     . "FROM $strTable "
+                     . "WHERE round(sqrt( power(2 * pi() / 360 * ($lat - $strFieldLat) * 6371,2) + power(2 * pi() / 360 * ($lng - $strFieldLng) * 6371 *  COS( 2 * pi() / 360 * ($lat + $strFieldLat) * 0.5 ),2))) <= $intDist "
+                     . "ORDER BY round(sqrt( power(2 * pi() / 360 * ($lat - $strFieldLat) * 6371,2) + power(2 * pi() / 360 * ($lng - $strFieldLng) * 6371 *  COS( 2 * pi() / 360 * ($lat + $strFieldLat) * 0.5 ),2)))";
 
-		// Get location.
-		$lat     = $objContainer->getLatitude();
-		$lng     = $objContainer->getLongitude();
-		$intDist = $objContainer->getDistance();
+        $objResult = \Database::getInstance()
+            ->prepare($strSelect)
+            ->execute();
 
-		$strSelect = "SELECT id "
-				. "FROM $strTable "
-				. "WHERE round(sqrt( power(2 * pi() / 360 * ($lat - $strFieldLat) * 6371,2) + power(2 * pi() / 360 * ($lng - $strFieldLng) * 6371 *  COS( 2 * pi() / 360 * ($lat + $strFieldLat) * 0.5 ),2))) <= $intDist "
-				. "ORDER BY round(sqrt( power(2 * pi() / 360 * ($lat - $strFieldLat) * 6371,2) + power(2 * pi() / 360 * ($lng - $strFieldLng) * 6371 *  COS( 2 * pi() / 360 * ($lat + $strFieldLat) * 0.5 ),2)))";
+        // Nothing found add empty list.
+        if ($objResult->numRows == 0) {
+            $objFilter->addFilterRule(new StaticIdList(array()));
+        } // Add the found id to the list.
+        else {
+            $objFilter->addFilterRule(new StaticIdList($objResult->fetchEach('id')));
+        }
+    }
 
-		$objResult = Database::getInstance()
-				->prepare($strSelect)
-				->execute();
+    /**
+     * User the provider classes to make a look up.
+     *
+     * @param string $strAddress
+     *
+     * @return Container|null Return the container with all information or null on error.
+     */
+    protected function lookupGeo($strAddress)
+    {
+        $arrLookupServices = deserialize($this->get('lookupservice'), true);
+        if (!count($arrLookupServices)) {
+            return false;
+        }
 
-		// Nothing found add empty list.
-		if ($objResult->numRows == 0)
-		{
-			$objFilter->addFilterRule(new StaticIdList(array()));
-		}
-		// Add the found id to the list.
-		else
-		{
-			$objFilter->addFilterRule(new StaticIdList($objResult->fetchEach('id')));
-		}
-	}
+        foreach ($arrLookupServices as $arrSettings) {
+            $strLookupClass = $arrSettings['lookupservice'];
 
-	/**
-	 * ToDo: Add chain support.
-	 * 
-	 * @param string $strAdress
-	 * 
-	 * @return MetaModelsCatchmentAreaGeoContainer
-	 */
-	protected function lookupGeo($strAdress)
-	{
-		$arrLookupServices = deserialize($this->get('lookupservice'), true);
-		if (!count($arrLookupServices))
-		{
-			return false;
-		}
+            // Check if we know this classe.
+            if (!isset($GLOBALS['METAMODELS']['filters']['perimetersearch']['resolve_class'][$strLookupClass])) {
+                continue;
+            }
 
-		foreach ($arrLookupServices as $arrSettings)
-		{
-			$strLookupClass = $arrSettings['lookupservice'];
+            try {
+                $sClass           = $GLOBALS['METAMODELS']['filters']['perimetersearch']['resolve_class'][$strLookupClass];
+                $objCallbackClass = null;
+                $oClass           = new \ReflectionClass($sClass);
 
-			try
-			{
-				$objCallbackClass = null;
-				$class            = new \ReflectionClass($strLookupClass);
+                // Fetch singleton instance.
+                if ($oClass->hasMethod('getInstance')) {
+                    $getInstanceMethod = $oClass->getMethod('getInstance');
 
-				// Fetch singleton instance.
-				if ($class->hasMethod('getInstance'))
-				{
-					$getInstanceMethod = $class->getMethod('getInstance');
+                    // Create a new instance.
+                    if ($getInstanceMethod->isStatic()) {
+                        $objCallbackClass = $getInstanceMethod->invoke(null);
+                    } else {
+                        $objCallbackClass = $oClass->newInstance();
+                    }
+                } else {
+                    // Create a normal object.
+                    $objCallbackClass = $oClass->newInstance();
+                }
 
-					// Create a new instance.
-					if ($getInstanceMethod->isStatic())
-					{
-						$objCallbackClass = $getInstanceMethod->invoke(null);
-					}
-					else
-					{
-						$objCallbackClass = $class->newInstance();
-					}
-				}
-				// Create a normale object.
-				else
-				{
-					$objCallbackClass = $class->newInstance();
-				}
+                // Call the main function.
+                if ($objCallbackClass != null) {
+                    /** @var Container $objResult */
+                    $objResult = $objCallbackClass->getCoordinates(null, null, null, null, $strAddress);
 
-				// Call the main function.
-				if ($objCallbackClass != null)
-				{
-					$objResult = $objCallbackClass->getCoordinates(null, null, null, null, $strAdress);
+                    // Check if we have a result.
+                    if (!$objResult->hasError()) {
+                        return $objResult;
+                    }
+                }
+            } catch (\RuntimeException $exc) {
+                // Okay, we have an error try next one.
+            }
+        }
 
-					// Check if we have a result.
-					if ($objResult !== false)
-					{
-						return $objResult;
-					}
-				}
-			}
-			catch (Exception $exc)
-			{
-				// Okay, we have an error try next one.
-			}
-		}
-
-		// When we reach this point, we have no result, so return false.
-		return false;
-	}
+        // When we reach this point, we have no result, so return false.
+        return null;
+    }
 
 }

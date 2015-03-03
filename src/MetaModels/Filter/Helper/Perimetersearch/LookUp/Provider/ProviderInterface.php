@@ -7,38 +7,45 @@
  * data in each collection.
  *
  * PHP version 5
- * @package	   MetaModels
- * @subpackage PerimeterSearch
- * @author     Stefan Heimes <stefan_heimes@hotmail.com>
- * @copyright  The MetaModels team.
- * @license    LGPL.
+ *
+ * @package       MetaModels
+ * @subpackage    PerimeterSearch
+ * @author        Stefan Heimes <stefan_heimes@hotmail.com>
+ * @copyright     The MetaModels team.
+ * @license       LGPL.
  * @filesource
  */
+
+namespace MetaModels\Filter\Helper\Perimetersearch\LookUp\Provider;
+
+use MetaModels\Filter\Helper\Perimetersearch\LookUp\Container;
 
 /**
  * Class MetaModelsCatchmentAreaGeoLookUpInterface
  *
  * Provide methods for decoding messages from look up services.
- * @package	   MetaModels
- * @subpackage PerimeterSearch
- * @author	   Stefan Heimes <stefan_heimes@hotmail.com>
+ *
+ * @package       MetaModels
+ * @subpackage    PerimeterSearch
+ * @author        Stefan Heimes <stefan_heimes@hotmail.com>
  */
-interface PerimetersearchLookUpInterface
+interface ProviderInterface
 {
     /**
-	 * Find coordinates for given adress
-	 * 
-	 * @param string Street
-	 * @param string Postal/ZIP Code
-	 * @param string Name of city
-	 * @param string 2-letter country code
-	 * @param string Adress string without specific format
-	 * @return array
-	 */
-	public function getCoordinates( $street=NULL, $postal=NULL, $city=NULL, $country=NULL, $fullAdress=NULL );
+     * Find coordinates for given adress
+     *
+     * @param string $street
+     *
+     * @param string $postal
+     *
+     * @param string $city        Name of city
+     *
+     * @param string $country     2-letter country code
+     *
+     * @param string $fullAddress Address string without specific format
+     *
+     * @return Container
+     */
+    public function getCoordinates($street = null, $postal = null, $city = null, $country = null, $fullAddress = null);
 
 }
-
-
-
-?>
