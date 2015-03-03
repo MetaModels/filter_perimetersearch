@@ -16,18 +16,8 @@
  */
 
 /**
- * Frontend filter
+ * Plugins for geo resolving.
  */
+$GLOBALS['METAMODELS']['filters']['perimetersearch']['resolve_class']['google_maps']
+    = 'MetaModels\Filter\Helper\Perimetersearch\LookUp\Provider\GoogleMaps';
 
-// Basic
-$GLOBALS['METAMODELS']['filters']['perimetersearch']['class'] = 'MetaModelFilterSettingPerimetersearch';
-$GLOBALS['METAMODELS']['filters']['perimetersearch']['image'] = 'system/modules/metamodelsfilter_perimetersearch/html/filter_perimetersearch.png';
-$GLOBALS['METAMODELS']['filters']['perimetersearch']['info_callback'] = array('TableMetaModelFilterSetting', 'infoCallback');
-
-// Supported attributes
-$GLOBALS['METAMODELS']['filters']['perimetersearch']['attr_filter']['single'][] = 'geolocation';
-$GLOBALS['METAMODELS']['filters']['perimetersearch']['attr_filter']['multi'][]  = 'text';
-$GLOBALS['METAMODELS']['filters']['perimetersearch']['attr_filter']['multi'][]  = 'decimal';
-
-// Plugins for georesolving
-$GLOBALS['METAMODELS']['filters']['perimetersearch']['resolve_class'][] = 'PerimetersearchLookUpGoogleMaps';
