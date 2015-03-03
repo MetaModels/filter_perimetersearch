@@ -119,14 +119,13 @@ class Subscriber extends BaseSubscriber
             return;
         }
 
-        \Controller::loadLanguageFile('tl_metamodel_filtersetting');
-
-        $arrClasses = (array) $GLOBALS['METAMODELS']['filters']['perimetersearch']['resolve_class'];
+        $arrClasses = (array)$GLOBALS['METAMODELS']['filters']['perimetersearch']['resolve_class'];
 
         $arrReturn = array();
-        foreach ($arrClasses as $value)
-        {
-            $arrReturn[$value] = (isset($GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['perimetersearch'][$value])) ? $GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['perimetersearch'][$value] : $value;
+        foreach (array_keys($arrClasses) as $name) {
+            $arrReturn[$name] = (isset($GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['perimetersearch'][$name]))
+                ? $GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['perimetersearch'][$name]
+                : $name;
         }
 
         $event->setOptions($arrReturn);
@@ -142,7 +141,8 @@ class Subscriber extends BaseSubscriber
     public function getTemplateOptions(GetPropertyOptionsEvent $event)
     {
         if (($event->getEnvironment()->getDataDefinition()->getName() !== 'tl_metamodel_filtersetting')
-            || ($event->getPropertyName() !== 'range_template')) {
+            || ($event->getPropertyName() !== 'range_template')
+        ) {
             return;
         }
 
