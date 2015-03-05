@@ -21,7 +21,7 @@ namespace MetaModels\Filter\Helper\Perimetersearch\LookUp\Provider;
 /**
  * Lookup class for google.
  */
-class GoogleMaps implements ProviderInterface
+class GoogleMaps extends ProviderInterface
 {
     /**
      * Google API call
@@ -29,13 +29,6 @@ class GoogleMaps implements ProviderInterface
      * @var string
      */
     protected $strGoogleUrl = "http://maps.googleapis.com/maps/api/geocode/json?address=%s&sensor=false&language=de";
-
-    /**
-     * Google alternative API call
-     *
-     * @var string
-     */
-    protected $strGoogleAltenativUrl = "http://maps.google.com/maps/geo?q=%s&output=json&oe=utf8&sensor=false&hl=de";
 
     /**
      * Find coordinates for given adress
@@ -57,24 +50,15 @@ class GoogleMaps implements ProviderInterface
         // Generate a new container.
         $objReturn = new Container();
 
-        // Find coordinates using google maps api.
-        $sQuery = sprintf(
-            "%s %s %s %s"
-            , $street
-            , $postal
-            , $city
-            , $country
-        );
-
-        $sQuery = $fullAddress ? $fullAddress : $sQuery;
-
         // Set the query string.
+        $sQuery = $this->getQueryString($street, $postal, $city, $country, $fullAddress);
         $objReturn->setSearchParam($sQuery);
 
         $oRequest = null;
         $oRequest = new \Request();
 
         $oRequest->send(sprintf($this->strGoogleUrl, rawurlencode($sQuery)));
+        $objReturn->setUri(sprintf($this->strGoogleUrl, rawurlencode($sQuery)));
 
         if ($oRequest->code == 200) {
             $aResponse = json_decode($oRequest->response, 1);
@@ -82,30 +66,19 @@ class GoogleMaps implements ProviderInterface
             if (!empty($aResponse['status']) && $aResponse['status'] == 'OK') {
                 $objReturn->setLatitude($aResponse['results'][0]['geometry']['location']['lat']);
                 $objReturn->setLongitude($aResponse['results'][0]['geometry']['location']['lng']);
-
-                return $objReturn;
+            } else if (!empty($aResponse['error_message'])) {
+                $objReturn->setError(true);
+                $objReturn->setErrorMsg($aResponse['error_message']);
             } else {
-                // Try alternative api if google blocked us.
-                $oRequest->send(sprintf($this->strGoogleAltenativUrl, rawurlencode($sQuery)));
-
-                if ($oRequest->code == 200) {
-                    $aResponse = json_decode($oRequest->response, 1);
-
-                    if (!empty($aResponse['Status']) && $aResponse['Status']['code'] == 200) {
-                        $objReturn->setLatitude($aResponse['Placemark'][0]['Point']['coordinates'][1]);
-                        $objReturn->setLongitude($aResponse['Placemark'][0]['Point']['coordinates'][0]);
-
-                        return $objReturn;
-                    }
-                }
+                $objReturn->setError(true);
+                $objReturn->setErrorMsg($aResponse['Status']['error_message']);
             }
+        } else {
+            // Okay nothing work. So set all to Error.
+            $objReturn->setError(true);
+            $objReturn->setErrorMsg('Could not find coordinates for address "' . $sQuery . '"');
         }
-
-        // Okay nothing work. So set all to Error.
-        $objReturn->setError("true");
-        $objReturn->setErrorMsg('Could not find coordinates for address "' . $sQuery . '"');
 
         return $objReturn;
     }
-
 }
