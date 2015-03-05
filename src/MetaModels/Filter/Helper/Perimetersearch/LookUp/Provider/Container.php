@@ -65,6 +65,13 @@ class Container
     protected $blnError = false;
 
     /**
+     * The request uri.
+     *
+     * @var string
+     */
+    protected $strUri = '';
+
+    /**
      * Error message
      *
      * @var string
@@ -130,4 +137,21 @@ class Container
     {
         $this->intDistance = $intDistance;
     }
+
+    /**
+     * @return string
+     */
+    public function getUri()
+    {
+        return $this->strUri;
+    }
+
+    /**
+     * @param string $strUri
+     */
+    public function setUri($strUri)
+    {
+        $this->strUri = $strUri;
+    }
+
 }
