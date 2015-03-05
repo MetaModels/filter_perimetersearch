@@ -109,8 +109,26 @@ class Perimetersearch extends SimpleLookup
             $intDist = intval($this->get('range_preset'));
         }
 
+        // Get the country for the lookup.
+        $strCountry = null;
+        if ($this->get('countrymode') === 'get' && $this->get('country_get')) {
+            $getValue = \Input::get($this->get('country_get'));
+            $getValue = trim($getValue);
+            if (!empty($getValue)) {
+                $strCountry = $getValue;
+            }
+        } else if ($this->get('countrymode') === 'get' && $this->get('country_get')) {
+            $getValue = \Input::post($this->get('country_get'));
+            $getValue = trim($getValue);
+            if (!empty($getValue)) {
+                $strCountry = $getValue;
+            }
+        } elseif ($this->get('countrymode') === 'preset') {
+            $strCountry = $this->get('country_preset');
+        }
+
         // Search for the geolocation.
-        $objContainer = $this->lookupGeo($strParamValue);
+        $objContainer = $this->lookupGeo($strParamValue, $strCountry);
 
         // Okay we cant find a entry. So search for nothing.
         if ($objContainer == null || $objContainer->hasError()) {
@@ -369,8 +387,19 @@ class Perimetersearch extends SimpleLookup
      *
      * @return Container|null Return the container with all information or null on error.
      */
-    protected function lookupGeo($strAddress)
+    protected function lookupGeo($strAddress, $strCountry)
     {
+        // Trim the data. Better!
+        $strAddress = trim($strAddress);
+        $strCountry = trim($strCountry);
+
+        // First check cache.
+        $objCacheResult = $this->getFromCache($strAddress, $strCountry);
+        if ($objCacheResult !== null) {
+            return $objCacheResult;
+        }
+
+        // If there is no data from the cache ask google.
         $arrLookupServices = deserialize($this->get('lookupservice'), true);
         if (!count($arrLookupServices)) {
             return false;
@@ -407,10 +436,11 @@ class Perimetersearch extends SimpleLookup
                 // Call the main function.
                 if ($objCallbackClass != null) {
                     /** @var Container $objResult */
-                    $objResult = $objCallbackClass->getCoordinates(null, null, null, null, $strAddress);
+                    $objResult = $objCallbackClass->getCoordinates(null, null, null, $strCountry, $strAddress);
 
                     // Check if we have a result.
                     if (!$objResult->hasError()) {
+                        $this->addToCache($strAddress, $strCountry, $objResult);
                         return $objResult;
                     }
                 }
@@ -421,6 +451,59 @@ class Perimetersearch extends SimpleLookup
 
         // When we reach this point, we have no result, so return false.
         return null;
+    }
+
+    /**
+     * Add data to the cache.
+     *
+     * @param string    $strAddress
+     *
+     * @param string    $strCountry
+     *
+     * @param Container $objResult
+     */
+    protected function addToCache($strAddress, $strCountry, $objResult)
+    {
+        \Database::getInstance()
+            ->prepare('INSERT INTO tl_metamodel_perimetersearch %s')
+            ->set(array
+            (
+                'search'   => $strAddress,
+                'country'  => $strCountry,
+                'geo_lat'  => $objResult->getLatitude(),
+                'geo_long' => $objResult->getLongitude(),
+            ))
+            ->execute();
+    }
+
+    /**
+     * Get data from cache.
+     *
+     * @param string $strAddress
+     *
+     * @param string $strCountry
+     *
+     * @return Container|null
+     */
+    protected function getFromCache($strAddress, $strCountry)
+    {
+        // Check cache.
+        $objResult = \Database::getInstance()
+            ->prepare('SELECT * FROM tl_metamodel_perimetersearch WHERE search = ? AND country = ?')
+            ->execute($strAddress, $strCountry);
+
+        // If we have no data just return null.
+        if ($objResult->count() === 0) {
+            return null;
+        }
+
+        // Build a new container.
+        $objContainer = new Container();
+        $objContainer->setLatitude($objResult->geo_lat);
+        $objContainer->setLongitude($objResult->geo_long);
+        $objContainer->setSearchParam($objResult->query);
+
+        return $objContainer;
     }
 
 }
