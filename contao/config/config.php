@@ -20,4 +20,6 @@
  */
 $GLOBALS['METAMODELS']['filters']['perimetersearch']['resolve_class']['google_maps']
     = 'MetaModels\Filter\Helper\Perimetersearch\LookUp\Provider\GoogleMaps';
+$GLOBALS['METAMODELS']['filters']['perimetersearch']['resolve_class']['open_street_maps']
+    = 'MetaModels\Filter\Helper\Perimetersearch\LookUp\Provider\OpenStreetMaps';
 
