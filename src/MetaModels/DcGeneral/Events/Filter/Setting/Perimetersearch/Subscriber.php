@@ -89,10 +89,21 @@ class Subscriber extends BaseSubscriber
             ->getServiceContainer()
             ->getFilterFactory()
             ->getTypeFactory($model->getProperty('type'));
+
         $typeFilter  = null;
         if ($typeFactory) {
             $typeFilter = $typeFactory->getKnownAttributeTypes();
         }
+
+        if ($event->getPropertyName() === 'single_attr_id') {
+            $typeFilter = array('geolocation');
+        } else {
+            $key = array_search('geolocation', $typeFilter);
+            if ($key !== null) {
+                unset($typeFilter[$key]);
+            }
+        }
+
         foreach ($metaModel->getAttributes() as $attribute) {
             $typeName = $attribute->get('type');
             if ($typeFilter && (!in_array($typeName, $typeFilter))) {
