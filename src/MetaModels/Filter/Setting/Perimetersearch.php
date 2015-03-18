@@ -329,7 +329,7 @@ class Perimetersearch extends SimpleLookup
 
         $objResult = \Database::getInstance()
             ->prepare($strSelect)
-            ->execute($this->get('single_attr_id'));
+            ->execute($this->getMetaModel()->getAttribute($this->get('single_attr_id'))->get('id'));
 
         // Nothing found add empty list.
         if ($objResult->numRows == 0) {
@@ -373,7 +373,7 @@ class Perimetersearch extends SimpleLookup
 
         // Nothing found add empty list.
         if ($objResult->numRows == 0) {
-            $objFilter->addFilterRule(new StaticIdList(array()));
+            $objFilter->addFilterRule(new StaticIdList(null));
         } // Add the found id to the list.
         else {
             $objFilter->addFilterRule(new StaticIdList($objResult->fetchEach('id')));
