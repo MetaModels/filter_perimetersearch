@@ -8,8 +8,9 @@
  * PHP version 5
  *
  * @package    MetaModels
- * @subpackage FilterFromTo
+ * @subpackage Perimetersearch
  * @author     Christian Schiffler <c.schiffler@cyberspectrum.de>
+ * @author     Stefan Heimes <stefan_heimes@hotmail.com>
  * @copyright  The MetaModels team.
  * @license    LGPL.
  * @filesource
