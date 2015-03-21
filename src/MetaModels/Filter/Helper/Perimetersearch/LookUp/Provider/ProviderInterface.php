@@ -18,7 +18,6 @@
 
 namespace MetaModels\Filter\Helper\Perimetersearch\LookUp\Provider;
 
-use MetaModels\Filter\Helper\Perimetersearch\LookUp\Container;
 
 /**
  * Class MetaModelsCatchmentAreaGeoLookUpInterface
