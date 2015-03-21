@@ -23,7 +23,7 @@ use MetaModels\Attribute\ISimple;
 use MetaModels\Filter\IFilterRule;
 
 /**
- * Test the FromTo class.
+ * Rule for perimeter search.
  */
 class Perimetersearch implements IFilterRule
 {
@@ -100,6 +100,8 @@ class Perimetersearch implements IFilterRule
      * @param float|int  $long               The longitude to search for.
      *
      * @param int        $dist               The dist.
+     *
+     * @throws \InvalidArgumentException     If any value or attribute is not valid.
      */
     public function __construct($latitudeAttribute, $longitudeAttribute, $singleAttribute, $lat, $long, $dist)
     {
@@ -159,6 +161,8 @@ class Perimetersearch implements IFilterRule
      * @param string $message The exception message.
      *
      * @return void
+     *
+     * @throws \InvalidArgumentException If the value is not numeric or float.
      */
     private function validateValue($value, $message)
     {
@@ -177,6 +181,8 @@ class Perimetersearch implements IFilterRule
      * @param IAttribute $singleAttribute    The attribute to be checked.
      *
      * @return void
+     *
+     * @throws \InvalidArgumentException If we have no single attribute or the lang/lot attribute is missing.
      */
     private function checkAttributeTypes($latitudeAttribute, $longitudeAttribute, $singleAttribute)
     {
@@ -202,6 +208,8 @@ class Perimetersearch implements IFilterRule
      * @param IAttribute $singleAttribute The attribute to be checked.
      *
      * @return void
+     *
+     * @throws \InvalidArgumentException If the attribute is not from type geolocation.
      */
     private function checkMultiAttribute($singleAttribute)
     {
@@ -219,6 +227,8 @@ class Perimetersearch implements IFilterRule
      * @param IAttribute $longitudeAttribute The attribute to be checked.
      *
      * @return void
+     *
+     * @throws \InvalidArgumentException If one of the attribute is not from type ISimple.
      */
     private function checkSingleAttributes($latitudeAttribute, $longitudeAttribute)
     {
@@ -263,9 +273,9 @@ class Perimetersearch implements IFilterRule
      *
      * @param string $tableName       The name of the table.
      *
-     * @param string $latitudeField   The name of the latitude field
+     * @param string $latitudeField   The name of the latitude field.
      *
-     * @param string $longitudeField  The name of the longitude field
+     * @param string $longitudeField  The name of the longitude field.
      *
      * @param array  $additionalWhere A list with additional where information.
      *
@@ -274,27 +284,29 @@ class Perimetersearch implements IFilterRule
     protected function runSimpleQuery($idField, $tableName, $latitudeField, $longitudeField, $additionalWhere)
     {
         // Base SQL with place holders.
-        $strSelect = 'SELECT %5$s '
-            . 'FROM %1$s '
-            . 'WHERE %4$s round(sqrt( power(2 * pi() / 360 * (? - %2$s) * 6371,2) + power(2 * pi() / 360 * (? - %3$s) * 6371 *  COS( 2 * pi() / 360 * (? + %2$s) * 0.5 ),2))) <= ?  '
-            . 'ORDER BY round(sqrt( power(2 * pi() / 360 * (? - %2$s) * 6371,2) + power(2 * pi() / 360 * (? - %3$s) * 6371 *  COS( 2 * pi() / 360 * (? + %2$s) * 0.5 ),2)))';
+        $strSelect = 'SELECT %5$s ' .
+            'FROM %1$s ' .
+            'WHERE %4$s round(sqrt(power(2 * pi() / 360 * (? - %2$s) * 6371,2) + power(2 * pi() / 360 * (? - %3$s) * 6371 * COS( 2 * pi() / 360 * (? + %2$s) * 0.5 ),2))) <= ?  ' .
+            'ORDER BY round(sqrt( power(2 * pi() / 360 * (? - %2$s) * 6371,2) + power(2 * pi() / 360 * (? - %3$s) * 6371 *  COS( 2 * pi() / 360 * (? + %2$s) * 0.5 ),2)))';
 
         // First value set for save values.
+        // @codingStandardsIgnoreStart
         $strSelect = sprintf(
             $strSelect,
-            $tableName,        // 1
-            $latitudeField,    // 2
-            $longitudeField,   // 3
-            $this->buildAdditionalWhere($additionalWhere),   // 4
+            $tableName, // 1
+            $latitudeField, // 2
+            $longitudeField, // 3
+            $this->buildAdditionalWhere($additionalWhere), // 4
             $idField // 5
         );
+        // @codingStandardsIgnoreEnd
 
         // Second value set for the database query.
         $lat    = $this->latitude;
         $lng    = $this->longitude;
         $dist   = $this->dist;
         $values = array_merge(
-            (array)$additionalWhere,
+            (array) $additionalWhere,
             array($lat, $lng, $lat, $dist, $lat, $lng, $lat)
         );
 
@@ -320,12 +332,11 @@ class Perimetersearch implements IFilterRule
      */
     protected function buildAdditionalWhere($additionalWhere)
     {
-        // If null return null.
         if ($additionalWhere === null) {
             return null;
         }
 
-        $sql = implode(' AND ', array_keys((array)$additionalWhere));
+        $sql = implode(' AND ', array_keys((array) $additionalWhere));
 
         return strlen($sql) ? $sql . ' AND ' : null;
     }
