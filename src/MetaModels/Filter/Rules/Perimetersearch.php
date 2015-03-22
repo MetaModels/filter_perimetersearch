@@ -286,8 +286,19 @@ class Perimetersearch implements IFilterRule
         // Base SQL with place holders.
         $strSelect = 'SELECT %5$s ' .
             'FROM %1$s ' .
-            'WHERE %4$s round(sqrt(power(2 * pi() / 360 * (? - %2$s) * 6371,2) + power(2 * pi() / 360 * (? - %3$s) * 6371 * COS( 2 * pi() / 360 * (? + %2$s) * 0.5 ),2))) <= ?  ' .
-            'ORDER BY round(sqrt( power(2 * pi() / 360 * (? - %2$s) * 6371,2) + power(2 * pi() / 360 * (? - %3$s) * 6371 *  COS( 2 * pi() / 360 * (? + %2$s) * 0.5 ),2)))';
+            'WHERE
+                %4$s
+                round(
+                    sqrt(
+                        power( 2 * pi() / 360 * (? - %2$s) * 6371,2) +
+                        power( 2 * pi() / 360 * (? - %3$s) * 6371 * COS( 2 * pi() / 360 * (? + %2$s) * 0.5 ),2)
+                    )
+                ) <= ? ' .
+            'ORDER BY
+                round(
+                    sqrt(
+                        power(2 * pi() / 360 * (? - %2$s) * 6371,2) +
+                        power(2 * pi() / 360 * (? - %3$s) * 6371 *  COS( 2 * pi() / 360 * (? + %2$s) * 0.5 ),2)))';
 
         // First value set for save values.
         // @codingStandardsIgnoreStart

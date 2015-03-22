@@ -19,7 +19,7 @@
 namespace MetaModels\Filter\Helper\Perimetersearch\LookUp\Provider;
 
 /**
- * Class MetaModelsCatchmentAreaGeoContainer
+ * Class MetaModelsCatchmentAreaGeoContainer.
  *
  * Provide methods for decoding messages from look up services.
  *
@@ -30,128 +30,219 @@ namespace MetaModels\Filter\Helper\Perimetersearch\LookUp\Provider;
 class Container
 {
     /**
-     * Lat
+     * Lat.
      *
      * @var mixed
      */
-    protected $mixLatitude = 0;
+    protected $latitude = 0;
 
     /**
-     * long
+     * Long.
      *
      * @var mixed
      */
-    protected $mixLongitude = 0;
+    protected $longitude = 0;
 
     /**
-     * Search param
+     * Search param.
      *
      * @var string
      */
-    protected $strSearchParam = '';
+    protected $searchParam = '';
 
     /**
      * Distance for the search.
      *
      * @var int
      */
-    protected $intDistance = 0;
+    protected $distance = 0;
 
     /**
-     * Show if we have an error
+     * Show if we have an error.
      *
      * @var boolean
      */
-    protected $blnError = false;
+    protected $errorFlag = false;
 
     /**
      * The request uri.
      *
      * @var string
      */
-    protected $strUri = '';
+    protected $uri = '';
 
     /**
-     * Error message
+     * Error message.
      *
      * @var string
      */
-    protected $strErrorMsg = "";
+    protected $errorMsg = '';
 
+    /**
+     * Return the latitude.
+     *
+     * @return float|int
+     */
     public function getLatitude()
     {
-        return $this->mixLatitude;
-    }
-
-    public function setLatitude($mixLat)
-    {
-        $this->mixLatitude = $mixLat;
-    }
-
-    public function getLongitude()
-    {
-        return $this->mixLongitude;
-    }
-
-    public function setLongitude($mixLong)
-    {
-        $this->mixLongitude = $mixLong;
-    }
-
-    public function getSearchParam()
-    {
-        return $this->strSearchParam;
-    }
-
-    public function setSearchParam($strSearchParam)
-    {
-        $this->strSearchParam = $strSearchParam;
-    }
-
-    public function hasError()
-    {
-        return $this->blnError;
-    }
-
-    public function setError($blnHasError)
-    {
-        $this->blnError = $blnHasError;
-    }
-
-    public function getErrorMsg()
-    {
-        return $this->strErrorMsg;
-    }
-
-    public function setErrorMsg($strErrorMsg)
-    {
-        $this->strErrorMsg = $strErrorMsg;
-    }
-
-    public function getDistance()
-    {
-        return $this->intDistance;
-    }
-
-    public function setDistance($intDistance)
-    {
-        $this->intDistance = $intDistance;
+        return $this->latitude;
     }
 
     /**
+     * Set the latitude.
+     *
+     * @param float|int $lat The latitude value.
+     *
+     * @return $this
+     */
+    public function setLatitude($lat)
+    {
+        $this->latitude = $lat;
+
+        return $this;
+    }
+
+    /**
+     * Return the longitude.
+     *
+     * @return mixed
+     */
+    public function getLongitude()
+    {
+        return $this->longitude;
+    }
+
+    /**
+     * Set the latitude.
+     *
+     * @param float|int $long The longitude value.
+     *
+     * @return $this
+     */
+    public function setLongitude($long)
+    {
+        $this->longitude = $long;
+
+        return $this;
+    }
+
+    /**
+     * Return parameters from the search.
+     *
+     * @return mixed
+     */
+    public function getSearchParam()
+    {
+        return $this->searchParam;
+    }
+
+    /**
+     * Set the latitude.
+     *
+     * @param mixed $searchParam The search parameters.
+     *
+     * @return $this
+     */
+    public function setSearchParam($searchParam)
+    {
+        $this->searchParam = $searchParam;
+
+        return $this;
+    }
+
+    /**
+     * Check if there was an error.
+     *
+     * @return bool True => Error | False => No Error.
+     */
+    public function hasError()
+    {
+        return $this->errorFlag;
+    }
+
+    /**
+     * Set the error flag.
+     *
+     * @param bool $hasError True => Error | False => No Error.
+     *
+     * @return $this
+     */
+    public function setError($hasError)
+    {
+        $this->errorFlag = $hasError;
+
+        return $this;
+    }
+
+    /**
+     * Return the error messages.
+     *
+     * @return string
+     */
+    public function getErrorMsg()
+    {
+        return $this->errorMsg;
+    }
+
+    /**
+     * Set the error message.
+     *
+     * @param string $strErrorMsg The error message.
+     *
+     * @return $this
+     */
+    public function setErrorMsg($strErrorMsg)
+    {
+        $this->errorMsg = $strErrorMsg;
+
+        return $this;
+    }
+
+    /**
+     * Get the distance value.
+     *
+     * @return int
+     */
+    public function getDistance()
+    {
+        return $this->distance;
+    }
+
+    /**
+     * Set the distance value.
+     *
+     * @param int $distance The distance value.
+     *
+     * @return $this
+     */
+    public function setDistance($distance)
+    {
+        $this->distance = $distance;
+
+        return $this;
+    }
+
+    /**
+     * Get the URI for the request.
+     *
      * @return string
      */
     public function getUri()
     {
-        return $this->strUri;
+        return $this->uri;
     }
 
     /**
-     * @param string $strUri
+     * Set the uri string.
+     *
+     * @param string $uri The uri string.
+     *
+     * @return string
      */
-    public function setUri($strUri)
+    public function setUri($uri)
     {
-        $this->strUri = $strUri;
-    }
+        $this->uri = $uri;
 
+        return $this;
+    }
 }

@@ -20,7 +20,7 @@ namespace MetaModels\Filter\Helper\Perimetersearch\LookUp\Provider;
 
 
 /**
- * Class MetaModelsCatchmentAreaGeoLookUpInterface
+ * Class MetaModelsCatchmentAreaGeoLookUpInterface.
  *
  * Provide methods for decoding messages from look up services.
  *
@@ -61,15 +61,15 @@ abstract class ProviderInterface
     /**
      * Build the query string.
      *
-     * @param string $street
+     * @param string $street      The street.
      *
-     * @param string $postal
+     * @param string $postal      The postal code.
      *
-     * @param string $city
+     * @param string $city        Name of city.
      *
-     * @param string $country
+     * @param string $country     A 2-letter country code.
      *
-     * @param string $fullAddress
+     * @param string $fullAddress Address string without specific format.
      *
      * @return string
      */
@@ -99,27 +99,27 @@ abstract class ProviderInterface
             }
 
             return sprintf(
-                "%s, %s %s, %s"
-                , $street
-                , $postal
-                , $city
-                , $country
+                '%s, %s %s, %s',
+                $street,
+                $postal,
+                $city,
+                $country
             );
         }
     }
 
     /**
-     * Find coordinates for given adress
+     * Find coordinates for given address.
      *
-     * @param string $street
+     * @param string $street      The street.
      *
-     * @param string $postal
+     * @param string $postal      The postal code.
      *
-     * @param string $city        Name of city
+     * @param string $city        Name of city.
      *
-     * @param string $country     2-letter country code
+     * @param string $country     A 2-letter country code.
      *
-     * @param string $fullAddress Address string without specific format
+     * @param string $fullAddress Address string without specific format.
      *
      * @return Container
      */
@@ -130,5 +130,4 @@ abstract class ProviderInterface
         $country = null,
         $fullAddress = null
     );
-
 }

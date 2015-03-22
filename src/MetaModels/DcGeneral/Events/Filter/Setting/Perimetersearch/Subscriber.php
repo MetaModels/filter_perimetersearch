@@ -52,6 +52,30 @@ class Subscriber extends BaseSubscriber
     }
 
     /**
+     * Check if the current context is valid.
+     *
+     * @param GetPropertyOptionsEvent $event              The event.
+     *
+     * @param string                  $dataDefinitionName The allowed name of the data definition.
+     *
+     * @param array                   $properties         A list of allowed properties.
+     *
+     * @return bool
+     */
+    protected function isAllowedProperty($event, $dataDefinitionName, $properties)
+    {
+        if ($event->getEnvironment()->getDataDefinition()->getName() !== $dataDefinitionName) {
+            return false;
+        }
+
+        if (!in_array($event->getPropertyName(), $properties)) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
      * Retrieve the MetaModel attached to the model filter setting.
      *
      * @param ModelInterface $model The model for which to retrieve the MetaModel.
@@ -76,8 +100,9 @@ class Subscriber extends BaseSubscriber
      */
     public function getAttributeIdOptions(GetPropertyOptionsEvent $event)
     {
-        if (($event->getEnvironment()->getDataDefinition()->getName() !== 'tl_metamodel_filtersetting')
-            || !($event->getPropertyName() === 'first_attr_id' || $event->getPropertyName() === 'second_attr_id' || $event->getPropertyName() === 'single_attr_id')
+        // Check the context.
+        $allowedProperties = array('first_attr_id', 'second_attr_id', 'single_attr_id');
+        if (!$this->isAllowedProperty($event, 'tl_metamodel_filtersetting', $allowedProperties)
         ) {
             return;
         }
@@ -90,7 +115,7 @@ class Subscriber extends BaseSubscriber
             ->getFilterFactory()
             ->getTypeFactory($model->getProperty('type'));
 
-        $typeFilter  = null;
+        $typeFilter = null;
         if ($typeFactory) {
             $typeFilter = $typeFactory->getKnownAttributeTypes();
         }
@@ -121,16 +146,20 @@ class Subscriber extends BaseSubscriber
      * @param GetPropertyOptionsEvent $event The event.
      *
      * @return void
+     *
+     * @SuppressWarnings(PHPMD.Superglobals)
      */
     public function getResolverClass(GetPropertyOptionsEvent $event)
     {
-        if (($event->getEnvironment()->getDataDefinition()->getName() !== 'tl_metamodel_filtersetting')
-            || !($event->getPropertyName() === 'lookupservice')
+        // Check the context.
+        $allowedProperties = array('lookupservice');
+        if (!$this->isAllowedProperty($event, 'tl_metamodel_filtersetting', $allowedProperties)
         ) {
             return;
         }
 
-        $arrClasses = (array)$GLOBALS['METAMODELS']['filters']['perimetersearch']['resolve_class'];
+        // ToDo: Add a subscriber class for this.
+        $arrClasses = (array) $GLOBALS['METAMODELS']['filters']['perimetersearch']['resolve_class'];
 
         $arrReturn = array();
         foreach (array_keys($arrClasses) as $name) {

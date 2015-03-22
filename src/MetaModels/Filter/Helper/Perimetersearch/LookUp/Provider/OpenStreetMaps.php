@@ -24,26 +24,14 @@ namespace MetaModels\Filter\Helper\Perimetersearch\LookUp\Provider;
 class OpenStreetMaps extends ProviderInterface
 {
     /**
-     * Google API call
+     * Google API call.
      *
      * @var string
      */
-    protected $strUrl = "http://nominatim.openstreetmap.org/search?q=%s&format=json&limit=1";
+    protected $strUrl = 'http://nominatim.openstreetmap.org/search?q=%s&format=json&limit=1';
 
     /**
-     * Find coordinates for given adress
-     *
-     * @param string $street
-     *
-     * @param string $postal
-     *
-     * @param string $city        Name of city
-     *
-     * @param string $country     2-letter country code
-     *
-     * @param string $fullAddress Address string without specific format
-     *
-     * @return Container
+     * {@inheritdoc}
      */
     public function getCoordinates($street = null, $postal = null, $city = null, $country = null, $fullAddress = null)
     {

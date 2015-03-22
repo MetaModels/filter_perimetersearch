@@ -24,26 +24,15 @@ namespace MetaModels\Filter\Helper\Perimetersearch\LookUp\Provider;
 class GoogleMaps extends ProviderInterface
 {
     /**
-     * Google API call
+     * Google API call.
      *
      * @var string
      */
-    protected $strGoogleUrl = "http://maps.googleapis.com/maps/api/geocode/json?address=%s&sensor=false&language=de";
+    protected $strGoogleUrl = 'http://maps.googleapis.com/maps/api/geocode/json?address=%s&sensor=false&language=de';
+
 
     /**
-     * Find coordinates for given adress
-     *
-     * @param string $street
-     *
-     * @param string $postal
-     *
-     * @param string $city        Name of city
-     *
-     * @param string $country     2-letter country code
-     *
-     * @param string $fullAddress Address string without specific format
-     *
-     * @return Container
+     * {@inheritdoc}
      */
     public function getCoordinates($street = null, $postal = null, $city = null, $country = null, $fullAddress = null)
     {
@@ -66,7 +55,7 @@ class GoogleMaps extends ProviderInterface
             if (!empty($aResponse['status']) && $aResponse['status'] == 'OK') {
                 $objReturn->setLatitude($aResponse['results'][0]['geometry']['location']['lat']);
                 $objReturn->setLongitude($aResponse['results'][0]['geometry']['location']['lng']);
-            } else if (!empty($aResponse['error_message'])) {
+            } elseif (!empty($aResponse['error_message'])) {
                 $objReturn->setError(true);
                 $objReturn->setErrorMsg($aResponse['error_message']);
             } else {
