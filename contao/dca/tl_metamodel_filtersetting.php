@@ -20,29 +20,43 @@
  * Palettes
  */
 // Default.
-$GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['metapalettes']['perimetersearch extends default']['+config'][]   = 'datamode';
-$GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['metapalettes']['perimetersearch extends default']['+config'][]   = 'urlparam';
-$GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['metapalettes']['perimetersearch extends default']['+fefilter'][] = 'label';
-$GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['metapalettes']['perimetersearch extends default']['+fefilter'][] = 'template';
-$GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['metapalettes']['perimetersearch extends default']['+fefilter'][] = 'range_label';
-$GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['metapalettes']['perimetersearch extends default']['+fefilter'][] = 'range_template';
-$GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['metapalettes']['perimetersearch extends default']['+range'][]    = 'rangemode';
-$GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['metapalettes']['perimetersearch extends default']['+country'][]  = 'countrymode';
+$GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['metapalettes']['perimetersearch extends default']['+config'][]   =
+    'datamode';
+$GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['metapalettes']['perimetersearch extends default']['+config'][]   =
+    'urlparam';
+$GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['metapalettes']['perimetersearch extends default']['+fefilter'][] =
+    'label';
+$GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['metapalettes']['perimetersearch extends default']['+fefilter'][] =
+    'template';
+$GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['metapalettes']['perimetersearch extends default']['+fefilter'][] =
+    'range_label';
+$GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['metapalettes']['perimetersearch extends default']['+fefilter'][] =
+    'range_template';
+$GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['metapalettes']['perimetersearch extends default']['+range'][]    =
+    'rangemode';
+$GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['metapalettes']['perimetersearch extends default']['+country'][]  =
+    'countrymode';
 
 // Geolookup options.
-$GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['metapalettes']['perimetersearch extends default']['+geolocation'][] = 'lookupservice';
+$GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['metapalettes']['perimetersearch extends default']['+geolocation'][] =
+    'lookupservice';
 
 // Subpalettes.
-$GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['metasubselectpalettes']['datamode']['single']     = array('single_attr_id');
-$GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['metasubselectpalettes']['datamode']['multi']      = array
-(
-    'first_attr_id',
-    'second_attr_id'
-);
-$GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['metasubselectpalettes']['rangemode']['preset']    = array('range_preset');
-$GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['metasubselectpalettes']['rangemode']['selection'] = array('range_selection');
-$GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['metasubselectpalettes']['countrymode']['preset']  = array('country_preset');
-$GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['metasubselectpalettes']['countrymode']['get']     = array('country_get');
+$GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['metasubselectpalettes']['datamode']['single']     =
+    array('single_attr_id');
+$GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['metasubselectpalettes']['datamode']['multi']      =
+    array(
+        'first_attr_id',
+        'second_attr_id'
+    );
+$GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['metasubselectpalettes']['rangemode']['preset']    =
+    array('range_preset');
+$GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['metasubselectpalettes']['rangemode']['selection'] =
+    array('range_selection');
+$GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['metasubselectpalettes']['countrymode']['preset']  =
+    array('country_preset');
+$GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['metasubselectpalettes']['countrymode']['get']     =
+    array('country_get');
 
 /**
  * Fields
