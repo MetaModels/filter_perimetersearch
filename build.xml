@@ -6,6 +6,6 @@ For documentation visit:
   https://github.com/phpcq/phpcq
 
 -->
-<project name="MetaModels filter perimetersearch" default="build">
+<project name="metamodels/filter_perimetersearch" default="build">
     <import file="vendor/phpcq/phpcq/phpcq.main.xml"/>
 </project>
