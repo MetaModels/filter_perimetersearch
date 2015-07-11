@@ -1,4 +1,5 @@
 <?php
+
 /**
  * The MetaModels extension allows the creation of multiple collections of custom items,
  * each with its own unique set of selectable attributes, with attribute extendability.
@@ -8,11 +9,11 @@
  * PHP version 5
  *
  * @package    MetaModels
- * @subpackage FilterRange
+ * @subpackage FilterPerimetersearch
  * @author     Christian Schiffler <c.schiffler@cyberspectrum.de>
  * @author     Stefan Heimes <stefan_heimes@hotmail.com>
  * @copyright  The MetaModels team.
- * @license    LGPL.
+ * @license    LGPL-3.0+
  * @filesource
  */
 
@@ -26,8 +27,6 @@ use MetaModels\IMetaModel;
 
 /**
  * Central event subscriber implementation.
- *
- * @package MetaModels\DcGeneral\Events\Filter\Setting\Range
  */
 class Subscriber extends BaseSubscriber
 {
@@ -148,6 +147,7 @@ class Subscriber extends BaseSubscriber
      * @return void
      *
      * @SuppressWarnings(PHPMD.Superglobals)
+     * @SuppressWarnings(PHPMD.CamelCaseVariableName)
      */
     public function getResolverClass(GetPropertyOptionsEvent $event)
     {

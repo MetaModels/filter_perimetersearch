@@ -8,18 +8,19 @@
  *
  * PHP version 5
  *
- * @package       MetaModels
- * @subpackage    PerimeterSearch
- * @author        Stefan Heimes <stefan_heimes@hotmail.com>
- * @copyright     The MetaModels team.
- * @license       LGPL.
+ * @package    MetaModels
+ * @subpackage FilterPerimetersearch
+ * @author     Christian Schiffler <c.schiffler@cyberspectrum.de>
+ * @author     Stefan Heimes <stefan_heimes@hotmail.com>
+ * @copyright  The MetaModels team.
+ * @license    LGPL-3.0+
  * @filesource
  */
 
 namespace MetaModels\Filter\Helper\Perimetersearch\LookUp\Provider;
 
 /**
- * Lookup class for google.
+ * Lookup class for open streetmap.
  */
 class OpenStreetMaps extends ProviderInterface
 {

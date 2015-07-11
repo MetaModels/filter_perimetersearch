@@ -1,4 +1,5 @@
 <?php
+
 /**
  * The MetaModels extension allows the creation of multiple collections of custom items,
  * each with its own unique set of selectable attributes, with attribute extendability.
@@ -6,11 +7,13 @@
  * data in each collection.
  *
  * PHP version 5
+ *
  * @package    MetaModels
  * @subpackage Tests
  * @author     Christian Schiffler <c.schiffler@cyberspectrum.de>
+ * @author     Stefan Heimes <stefan_heimes@hotmail.com>
  * @copyright  The MetaModels team.
- * @license    LGPL.
+ * @license    LGPL-3.0+
  * @filesource
  */
 

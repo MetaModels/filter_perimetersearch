@@ -8,11 +8,12 @@
  *
  * PHP version 5
  *
- * @package       MetaModels
- * @subpackage    PerimeterSearch
- * @author        Stefan Heimes <stefan_heimes@hotmail.com>
- * @copyright     The MetaModels team.
- * @license       LGPL.
+ * @package    MetaModels
+ * @subpackage FilterPerimetersearch
+ * @author     Christian Schiffler <c.schiffler@cyberspectrum.de>
+ * @author     Stefan Heimes <stefan_heimes@hotmail.com>
+ * @copyright  The MetaModels team.
+ * @license    LGPL-3.0+
  * @filesource
  */
 
@@ -26,10 +27,6 @@ use MetaModels\FrontendIntegration\FrontendFilterOptions;
 
 /**
  * Filter "select field" for FE-filtering, based on filters by the meta models team.
- *
- * @package       MetaModels
- * @subpackage    PerimeterSearch
- * @author        Stefan Heimes <stefan_heimes@hotmail.com>
  */
 class Perimetersearch extends SimpleLookup
 {
@@ -129,7 +126,7 @@ class Perimetersearch extends SimpleLookup
 
             // Search for the geolocation attribute.
             if ($objAttribute->get('type') == 'geolocation') {
-                $this->doSearchForAttGeolocation($objContainer, $objFilter, $objAttribute);
+                $this->doSearchForAttGeolocation($objContainer, $objFilter);
             }
         } elseif ($this->get('datamode') == 'multi') {
             // Get the attributes.
@@ -489,6 +486,7 @@ class Perimetersearch extends SimpleLookup
      * @return null|object
      *
      * @SuppressWarnings(PHPMD.Superglobals)
+     * @SuppressWarnings(PHPMD.CamelCaseVariableName)
      */
     protected function getObjectFromName($lookupClassName)
     {
