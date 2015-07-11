@@ -366,19 +366,24 @@ class Perimetersearch extends SimpleLookup
     protected function doSearchForAttGeolocation($container, $filter)
     {
         // Get location.y
-        $lat     = $container->getLatitude();
-        $lng     = $container->getLongitude();
-        $intDist = $container->getDistance();
-
-        $strSelect = "SELECT item_id "
-            . "FROM tl_metamodel_geolocation "
-            . "WHERE round(sqrt( power(2 * pi() / 360 * ($lat - latitude) * 6371,2) + power(2 * pi() / 360 * ($lng - longitude) * 6371 *  COS( 2 * pi() / 360 * ($lat + latitude) * 0.5 ),2))) <= $intDist "
-            . "AND att_id=? "
-            . "ORDER BY round(sqrt( power(2 * pi() / 360 * ($lat - latitude) * 6371,2) + power(2 * pi() / 360 * ($lng - longitude) * 6371 *  COS( 2 * pi() / 360 * ($lat + latitude) * 0.5 ),2)))";
+        $lat      = $container->getLatitude();
+        $lng      = $container->getLongitude();
+        $intDist  = $container->getDistance();
+        $distance = sprintf(
+            'round(sqrt(' .
+            'power(2 * pi() / 360 * (%1$s - latitude) * 6371,2)' .
+            '+ power(2 * pi() / 360 * (%2$s - longitude) * 6371 * COS( 2 * pi() / 360 * (%1$s + latitude) * 0.5), 2)' .
+            '))',
+            $lat,
+            $lng
+        );
 
         $objResult = \Database::getInstance()
-            ->prepare($strSelect)
-            ->execute($this->getMetaModel()->getAttribute($this->get('single_attr_id'))->get('id'));
+            ->prepare(sprintf(
+                'SELECT item_id FROM tl_metamodel_geolocation WHERE %1$s<=? AND att_id=? ORDER BY %1$s',
+                $distance
+            ))
+            ->execute($intDist, $this->getMetaModel()->getAttribute($this->get('single_attr_id'))->get('id'));
 
         if ($objResult->numRows == 0) {
             $filter->addFilterRule(new StaticIdList(array()));
@@ -402,23 +407,30 @@ class Perimetersearch extends SimpleLookup
      */
     protected function doSearchForTwoSimpleAtt($container, $filter, $latAttribute, $longAttribute)
     {
-        $strFieldLat = $latAttribute->getColName();
-        $strFieldLng = $longAttribute->getColName();
-        $strTable    = $this->getMetaModel()->getTableName();
-
         // Get location.
-        $lat     = $container->getLatitude();
-        $lng     = $container->getLongitude();
-        $intDist = $container->getDistance();
-
-        $strSelect = "SELECT id "
-            . "FROM $strTable "
-            . "WHERE round(sqrt( power(2 * pi() / 360 * ($lat - $strFieldLat) * 6371,2) + power(2 * pi() / 360 * ($lng - $strFieldLng) * 6371 *  COS( 2 * pi() / 360 * ($lat + $strFieldLat) * 0.5 ),2))) <= $intDist "
-            . "ORDER BY round(sqrt( power(2 * pi() / 360 * ($lat - $strFieldLat) * 6371,2) + power(2 * pi() / 360 * ($lng - $strFieldLng) * 6371 *  COS( 2 * pi() / 360 * ($lat + $strFieldLat) * 0.5 ),2)))";
+        $lat      = $container->getLatitude();
+        $lng      = $container->getLongitude();
+        $intDist  = $container->getDistance();
+        $distance = sprintf(
+            'round(sqrt(' .
+            'power(2 * pi() / 360 * (%1$s - %3$s) * 6371,2)' .
+            '+ power(2 * pi() / 360 * (%2$s - %4$s) * 6371 * COS( 2 * pi() / 360 * (%1$s + %3$s) * 0.5), 2)' .
+            '))',
+            $lat,
+            $lng,
+            $latAttribute->getColName(),
+            $longAttribute->getColName()
+        );
 
         $objResult = \Database::getInstance()
-            ->prepare($strSelect)
-            ->execute();
+            ->prepare(
+                sprintf(
+                    'SELECT id FROM %1$s WHERE %2$s<=? ORDER BY %2$s',
+                    $this->getMetaModel()->getTableName(),
+                    $distance
+                )
+            )
+            ->execute($intDist, $this->getMetaModel()->getAttribute($this->get('single_attr_id'))->get('id'));
 
         if ($objResult->numRows == 0) {
             $filter->addFilterRule(new StaticIdList(null));
