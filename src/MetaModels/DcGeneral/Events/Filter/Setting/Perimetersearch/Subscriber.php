@@ -21,6 +21,7 @@ namespace MetaModels\DcGeneral\Events\Filter\Setting\Perimetersearch;
 
 use ContaoCommunityAlliance\DcGeneral\Contao\View\Contao2BackendView\Event\GetPropertyOptionsEvent;
 use ContaoCommunityAlliance\DcGeneral\Data\ModelInterface;
+use MenAtWork\MultiColumnWizard\Event\GetOptionsEvent;
 use MetaModels\BackendIntegration\TemplateList;
 use MetaModels\DcGeneral\Events\BaseSubscriber;
 use MetaModels\IMetaModel;
@@ -41,7 +42,7 @@ class Subscriber extends BaseSubscriber
                 array($this, 'getAttributeIdOptions')
             )
             ->addListener(
-                GetPropertyOptionsEvent::NAME,
+                GetOptionsEvent::NAME,
                 array($this, 'getResolverClass')
             )
             ->addListener(
@@ -53,11 +54,11 @@ class Subscriber extends BaseSubscriber
     /**
      * Check if the current context is valid.
      *
-     * @param GetPropertyOptionsEvent $event              The event.
+     * @param GetPropertyOptionsEvent|GetOptionsEvent $event              The event.
      *
-     * @param string                  $dataDefinitionName The allowed name of the data definition.
+     * @param string                                  $dataDefinitionName The allowed name of the data definition.
      *
-     * @param array                   $properties         A list of allowed properties.
+     * @param array                                   $properties         A list of allowed properties.
      *
      * @return bool
      */
@@ -142,14 +143,14 @@ class Subscriber extends BaseSubscriber
     /**
      * Get a list with all supported resolver class for a geo lookup.
      *
-     * @param GetPropertyOptionsEvent $event The event.
+     * @param GetOptionsEvent $event The event.
      *
      * @return void
      *
      * @SuppressWarnings(PHPMD.Superglobals)
      * @SuppressWarnings(PHPMD.CamelCaseVariableName)
      */
-    public function getResolverClass(GetPropertyOptionsEvent $event)
+    public function getResolverClass(GetOptionsEvent $event)
     {
         // Check the context.
         $allowedProperties = array('lookupservice');
