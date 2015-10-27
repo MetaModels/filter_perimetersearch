@@ -430,7 +430,7 @@ class Perimetersearch extends SimpleLookup
                     $distance
                 )
             )
-            ->execute($intDist, $this->getMetaModel()->getAttribute($this->get('single_attr_id'))->get('id'));
+            ->execute($intDist);
 
         if ($objResult->numRows == 0) {
             $filter->addFilterRule(new StaticIdList(null));
