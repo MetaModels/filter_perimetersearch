@@ -433,7 +433,7 @@ class Perimetersearch extends SimpleLookup
             ->execute($intDist);
 
         if ($objResult->numRows == 0) {
-            $filter->addFilterRule(new StaticIdList(null));
+            $filter->addFilterRule(new StaticIdList(array()));
         } else {
             $filter->addFilterRule(new StaticIdList($objResult->fetchEach('id')));
         }
