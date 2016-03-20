@@ -8,10 +8,10 @@
  *
  * @license http://www.gnu.org/licenses/lgpl-3.0.html LGPL
  *
- * last-updated: 2014-05-08T08:17:14+02:00
+ * last-updated: 2015-07-11T08:03:46+02:00
  */
 
-
+$GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['fefilter_legend']     = 'Paramètre du filtre de Frontend';
 $GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['geolocation_legend']  = 'Paramètres de géolocalisation';
 $GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['single_attr_id']['0'] = 'Attribut';
 
