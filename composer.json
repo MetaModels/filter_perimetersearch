@@ -35,7 +35,7 @@
     "php": ">=5.4",
     "contao/core": "^3.5.5",
     "contao-community-alliance/composer-plugin": "~2.0",
-    "metamodels/core": "~2.0"
+    "metamodels/core": "~2.0@alpha"
   },
   "require-dev": {
     "cyberspectrum/contao-toolbox": "~0.6",
@@ -66,6 +66,5 @@
       "dev-develop": "2.1.x-dev"
     }
   },
-  "minimum-stability": "dev",
   "prefer-stable": true
 }
