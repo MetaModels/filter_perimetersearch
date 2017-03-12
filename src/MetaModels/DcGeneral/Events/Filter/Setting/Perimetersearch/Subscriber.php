@@ -14,7 +14,7 @@
  * @subpackage FilterPerimetersearch
  * @author     Christian Schiffler <c.schiffler@cyberspectrum.de>
  * @author     Stefan Heimes <stefan_heimes@hotmail.com>
- * @copyright  The MetaModels team.
+ * @copyright  2012-2017 The MetaModels team.
  * @license    https://github.com/MetaModels/filter_perimetersearch/blob/master/LICENSE LGPL-3.0
  * @filesource
  */
@@ -161,7 +161,6 @@ class Subscriber extends BaseSubscriber
             return;
         }
 
-        // ToDo: Add a subscriber class for this.
         $arrClasses = (array) $GLOBALS['METAMODELS']['filters']['perimetersearch']['resolve_class'];
 
         $arrReturn = array();
