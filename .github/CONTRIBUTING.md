@@ -62,5 +62,6 @@ create.
 [1]: https://github.com/MetaModels
 [2]: http://help.github.com/pull-requests/
 [3]: https://github.com/phpcq/coding-standard
-[4]: https://github.com/MetaModels/core/pull/new/master
-[5]: https://github.com/MetaModels/core/pull/new/develop
+[4]: https://github.com/MetaModels/filter_perimetersearch/pull/new/master
+[5]: https://github.com/MetaModels/filter_perimetersearch/pull/new/develop
+
