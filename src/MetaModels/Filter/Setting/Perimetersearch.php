@@ -1,19 +1,21 @@
 <?php
 
 /**
- * The MetaModels extension allows the creation of multiple collections of custom items,
- * each with its own unique set of selectable attributes, with attribute extendability.
- * The Front-End modules allow you to build powerful listing and filtering of the
- * data in each collection.
+ * This file is part of MetaModels/filter_perimetersearch.
  *
- * PHP version 5
+ * (c) 2012-2017 The MetaModels team.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * This project is provided in good faith and hope to be usable by anyone.
  *
  * @package    MetaModels
  * @subpackage FilterPerimetersearch
  * @author     Christian Schiffler <c.schiffler@cyberspectrum.de>
  * @author     Stefan Heimes <stefan_heimes@hotmail.com>
- * @copyright  The MetaModels team.
- * @license    LGPL-3.0+
+ * @copyright  2012-2017 The MetaModels team.
+ * @license    https://github.com/MetaModels/filter_perimetersearch/blob/master/LICENSE LGPL-3.0
  * @filesource
  */
 
@@ -243,7 +245,6 @@ class Perimetersearch extends SimpleLookup
         $arrCount  = array();
         $arrWidget = array(
             'label'     => array(
-                // TODO: make this multilingual.
                 ($this->get('label') ? $this->get('label') : $this->getAttributeName()),
                 'GET: ' . $this->getParamName()
             ),
@@ -278,7 +279,6 @@ class Perimetersearch extends SimpleLookup
 
             $arrRangeWidget = array(
                 'label'     => array(
-                    // TODO: make this multilingual.
                     ($this->get('range_label') ? $this->get('range_label') : $this->getAttributeName() . ' Range '),
                     'GET: ' . $this->getParamNameRange()
                 ),
@@ -296,7 +296,6 @@ class Perimetersearch extends SimpleLookup
         } elseif ($this->get('rangemode') == 'free') {
             $arrRangeWidget = array(
                 'label'     => array(
-                    // TODO: make this multilingual.
                     ($this->get('range_label') ? $this->get('range_label') : $this->getAttributeName() . ' Range '),
                     'GET: ' . $this->getParamNameRange()
                 ),
@@ -341,7 +340,6 @@ class Perimetersearch extends SimpleLookup
         if (($strParamName = $this->getParamName()) && $this->get('datamode') == 'single') {
             return $this->getMetaModel()->getAttribute($this->get('single_attr_id'))->getName();
         } elseif (($strParamName = $this->getParamName()) && $this->get('datamode') == 'multi') {
-
             $objFirstAttribute  = $this->getMetaModel()->getAttribute($this->get('first_attr_id'));
             $objSecondAttribute = $this->getMetaModel()->getAttribute($this->get('second_attr_id'));
 
@@ -481,8 +479,9 @@ class Perimetersearch extends SimpleLookup
                         return $objResult;
                     }
                 }
-            } catch ( \RuntimeException $exc ) {
+            } catch (\RuntimeException $exc) {
                 // Okay, we have an error try next one.
+                continue;
             }
         }
 
@@ -507,7 +506,6 @@ class Perimetersearch extends SimpleLookup
             return null;
         }
 
-        // ToDo: Try to make a subscriber from this.
         $sClass = $GLOBALS['METAMODELS']['filters']['perimetersearch']['resolve_class'][$lookupClassName];
 
         $objCallbackClass = null;
