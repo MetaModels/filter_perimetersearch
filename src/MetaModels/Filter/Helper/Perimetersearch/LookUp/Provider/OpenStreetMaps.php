@@ -1,19 +1,21 @@
 <?php
 
 /**
- * The MetaModels extension allows the creation of multiple collections of custom items,
- * each with its own unique set of selectable attributes, with attribute extendability.
- * The Front-End modules allow you to build powerful listing and filtering of the
- * data in each collection.
+ * This file is part of MetaModels/filter_perimetersearch.
  *
- * PHP version 5
+ * (c) 2012-2017 The MetaModels team.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * This project is provided in good faith and hope to be usable by anyone.
  *
  * @package    MetaModels
  * @subpackage FilterPerimetersearch
  * @author     Christian Schiffler <c.schiffler@cyberspectrum.de>
  * @author     Stefan Heimes <stefan_heimes@hotmail.com>
- * @copyright  The MetaModels team.
- * @license    LGPL-3.0+
+ * @copyright  2012-2017 The MetaModels team.
+ * @license    https://github.com/MetaModels/filter_perimetersearch/blob/master/LICENSE LGPL-3.0
  * @filesource
  */
 
@@ -54,7 +56,6 @@ class OpenStreetMaps extends ProviderInterface
             if (!empty($objResponse->place_id)) {
                 $objReturn->setLatitude($objResponse->lat);
                 $objReturn->setLongitude($objResponse->lon);
-
             } else {
                 $objReturn->setError(true);
                 $objReturn->setErrorMsg('No data from OpenStreetMap for ' . $sQuery);
