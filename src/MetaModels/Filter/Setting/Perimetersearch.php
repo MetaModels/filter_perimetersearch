@@ -291,7 +291,6 @@ class Perimetersearch extends SimpleLookup
                     'colname'            => $this->getColname(),
                     'urlparam'           => $this->getParamNameRange(),
                     'template'           => $this->get('range_template'),
-
                 )
             );
 
