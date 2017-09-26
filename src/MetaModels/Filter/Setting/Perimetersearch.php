@@ -14,6 +14,7 @@
  * @subpackage FilterPerimetersearch
  * @author     Christian Schiffler <c.schiffler@cyberspectrum.de>
  * @author     Stefan Heimes <stefan_heimes@hotmail.com>
+ * @author     Christopher Bölter <christopher@boelter.eu>
  * @copyright  2012-2017 The MetaModels team.
  * @license    https://github.com/MetaModels/filter_perimetersearch/blob/master/LICENSE LGPL-3.0
  * @filesource
@@ -252,9 +253,10 @@ class Perimetersearch extends SimpleLookup
             'count'     => $arrCount,
             'showCount' => $objFrontendFilterOptions->isShowCountValues(),
             'eval'      => array(
-                'colname'  => $this->getColname(),
-                'urlparam' => $this->getParamName(),
-                'template' => $this->get('template'),
+                'colname'     => $this->getColname(),
+                'urlparam'    => $this->getParamName(),
+                'template'    => $this->get('template'),
+                'placeholder' => $this->get('placeholder'),
             )
         );
 
@@ -289,6 +291,7 @@ class Perimetersearch extends SimpleLookup
                     'colname'            => $this->getColname(),
                     'urlparam'           => $this->getParamNameRange(),
                     'template'           => $this->get('range_template'),
+
                 )
             );
 
@@ -301,9 +304,10 @@ class Perimetersearch extends SimpleLookup
                 ),
                 'inputType' => 'text',
                 'eval'      => array(
-                    'colname'  => $this->getColname(),
-                    'urlparam' => $this->getParamNameRange(),
-                    'template' => $this->get('range_template'),
+                    'colname'     => $this->getColname(),
+                    'urlparam'    => $this->getParamNameRange(),
+                    'template'    => $this->get('range_template'),
+                    'placeholder' => $this->get('range_placeholder'),
                 )
             );
 
