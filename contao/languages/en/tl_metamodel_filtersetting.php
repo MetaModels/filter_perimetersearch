@@ -65,6 +65,10 @@ $GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['range_label']     = array(
     'Range Label',
     'Show range label instead of attribute name.'
 );
+$GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['range_placeholder']     = array(
+    'Range-Placeholder',
+    'Show this text as long as the field is empty (requires HTML5).'
+);
 $GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['range_template']  = array(
     'Range Template',
     'Sub template for this range filter element. Standard: form widget.'

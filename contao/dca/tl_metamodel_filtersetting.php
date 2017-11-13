@@ -14,6 +14,7 @@
  * @subpackage FilterPerimetersearch
  * @author     Christian Schiffler <c.schiffler@cyberspectrum.de>
  * @author     Stefan Heimes <stefan_heimes@hotmail.com>
+ * @author     Christopher Bölter <christopher@boelter.eu>
  * @copyright  2012-2017 The MetaModels team.
  * @license    https://github.com/MetaModels/filter_perimetersearch/blob/master/LICENSE LGPL-3.0
  * @filesource
@@ -29,6 +30,8 @@ $GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['metapalettes']['perimetersearc
     'urlparam';
 $GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['metapalettes']['perimetersearch extends default']['+fefilter'][] =
     'label';
+$GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['metapalettes']['perimetersearch extends default']['+fefilter'][] =
+    'placeholder';
 $GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['metapalettes']['perimetersearch extends default']['+fefilter'][] =
     'template';
 $GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['metapalettes']['perimetersearch extends default']['+fefilter'][] =
@@ -56,6 +59,8 @@ $GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['metasubselectpalettes']['range
     array('range_preset');
 $GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['metasubselectpalettes']['rangemode']['selection'] =
     array('range_selection');
+$GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['metasubselectpalettes']['rangemode']['free'] =
+    array('range_placeholder');
 $GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['metasubselectpalettes']['countrymode']['preset']  =
     array('country_preset');
 $GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['metasubselectpalettes']['countrymode']['get']     =
@@ -178,6 +183,16 @@ $GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['fields']['range_label'] = arra
     ),
 );
 
+$GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['fields']['range_placeholder'] = array
+(
+    'label'     => &$GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['range_placeholder'],
+    'exclude'   => true,
+    'inputType' => 'text',
+    'eval'      => array(
+        'tl_class' => 'w50'
+    )
+);
+
 $GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['fields']['range_template'] = array
 (
     'label'     => &$GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['range_template'],
@@ -285,5 +300,17 @@ $GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['fields']['second_attr_id'] = a
         'mandatory'          => true,
         'tl_class'           => 'w50',
         'chosen'             => true
+    )
+);
+
+// ---- Placeholder ----
+
+$GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['fields']['placeholder'] = array
+(
+    'label'     => &$GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['placeholder'],
+    'exclude'   => true,
+    'inputType' => 'text',
+    'eval'      => array(
+        'tl_class' => 'w50'
     )
 );
