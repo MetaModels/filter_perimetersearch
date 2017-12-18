@@ -19,7 +19,7 @@
  * @filesource
  */
 
-namespace MetaModels\Filter\Rules;
+namespace  MetaModels\FilterPerimetersearchBundle\FilterRules;
 
 use MetaModels\Attribute\IAttribute;
 use MetaModels\Attribute\ISimple;

@@ -19,7 +19,9 @@
  * @filesource
  */
 
-namespace MetaModels\Filter\Setting;
+namespace MetaModels\FilterPerimetersearchBundle\FilterSetting;
+
+use MetaModels\Filter\Setting\AbstractFilterSettingTypeFactory;
 
 /**
  * Attribute type factory for text filter settings.
@@ -35,8 +37,8 @@ class PerimetersearchFilterSettingTypeFactory extends AbstractFilterSettingTypeF
 
         $this
             ->setTypeName('perimetersearch')
-            ->setTypeIcon('system/modules/metamodelsfilter_perimetersearch/html/filter_perimetersearch.png')
-            ->setTypeClass('MetaModels\Filter\Setting\Perimetersearch')
+            ->setTypeIcon('bundles/metamodelsfilterperimetersearch/filter_perimetersearch.png')
+            ->setTypeClass(Perimetersearch::class)
             ->allowAttributeTypes();
 
         foreach (array(

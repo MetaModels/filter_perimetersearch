@@ -1,0 +1,19 @@
+services:
+    metamodels.filter_perimetersearch.factory:
+        class: MetaModels\FilterPerimetersearchBundle\FilterSetting\PerimetersearchFilterSettingTypeFactory
+        tags:
+          - { name: metamodels.filter_factory }
+
+    metamodels.filter_perimetersearch.listener.filter_setting_renderer:
+        class: MetaModels\FilterPerimetersearchBundle\EventListener\PerimeterFilterSettingTypeRendererListener
+        arguments:
+          - "@metamodels.filter_setting_factory"
+          - "@event_dispatcher"
+          - "@metamodels.assets.icon_builder"
+          - "@cca.dc-general.scope-matcher"
+        tags:
+          - {
+              name: kernel.event_listener,
+              event: 'dc-general.view.contao2backend.model-to-label',
+              method: modelToLabel
+            }

@@ -19,7 +19,7 @@
  * @filesource
  */
 
-namespace MetaModels\Filter\Helper\Perimetersearch\LookUp\Provider;
+namespace MetaModels\FilterPerimetersearchBundle\FilterHelper;
 
 /**
  * Lookup class for google.

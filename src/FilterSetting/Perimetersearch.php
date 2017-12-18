@@ -20,12 +20,13 @@
  * @filesource
  */
 
-namespace MetaModels\Filter\Setting;
+namespace MetaModels\FilterPerimetersearchBundle\FilterSetting;
 
 use MetaModels\Attribute\IAttribute;
 use MetaModels\Filter\Helper\Perimetersearch\LookUp\Provider\Container;
 use MetaModels\Filter\IFilter;
 use MetaModels\Filter\Rules\StaticIdList;
+use MetaModels\Filter\Setting\SimpleLookup;
 use MetaModels\FrontendIntegration\FrontendFilterOptions;
 
 /**
