@@ -18,7 +18,7 @@
  * @filesource
  */
 
-namespace MetaModels\FilterPerimetersearchtBundle\ContaoManager;
+namespace MetaModels\FilterPerimetersearchBundle\ContaoManager;
 
 use Contao\ManagerPlugin\Bundle\BundlePluginInterface;
 use Contao\ManagerPlugin\Bundle\Config\BundleConfig;
@@ -43,7 +43,7 @@ class Plugin implements BundlePluginInterface
                         MetaModelsCoreBundle::class
                     ]
                 )
-                ->setReplace(['metamodelsfilter_text'])
+                ->setReplace(['metamodelsfilter_perimetersearch'])
         ];
     }
 }
