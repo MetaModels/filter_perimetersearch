@@ -23,10 +23,10 @@
 namespace MetaModels\FilterPerimetersearchBundle\FilterSetting;
 
 use MetaModels\Attribute\IAttribute;
-use MetaModels\Filter\Helper\Perimetersearch\LookUp\Provider\Container;
 use MetaModels\Filter\IFilter;
 use MetaModels\Filter\Rules\StaticIdList;
 use MetaModels\Filter\Setting\SimpleLookup;
+use MetaModels\FilterPerimetersearchBundle\FilterHelper\Container;
 use MetaModels\FrontendIntegration\FrontendFilterOptions;
 
 /**
@@ -34,6 +34,19 @@ use MetaModels\FrontendIntegration\FrontendFilterOptions;
  */
 class Perimetersearch extends SimpleLookup
 {
+    /**
+     * Retrieve the database.
+     *
+     * @return \Contao\Database
+     */
+    private function getDataBase()
+    {
+        return $this
+            ->getMetaModel()
+            ->getServiceContainer()
+            ->getDatabase();
+    }
+
     /**
      * Overrides the parent implementation to always return true, as this setting is always optional.
      *
@@ -71,8 +84,10 @@ class Perimetersearch extends SimpleLookup
             $objAttribute = $this
                 ->getMetaModel()
                 ->getAttribute($this->get('first_attr_id'));
-        } else {
-            return '';
+        }
+
+        if($objAttribute === null){
+            return 'filter_attr_' . $this->get('id');
         }
 
         // Return name if we have a result.
@@ -532,19 +547,6 @@ class Perimetersearch extends SimpleLookup
             $objCallbackClass = $oClass->newInstance();
             return $objCallbackClass;
         }
-    }
-
-    /**
-     * Retrieve the database.
-     *
-     * @return \Contao\Database
-     */
-    private function getDataBase()
-    {
-        return $this
-            ->getMetaModel()
-            ->getServiceContainer()
-            ->getDatabase();
     }
 
     /**
