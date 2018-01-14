@@ -28,7 +28,7 @@ use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 /**
  * This is the Bundle extension.
  */
-class MetaModelsFilterPerimetersearchBundle extends Extension
+class MetaModelsFilterPerimetersearchExtension extends Extension
 {
     /**
      * {@inheritDoc}
