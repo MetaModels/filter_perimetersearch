@@ -23,6 +23,6 @@
  * Plugins for geo resolving.
  */
 $GLOBALS['METAMODELS']['filters']['perimetersearch']['resolve_class']['google_maps']      =
-    'MetaModels\Filter\Helper\Perimetersearch\LookUp\Provider\GoogleMaps';
+    'MetaModels\FilterPerimetersearchBundle\FilterHelper\GoogleMaps';
 $GLOBALS['METAMODELS']['filters']['perimetersearch']['resolve_class']['open_street_maps'] =
-    'MetaModels\Filter\Helper\Perimetersearch\LookUp\Provider\OpenStreetMaps';
+    'MetaModels\FilterPerimetersearchBundle\FilterHelper\OpenStreetMaps';
