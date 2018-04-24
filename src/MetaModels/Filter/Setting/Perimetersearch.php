@@ -362,7 +362,6 @@ class Perimetersearch extends SimpleLookup
      * Run the search for the complex attribute geolocation.
      *
      * @param Container $container The container with all information.
-     *
      * @param IFilter   $filter    The filter container.
      *
      * @return void
@@ -400,11 +399,8 @@ class Perimetersearch extends SimpleLookup
      * Run the search for the complex attribute geolocation.
      *
      * @param Container  $container     The container with all information.
-     *
      * @param IFilter    $filter        The filter container.
-     *
      * @param IAttribute $latAttribute  The attribute to filter on.
-     *
      * @param IAttribute $longAttribute The attribute to filter on.
      *
      * @return void
@@ -447,7 +443,6 @@ class Perimetersearch extends SimpleLookup
      * User the provider classes to make a look up.
      *
      * @param string $strAddress The full address to search for.
-     *
      * @param string $strCountry The country as 2-letters form.
      *
      * @return Container|null Return the container with all information or null on error.
@@ -561,9 +556,7 @@ class Perimetersearch extends SimpleLookup
      * Add data to the cache.
      *
      * @param string    $address The address which where use for the search.
-     *
      * @param string    $country The country.
-     *
      * @param Container $result  The container with all information.
      *
      * @return void
@@ -585,7 +578,6 @@ class Perimetersearch extends SimpleLookup
      * Get data from cache.
      *
      * @param string $address The address which where use for the search.
-     *
      * @param string $country The country.
      *
      * @return Container|null

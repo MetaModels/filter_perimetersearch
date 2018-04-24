@@ -94,15 +94,10 @@ class Perimetersearch implements IFilterRule
      * Create a new instance.
      *
      * @param IAttribute $latitudeAttribute  The attribute to perform filtering on.
-     *
      * @param IAttribute $longitudeAttribute The attribute to perform filtering on.
-     *
      * @param IAttribute $singleAttribute    The attribute to perform filtering on.
-     *
      * @param float|int  $lat                The latitude to search for.
-     *
      * @param float|int  $long               The longitude to search for.
-     *
      * @param int        $dist               The dist.
      *
      * @throws \InvalidArgumentException     If any value or attribute is not valid.
@@ -161,7 +156,6 @@ class Perimetersearch implements IFilterRule
      * Check if the longitude value is valid.
      *
      * @param mixed  $value   The value to check.
-     *
      * @param string $message The exception message.
      *
      * @return void
@@ -179,9 +173,7 @@ class Perimetersearch implements IFilterRule
      * Check the attribute.
      *
      * @param IAttribute $latitudeAttribute  The attribute to be checked.
-     *
      * @param IAttribute $longitudeAttribute The attribute to be checked.
-     *
      * @param IAttribute $singleAttribute    The attribute to be checked.
      *
      * @return void
@@ -227,7 +219,6 @@ class Perimetersearch implements IFilterRule
      * Check the single attributes.
      *
      * @param IAttribute $latitudeAttribute  The attribute to be checked.
-     *
      * @param IAttribute $longitudeAttribute The attribute to be checked.
      *
      * @return void
@@ -274,13 +265,9 @@ class Perimetersearch implements IFilterRule
      * Build the SQL and execute it.
      *
      * @param string $idField         Name of the id field.
-     *
      * @param string $tableName       The name of the table.
-     *
      * @param string $latitudeField   The name of the latitude field.
-     *
      * @param string $longitudeField  The name of the longitude field.
-     *
      * @param array  $additionalWhere A list with additional where information.
      *
      * @return array A list with ID's or an empty array.

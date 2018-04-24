@@ -28,7 +28,7 @@ namespace MetaModels\Filter\Helper\Perimetersearch\LookUp\Provider;
 class OpenStreetMaps extends ProviderInterface
 {
     /**
-     * Google API call.
+     * Open street map API call.
      *
      * @var string
      */

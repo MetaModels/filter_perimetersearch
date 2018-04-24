@@ -63,13 +63,9 @@ abstract class ProviderInterface
      * Build the query string.
      *
      * @param string $street      The street.
-     *
      * @param string $postal      The postal code.
-     *
      * @param string $city        Name of city.
-     *
      * @param string $country     A 2-letter country code.
-     *
      * @param string $fullAddress Address string without specific format.
      *
      * @return string
@@ -113,15 +109,10 @@ abstract class ProviderInterface
      * Find coordinates for given address.
      *
      * @param string $street      The street.
-     *
      * @param string $postal      The postal code.
-     *
      * @param string $city        Name of city.
-     *
      * @param string $country     A 2-letter country code.
-     *
      * @param string $fullAddress Address string without specific format.
-     *
      * @param string $apiToken    Optional the API token.
      *
      * @return Container
