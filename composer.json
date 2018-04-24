@@ -54,7 +54,7 @@
   },
   "autoload-dev": {
     "psr-4": {
-      "MetaModels\\FilterPerimetersearchBundle\\": "src"
+      "MetaModels\\FilterPerimetersearchBundle\\Test\\": "tests/Test"
     }
   },
   "extra": {
