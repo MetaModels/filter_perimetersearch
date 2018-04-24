@@ -32,7 +32,7 @@ class OpenStreetMaps extends ProviderInterface
      *
      * @var string
      */
-    protected $strUrl = 'http://nominatim.openstreetmap.org/search?q=%s&format=json&limit=1';
+    protected $strUrl = 'https://nominatim.openstreetmap.org/search?q=%s&format=json&limit=1';
 
     /**
      * {@inheritdoc}

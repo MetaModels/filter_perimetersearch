@@ -32,7 +32,7 @@ class GoogleMaps extends ProviderInterface
      *
      * @var string
      */
-    protected $strGoogleUrl = 'http://maps.googleapis.com/maps/api/geocode/json?address=%s&sensor=false&language=de';
+    protected $strGoogleUrl = 'https://maps.googleapis.com/maps/api/geocode/json?address=%s&sensor=false&language=de';
 
 
     /**
