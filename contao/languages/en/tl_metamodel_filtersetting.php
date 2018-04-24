@@ -79,15 +79,15 @@ $GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['range_template']  = [
     'Sub template for this range filter element. Standard: form widget.'
 ];
 $GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['countrymode']     = [
-    'Coutrymode',
+    'Countrymode',
     'Here you can choose how the language will used.'
 ];
 $GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['country_preset']  = [
-    'Coutry preset',
+    'Country preset',
     'Here you can add a preset for the language.'
 ];
 $GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['country_get']     = [
-    'Coutry GET Parameter',
+    'Country GET Parameter',
     'Here you can add a get parameter.'
 ];
 
