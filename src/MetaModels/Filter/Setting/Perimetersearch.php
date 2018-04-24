@@ -113,7 +113,7 @@ class Perimetersearch extends SimpleLookup
         }
 
         // Try to get a country.
-        $strCountry = $this->getCountyInformation();
+        $strCountry = $this->getCountryInformation();
 
         // Search for the geolocation.
         $objContainer = $this->lookupGeo($strParamValue, $strCountry);
@@ -149,19 +149,13 @@ class Perimetersearch extends SimpleLookup
      *
      * @return string|null The country short tag (2-letters) or null.
      */
-    protected function getCountyInformation()
+    protected function getCountryInformation()
     {
         // Get the country for the lookup.
         $strCountry = null;
 
         if ($this->get('countrymode') === 'get' && $this->get('country_get')) {
-            $getValue = Input::get($this->get('country_get'));
-            $getValue = \trim($getValue);
-            if (!empty($getValue)) {
-                $strCountry = $getValue;
-            }
-        } elseif ($this->get('countrymode') === 'get' && $this->get('country_get')) {
-            $getValue = Input::post($this->get('country_get'));
+            $getValue = Input::get($this->get('country_get')) ?: Input::post($this->get('country_get'));
             $getValue = \trim($getValue);
             if (!empty($getValue)) {
                 $strCountry = $getValue;
