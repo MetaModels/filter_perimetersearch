@@ -100,7 +100,7 @@ class Perimetersearch extends SimpleLookup
         $strParamName      = $this->getParamName();
         $strParamNameRange = $this->getParamNameRange();
         $strParamValue     = $arrFilterUrl[$strParamName];
-        $intDist           = intval($arrFilterUrl[$strParamNameRange]);
+        $intDist           = (int) $arrFilterUrl[$strParamNameRange];
 
         // Check if we have a value.
         if (empty($strParamValue)) {
@@ -109,7 +109,7 @@ class Perimetersearch extends SimpleLookup
 
         // If range mode is preset use this value.
         if ($this->get('rangemode') == 'preset') {
-            $intDist = intval($this->get('range_preset'));
+            $intDist = (int) $this->get('range_preset');
         }
 
         // Try to get a country.
