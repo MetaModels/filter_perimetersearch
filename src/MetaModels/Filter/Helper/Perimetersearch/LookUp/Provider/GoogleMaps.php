@@ -53,7 +53,6 @@ class GoogleMaps extends ProviderInterface
         $sQuery = $this->getQueryString($street, $postal, $city, $country, $fullAddress, $apiToken);
         $objReturn->setSearchParam($sQuery);
 
-        $oRequest = null;
         $oRequest = new \Request();
 
         $apiUrlParameter = $apiToken ? '&key=' . $apiToken : '';

@@ -52,7 +52,6 @@ class OpenStreetMaps extends ProviderInterface
         $sQuery = $this->getQueryString($street, $postal, $city, $country, $fullAddress);
         $objReturn->setSearchParam($sQuery);
 
-        $oRequest = null;
         $oRequest = new \Request();
 
         $oRequest->send(\sprintf($this->strUrl, \rawurlencode($sQuery)));
