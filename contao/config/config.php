@@ -1,5 +1,8 @@
 <?php
 
+use MetaModels\Filter\Helper\Perimetersearch\LookUp\Provider\OpenStreetMaps;
+use MetaModels\Filter\Helper\Perimetersearch\LookUp\Provider\GoogleMaps;
+
 /**
  * This file is part of MetaModels/filter_perimetersearch.
  *
@@ -24,6 +27,6 @@
  * Plugins for geo resolving.
  */
 $GLOBALS['METAMODELS']['filters']['perimetersearch']['resolve_class']['google_maps']      =
-    'MetaModels\Filter\Helper\Perimetersearch\LookUp\Provider\GoogleMaps';
+    GoogleMaps::class;
 $GLOBALS['METAMODELS']['filters']['perimetersearch']['resolve_class']['open_street_maps'] =
-    'MetaModels\Filter\Helper\Perimetersearch\LookUp\Provider\OpenStreetMaps';
+    OpenStreetMaps::class;

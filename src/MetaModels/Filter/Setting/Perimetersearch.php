@@ -23,6 +23,8 @@
 
 namespace MetaModels\Filter\Setting;
 
+use Contao\Database;
+use Contao\Input;
 use MetaModels\Attribute\IAttribute;
 use MetaModels\Filter\Helper\Perimetersearch\LookUp\Provider\Container;
 use MetaModels\Filter\IFilter;
@@ -153,13 +155,13 @@ class Perimetersearch extends SimpleLookup
         $strCountry = null;
 
         if ($this->get('countrymode') === 'get' && $this->get('country_get')) {
-            $getValue = \Input::get($this->get('country_get'));
+            $getValue = Input::get($this->get('country_get'));
             $getValue = trim($getValue);
             if (!empty($getValue)) {
                 $strCountry = $getValue;
             }
         } elseif ($this->get('countrymode') === 'get' && $this->get('country_get')) {
-            $getValue = \Input::post($this->get('country_get'));
+            $getValue = Input::post($this->get('country_get'));
             $getValue = trim($getValue);
             if (!empty($getValue)) {
                 $strCountry = $getValue;
@@ -380,7 +382,7 @@ class Perimetersearch extends SimpleLookup
             $lng
         );
 
-        $objResult = \Database::getInstance()
+        $objResult = Database::getInstance()
             ->prepare(sprintf(
                 'SELECT item_id FROM tl_metamodel_geolocation WHERE %1$s<=? AND att_id=? ORDER BY %1$s',
                 $distance

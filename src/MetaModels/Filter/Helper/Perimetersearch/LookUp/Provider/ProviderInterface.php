@@ -22,6 +22,8 @@
 
 namespace MetaModels\Filter\Helper\Perimetersearch\LookUp\Provider;
 
+use Contao\Controller;
+
 /**
  * Class MetaModelsCatchmentAreaGeoLookUpInterface.
  *
@@ -37,7 +39,7 @@ abstract class ProviderInterface
      */
     public function getCountries()
     {
-        return \Controller::getCountries();
+        return Controller::getCountries();
     }
 
     /**

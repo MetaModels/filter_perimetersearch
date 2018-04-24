@@ -37,7 +37,7 @@ class PerimetersearchFilterSettingTypeFactory extends AbstractFilterSettingTypeF
         $this
             ->setTypeName('perimetersearch')
             ->setTypeIcon('system/modules/metamodelsfilter_perimetersearch/html/filter_perimetersearch.png')
-            ->setTypeClass('MetaModels\Filter\Setting\Perimetersearch')
+            ->setTypeClass(Perimetersearch::class)
             ->allowAttributeTypes();
 
         foreach ([
