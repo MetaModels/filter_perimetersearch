@@ -257,7 +257,7 @@ class Perimetersearch implements IFilterRule
                 'tl_metamodel_geolocation',
                 'latitude',
                 'longitude',
-                array('att_id=?' => $this->singleAttribute->get('id'))
+                ['att_id=?' => $this->singleAttribute->get('id')]
             );
         } else {
             return $this->runSimpleQuery(
@@ -322,7 +322,7 @@ class Perimetersearch implements IFilterRule
         $dist   = $this->dist;
         $values = array_merge(
             (array) $additionalWhere,
-            array($lat, $lng, $lat, $dist, $lat, $lng, $lat)
+            [$lat, $lng, $lat, $dist, $lat, $lng, $lat]
         );
 
         $objResult = $this
@@ -332,7 +332,7 @@ class Perimetersearch implements IFilterRule
 
         // Check the data.
         if ($objResult->numRows == 0) {
-            return array();
+            return [];
         } else {
             return $objResult->fetchEach($idField);
         }

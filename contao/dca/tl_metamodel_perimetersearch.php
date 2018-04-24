@@ -21,41 +21,31 @@
 /**
  * Table tl_metamodel_perimetersearch
  */
-$GLOBALS['TL_DCA']['tl_metamodel_perimetersearch'] = array
-(
+$GLOBALS['TL_DCA']['tl_metamodel_perimetersearch'] = [
     // Config
-    'config' => array
-    (
-        'sql' => array
-        (
-            'keys' => array
-            (
+    'config' => [
+        'sql' => [
+            'keys' => [
                 'id' => 'primary',
-            )
-        )
-    ),
+            ]
+        ]
+    ],
     // Fields
-    'fields' => array
-    (
-        'id' => array
-        (
-            'sql'                     => 'int(10) unsigned NOT NULL auto_increment'
-        ),
-        'search' => array
-        (
-            'sql'                        => 'text NULL'
-        ),
-        'country' => array
-        (
-            'sql'                        => 'varchar(255) NOT NULL default \'\''
-        ),
-        'geo_lat' => array
-        (
-            'sql'                        => 'text NULL'
-        ),
-        'geo_long' => array
-        (
-            'sql'                        => 'text NULL'
-        )
-    )
-);
+    'fields' => [
+        'id' => [
+            'sql'                       => 'int(10) unsigned NOT NULL auto_increment'
+        ],
+        'search' => [
+            'sql'                       => 'text NULL'
+        ],
+        'country' => [
+            'sql'                       => 'varchar(255) NOT NULL default \'\''
+        ],
+        'geo_lat' => [
+            'sql'                       => 'text NULL'
+        ],
+        'geo_long' => [
+            'sql'                       => 'text NULL'
+        ]
+    ]
+];

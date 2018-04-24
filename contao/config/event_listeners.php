@@ -26,16 +26,15 @@ use MetaModels\Filter\Setting\Events\CreateFilterSettingFactoryEvent;
 use MetaModels\Filter\Setting\PerimetersearchFilterSettingTypeFactory;
 use MetaModels\MetaModelsEvents;
 
-return array
-(
-    MetaModelsEvents::SUBSYSTEM_BOOT_BACKEND => array(
+return [
+    MetaModelsEvents::SUBSYSTEM_BOOT_BACKEND        => [
         function (MetaModelsBootEvent $event) {
             new Subscriber($event->getServiceContainer());
         }
-    ),
-    MetaModelsEvents::FILTER_SETTING_FACTORY_CREATE => array(
+    ],
+    MetaModelsEvents::FILTER_SETTING_FACTORY_CREATE => [
         function (CreateFilterSettingFactoryEvent $event) {
             $event->getFactory()->addTypeFactory(new PerimetersearchFilterSettingTypeFactory());
         }
-    )
-);
+    ]
+];

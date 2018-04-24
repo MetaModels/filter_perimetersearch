@@ -210,10 +210,10 @@ class Perimetersearch extends SimpleLookup
     ) {
         // If defined as static, return nothing as not to be manipulated via editors.
         if (!$this->enableFEFilterWidget()) {
-            return array();
+            return [];
         }
 
-        $arrReturn                     = array();
+        $arrReturn                     = [];
         $GLOBALS['MM_FILTER_PARAMS'][] = $this->getParamName();
         $GLOBALS['MM_FILTER_PARAMS'][] = $this->getParamNameRange();
 
@@ -244,22 +244,22 @@ class Perimetersearch extends SimpleLookup
      */
     private function getSearchWidget(FrontendFilterOptions $objFrontendFilterOptions)
     {
-        $arrCount  = array();
-        $arrWidget = array(
-            'label'     => array(
+        $arrCount  = [];
+        $arrWidget = [
+            'label'     => [
                 ($this->get('label') ? $this->get('label') : $this->getAttributeName()),
                 'GET: ' . $this->getParamName()
-            ),
+            ],
             'inputType' => 'text',
             'count'     => $arrCount,
             'showCount' => $objFrontendFilterOptions->isShowCountValues(),
-            'eval'      => array(
+            'eval'      => [
                 'colname'     => $this->getColname(),
                 'urlparam'    => $this->getParamName(),
                 'template'    => $this->get('template'),
                 'placeholder' => $this->get('placeholder'),
-            )
-        );
+            ]
+        ];
 
         return $arrWidget;
     }

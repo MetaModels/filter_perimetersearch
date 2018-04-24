@@ -42,15 +42,15 @@ class Subscriber extends BaseSubscriber
         $this
             ->addListener(
                 GetPropertyOptionsEvent::NAME,
-                array($this, 'getAttributeIdOptions')
+                [$this, 'getAttributeIdOptions']
             )
             ->addListener(
                 GetOptionsEvent::NAME,
-                array($this, 'getResolverClass')
+                [$this, 'getResolverClass']
             )
             ->addListener(
                 GetPropertyOptionsEvent::NAME,
-                array($this, 'getTemplateOptions')
+                [$this, 'getTemplateOptions']
             );
     }
 
@@ -104,13 +104,13 @@ class Subscriber extends BaseSubscriber
     public function getAttributeIdOptions(GetPropertyOptionsEvent $event)
     {
         // Check the context.
-        $allowedProperties = array('first_attr_id', 'second_attr_id', 'single_attr_id');
+        $allowedProperties = ['first_attr_id', 'second_attr_id', 'single_attr_id'];
         if (!$this->isAllowedProperty($event, 'tl_metamodel_filtersetting', $allowedProperties)
         ) {
             return;
         }
 
-        $result      = array();
+        $result      = [];
         $model       = $event->getModel();
         $metaModel   = $this->getMetaModel($model);
         $typeFactory = $this
@@ -124,7 +124,7 @@ class Subscriber extends BaseSubscriber
         }
 
         if ($event->getPropertyName() === 'single_attr_id') {
-            $typeFilter = array('geolocation');
+            $typeFilter = ['geolocation'];
         } else {
             $key = array_search('geolocation', $typeFilter);
             if ($key !== null) {
@@ -156,7 +156,7 @@ class Subscriber extends BaseSubscriber
     public function getResolverClass(GetOptionsEvent $event)
     {
         // Check the context.
-        $allowedProperties = array('lookupservice');
+        $allowedProperties = ['lookupservice'];
         if (!$this->isAllowedProperty($event, 'tl_metamodel_filtersetting', $allowedProperties)
             || 'lookupservice' !== $event->getSubPropertyName()
         ) {
@@ -165,7 +165,7 @@ class Subscriber extends BaseSubscriber
 
         $arrClasses = (array) $GLOBALS['METAMODELS']['filters']['perimetersearch']['resolve_class'];
 
-        $arrReturn = array();
+        $arrReturn = [];
         foreach (array_keys($arrClasses) as $name) {
             $arrReturn[$name] = (isset($GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['perimetersearch'][$name]))
                 ? $GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['perimetersearch'][$name]

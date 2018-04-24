@@ -40,11 +40,11 @@ class PerimetersearchFilterSettingTypeFactory extends AbstractFilterSettingTypeF
             ->setTypeClass('MetaModels\Filter\Setting\Perimetersearch')
             ->allowAttributeTypes();
 
-        foreach (array(
-                     'geolocation',
-                     'text',
-                     'decimal'
-                 ) as $attribute) {
+        foreach ([
+                'geolocation',
+                'text',
+                'decimal'
+            ] as $attribute) {
             $this->addKnownAttributeType($attribute);
         }
     }
