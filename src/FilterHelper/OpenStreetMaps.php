@@ -3,7 +3,7 @@
 /**
  * This file is part of MetaModels/filter_perimetersearch.
  *
- * (c) 2012-2017 The MetaModels team.
+ * (c) 2012-2018 The MetaModels team.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -14,8 +14,9 @@
  * @subpackage FilterPerimetersearch
  * @author     Christian Schiffler <c.schiffler@cyberspectrum.de>
  * @author     Stefan Heimes <stefan_heimes@hotmail.com>
- * @copyright  2012-2017 The MetaModels team.
- * @license    https://github.com/MetaModels/filter_perimetersearch/blob/master/LICENSE LGPL-3.0
+ * @author     Sven Baumann <baumann.sv@gmail.com>
+ * @copyright  2012-2018 The MetaModels team.
+ * @license    https://github.com/MetaModels/filter_perimetersearch/blob/master/LICENSE LGPL-3.0-or-later
  * @filesource
  */
 
@@ -27,17 +28,23 @@ namespace MetaModels\FilterPerimetersearchBundle\FilterHelper;
 class OpenStreetMaps extends ProviderInterface
 {
     /**
-     * Google API call.
+     * Open street map API call.
      *
      * @var string
      */
-    protected $strUrl = 'http://nominatim.openstreetmap.org/search?q=%s&format=json&limit=1';
+    protected $strUrl = 'https://nominatim.openstreetmap.org/search?q=%s&format=json&limit=1';
 
     /**
      * {@inheritdoc}
      */
-    public function getCoordinates($street = null, $postal = null, $city = null, $country = null, $fullAddress = null)
-    {
+    public function getCoordinates(
+        $street = null,
+        $postal = null,
+        $city = null,
+        $country = null,
+        $fullAddress = null,
+        $apiToken = null
+    ) {
         // Generate a new container.
         $objReturn = new Container();
 
@@ -45,11 +52,10 @@ class OpenStreetMaps extends ProviderInterface
         $sQuery = $this->getQueryString($street, $postal, $city, $country, $fullAddress);
         $objReturn->setSearchParam($sQuery);
 
-        $oRequest = null;
         $oRequest = new \Request();
 
-        $oRequest->send(sprintf($this->strUrl, rawurlencode($sQuery)));
-        $aResponse   = json_decode($oRequest->response);
+        $oRequest->send(\sprintf($this->strUrl, \rawurlencode($sQuery)));
+        $aResponse   = \json_decode($oRequest->response);
         $objResponse = $aResponse[0];
 
         if ($oRequest->code == 200) {

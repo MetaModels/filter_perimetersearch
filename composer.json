@@ -10,7 +10,7 @@
   ],
   "type": "contao-module",
   "homepage": "http://now.metamodel.me/",
-  "license": "LGPL-3.0+",
+  "license": "LGPL-3.0-or-later",
   "authors": [
     {
       "name": "Christian Schiffler",
@@ -36,12 +36,13 @@
     "contao/core-bundle": "^4.4",
     "contao-community-alliance/dc-general": "~2.1@dev",
     "metamodels/core": "~2.1@dev",
+    "menatwork/contao-multicolumnwizard": "^3.3",
     "symfony/dependency-injection": "^3.3"
   },
   "require-dev": {
-    "cyberspectrum/contao-toolbox": "~0.7",
-    "phpcq/all-tasks": "~1.2",
-    "contao/manager-plugin": "~2.1"
+    "cyberspectrum/contao-toolbox": "^0.7",
+    "phpcq/all-tasks": "^1.2",
+    "contao/manager-plugin": "^2.1"
   },
   "autoload": {
     "psr-4": {

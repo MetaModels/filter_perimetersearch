@@ -3,7 +3,7 @@
 /**
  * This file is part of MetaModels/filter_perimetersearch.
  *
- * (c) 2012-2017 The MetaModels team.
+ * (c) 2012-2018 The MetaModels team.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -14,8 +14,9 @@
  * @subpackage Perimetersearch
  * @author     Christian Schiffler <c.schiffler@cyberspectrum.de>
  * @author     Stefan Heimes <stefan_heimes@hotmail.com>
- * @copyright  2012-2017 The MetaModels team.
- * @license    https://github.com/MetaModels/filter_perimetersearch/blob/master/LICENSE LGPL-3.0
+ * @author     Sven Baumann <baumann.sv@gmail.com>
+ * @copyright  2012-2018 The MetaModels team.
+ * @license    https://github.com/MetaModels/filter_perimetersearch/blob/master/LICENSE LGPL-3.0-or-later
  * @filesource
  */
 
@@ -93,15 +94,10 @@ class Perimetersearch implements IFilterRule
      * Create a new instance.
      *
      * @param IAttribute $latitudeAttribute  The attribute to perform filtering on.
-     *
      * @param IAttribute $longitudeAttribute The attribute to perform filtering on.
-     *
      * @param IAttribute $singleAttribute    The attribute to perform filtering on.
-     *
      * @param float|int  $lat                The latitude to search for.
-     *
      * @param float|int  $long               The longitude to search for.
-     *
      * @param int        $dist               The dist.
      *
      * @throws \InvalidArgumentException     If any value or attribute is not valid.
@@ -114,7 +110,7 @@ class Perimetersearch implements IFilterRule
         $this->validateValue($long, 'Only float and numeric allowed for the longitude.');
 
         // Check if the dist value is valid.
-        if (!is_numeric($dist) || $dist < 0) {
+        if (!\is_numeric($dist) || $dist < 0) {
             throw new \InvalidArgumentException('The dist has to be a valid number and greater than 0.');
         }
 
@@ -160,7 +156,6 @@ class Perimetersearch implements IFilterRule
      * Check if the longitude value is valid.
      *
      * @param mixed  $value   The value to check.
-     *
      * @param string $message The exception message.
      *
      * @return void
@@ -169,7 +164,7 @@ class Perimetersearch implements IFilterRule
      */
     private function validateValue($value, $message)
     {
-        if (!is_numeric($value) || !is_float($value)) {
+        if (!\is_numeric($value) || !\is_float($value)) {
             throw new \InvalidArgumentException($message);
         }
     }
@@ -178,9 +173,7 @@ class Perimetersearch implements IFilterRule
      * Check the attribute.
      *
      * @param IAttribute $latitudeAttribute  The attribute to be checked.
-     *
      * @param IAttribute $longitudeAttribute The attribute to be checked.
-     *
      * @param IAttribute $singleAttribute    The attribute to be checked.
      *
      * @return void
@@ -226,7 +219,6 @@ class Perimetersearch implements IFilterRule
      * Check the single attributes.
      *
      * @param IAttribute $latitudeAttribute  The attribute to be checked.
-     *
      * @param IAttribute $longitudeAttribute The attribute to be checked.
      *
      * @return void
@@ -256,7 +248,7 @@ class Perimetersearch implements IFilterRule
                 'tl_metamodel_geolocation',
                 'latitude',
                 'longitude',
-                array('att_id=?' => $this->singleAttribute->get('id'))
+                ['att_id=?' => $this->singleAttribute->get('id')]
             );
         } else {
             return $this->runSimpleQuery(
@@ -273,13 +265,9 @@ class Perimetersearch implements IFilterRule
      * Build the SQL and execute it.
      *
      * @param string $idField         Name of the id field.
-     *
      * @param string $tableName       The name of the table.
-     *
      * @param string $latitudeField   The name of the latitude field.
-     *
      * @param string $longitudeField  The name of the longitude field.
-     *
      * @param array  $additionalWhere A list with additional where information.
      *
      * @return array A list with ID's or an empty array.
@@ -305,7 +293,7 @@ class Perimetersearch implements IFilterRule
 
         // First value set for save values.
         // @codingStandardsIgnoreStart
-        $strSelect = sprintf(
+        $strSelect = \sprintf(
             $strSelect,
             $tableName, // 1
             $latitudeField, // 2
@@ -319,9 +307,9 @@ class Perimetersearch implements IFilterRule
         $lat    = $this->latitude;
         $lng    = $this->longitude;
         $dist   = $this->dist;
-        $values = array_merge(
+        $values = \array_merge(
             (array) $additionalWhere,
-            array($lat, $lng, $lat, $dist, $lat, $lng, $lat)
+            [$lat, $lng, $lat, $dist, $lat, $lng, $lat]
         );
 
         $objResult = $this
@@ -331,7 +319,7 @@ class Perimetersearch implements IFilterRule
 
         // Check the data.
         if ($objResult->numRows == 0) {
-            return array();
+            return [];
         } else {
             return $objResult->fetchEach($idField);
         }
@@ -350,8 +338,8 @@ class Perimetersearch implements IFilterRule
             return null;
         }
 
-        $sql = implode(' AND ', array_keys((array) $additionalWhere));
+        $sql = \implode(' AND ', \array_keys((array) $additionalWhere));
 
-        return strlen($sql) ? $sql . ' AND ' : null;
+        return \strlen($sql) ? $sql . ' AND ' : null;
     }
 }

@@ -3,7 +3,7 @@
 /**
  * This file is part of MetaModels/filter_perimetersearch.
  *
- * (c) 2012-2017 The MetaModels team.
+ * (c) 2012-2018 The MetaModels team.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -14,12 +14,15 @@
  * @subpackage FilterPerimetersearch
  * @author     Christian Schiffler <c.schiffler@cyberspectrum.de>
  * @author     Stefan Heimes <stefan_heimes@hotmail.com>
- * @copyright  2012-2017 The MetaModels team.
- * @license    https://github.com/MetaModels/filter_perimetersearch/blob/master/LICENSE LGPL-3.0
+ * @author     Sven Baumann <baumann.sv@gmail.com>
+ * @copyright  2012-2018 The MetaModels team.
+ * @license    https://github.com/MetaModels/filter_perimetersearch/blob/master/LICENSE LGPL-3.0-or-later
  * @filesource
  */
 
 namespace MetaModels\FilterPerimetersearchBundle\FilterHelper;
+
+use Contao\Controller;
 
 /**
  * Class MetaModelsCatchmentAreaGeoLookUpInterface.
@@ -36,7 +39,7 @@ abstract class ProviderInterface
      */
     public function getCountries()
     {
-        return \Controller::getCountries();
+        return Controller::getCountries();
     }
 
     /**
@@ -49,7 +52,7 @@ abstract class ProviderInterface
     public function getFullCountryName($strShort)
     {
         $arrCountries = $this->getCountries();
-        if (array_key_exists($strShort, $arrCountries)) {
+        if (\array_key_exists($strShort, $arrCountries)) {
             return $arrCountries[$strShort];
         }
 
@@ -60,13 +63,9 @@ abstract class ProviderInterface
      * Build the query string.
      *
      * @param string $street      The street.
-     *
      * @param string $postal      The postal code.
-     *
      * @param string $city        Name of city.
-     *
      * @param string $country     A 2-letter country code.
-     *
      * @param string $fullAddress Address string without specific format.
      *
      * @return string
@@ -82,10 +81,10 @@ abstract class ProviderInterface
         if ($fullAddress) {
             // If there is a country try to use the long form.
             if ($country !== null && ($fullCountryName = $this->getFullCountryName($country)) !== null) {
-                return sprintf('%s, %s', $fullAddress, $fullCountryName);
+                return \sprintf('%s, %s', $fullAddress, $fullCountryName);
             } elseif ($country !== null) {
                 // If there is no long form use it as is it.
-                return sprintf('%s, %s', $fullAddress, $country);
+                return \sprintf('%s, %s', $fullAddress, $country);
             } else {
                 // Or just the full one.
                 return $fullAddress;
@@ -96,7 +95,7 @@ abstract class ProviderInterface
                 $country = $fullCountryName;
             }
 
-            return sprintf(
+            return \sprintf(
                 '%s, %s %s, %s',
                 $street,
                 $postal,
@@ -110,14 +109,11 @@ abstract class ProviderInterface
      * Find coordinates for given address.
      *
      * @param string $street      The street.
-     *
      * @param string $postal      The postal code.
-     *
      * @param string $city        Name of city.
-     *
      * @param string $country     A 2-letter country code.
-     *
      * @param string $fullAddress Address string without specific format.
+     * @param string $apiToken    Optional the API token.
      *
      * @return Container
      */
@@ -126,6 +122,7 @@ abstract class ProviderInterface
         $postal = null,
         $city = null,
         $country = null,
-        $fullAddress = null
+        $fullAddress = null,
+        $apiToken = null
     );
 }
