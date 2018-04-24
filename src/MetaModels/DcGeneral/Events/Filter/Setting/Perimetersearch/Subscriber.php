@@ -69,7 +69,7 @@ class Subscriber extends BaseSubscriber
             return false;
         }
 
-        if (!in_array($event->getPropertyName(), $properties)) {
+        if (!\in_array($event->getPropertyName(), $properties)) {
             return false;
         }
 
@@ -124,7 +124,7 @@ class Subscriber extends BaseSubscriber
         if ($event->getPropertyName() === 'single_attr_id') {
             $typeFilter = ['geolocation'];
         } else {
-            $key = array_search('geolocation', $typeFilter);
+            $key = \array_search('geolocation', $typeFilter);
             if ($key !== null) {
                 unset($typeFilter[$key]);
             }
@@ -132,7 +132,7 @@ class Subscriber extends BaseSubscriber
 
         foreach ($metaModel->getAttributes() as $attribute) {
             $typeName = $attribute->get('type');
-            if ($typeFilter && (!in_array($typeName, $typeFilter))) {
+            if ($typeFilter && (!\in_array($typeName, $typeFilter))) {
                 continue;
             }
             $strSelectVal          = $attribute->getColName();
@@ -164,7 +164,7 @@ class Subscriber extends BaseSubscriber
         $arrClasses = (array) $GLOBALS['METAMODELS']['filters']['perimetersearch']['resolve_class'];
 
         $arrReturn = [];
-        foreach (array_keys($arrClasses) as $name) {
+        foreach (\array_keys($arrClasses) as $name) {
             $arrReturn[$name] = (isset($GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['perimetersearch'][$name]))
                 ? $GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['perimetersearch'][$name]
                 : $name;

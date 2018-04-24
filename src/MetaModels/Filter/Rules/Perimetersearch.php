@@ -110,7 +110,7 @@ class Perimetersearch implements IFilterRule
         $this->validateValue($long, 'Only float and numeric allowed for the longitude.');
 
         // Check if the dist value is valid.
-        if (!is_numeric($dist) || $dist < 0) {
+        if (!\is_numeric($dist) || $dist < 0) {
             throw new \InvalidArgumentException('The dist has to be a valid number and greater than 0.');
         }
 
@@ -164,7 +164,7 @@ class Perimetersearch implements IFilterRule
      */
     private function validateValue($value, $message)
     {
-        if (!is_numeric($value) || !is_float($value)) {
+        if (!\is_numeric($value) || !\is_float($value)) {
             throw new \InvalidArgumentException($message);
         }
     }
@@ -293,7 +293,7 @@ class Perimetersearch implements IFilterRule
 
         // First value set for save values.
         // @codingStandardsIgnoreStart
-        $strSelect = sprintf(
+        $strSelect = \sprintf(
             $strSelect,
             $tableName, // 1
             $latitudeField, // 2
@@ -307,7 +307,7 @@ class Perimetersearch implements IFilterRule
         $lat    = $this->latitude;
         $lng    = $this->longitude;
         $dist   = $this->dist;
-        $values = array_merge(
+        $values = \array_merge(
             (array) $additionalWhere,
             [$lat, $lng, $lat, $dist, $lat, $lng, $lat]
         );
@@ -338,8 +338,8 @@ class Perimetersearch implements IFilterRule
             return null;
         }
 
-        $sql = implode(' AND ', array_keys((array) $additionalWhere));
+        $sql = \implode(' AND ', \array_keys((array) $additionalWhere));
 
-        return strlen($sql) ? $sql . ' AND ' : null;
+        return \strlen($sql) ? $sql . ' AND ' : null;
     }
 }

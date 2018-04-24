@@ -156,13 +156,13 @@ class Perimetersearch extends SimpleLookup
 
         if ($this->get('countrymode') === 'get' && $this->get('country_get')) {
             $getValue = Input::get($this->get('country_get'));
-            $getValue = trim($getValue);
+            $getValue = \trim($getValue);
             if (!empty($getValue)) {
                 $strCountry = $getValue;
             }
         } elseif ($this->get('countrymode') === 'get' && $this->get('country_get')) {
             $getValue = Input::post($this->get('country_get'));
-            $getValue = trim($getValue);
+            $getValue = \trim($getValue);
             if (!empty($getValue)) {
                 $strCountry = $getValue;
             }
@@ -372,7 +372,7 @@ class Perimetersearch extends SimpleLookup
         $lat      = $container->getLatitude();
         $lng      = $container->getLongitude();
         $intDist  = $container->getDistance();
-        $distance = sprintf(
+        $distance = \sprintf(
             'round(sqrt(' .
             'power(2 * pi() / 360 * (%1$s - latitude) * 6371,2)' .
             '+ power(2 * pi() / 360 * (%2$s - longitude) * 6371 * COS( 2 * pi() / 360 * (%1$s + latitude) * 0.5), 2)' .
@@ -382,7 +382,7 @@ class Perimetersearch extends SimpleLookup
         );
 
         $objResult = Database::getInstance()
-            ->prepare(sprintf(
+            ->prepare(\sprintf(
                 'SELECT item_id FROM tl_metamodel_geolocation WHERE %1$s<=? AND att_id=? ORDER BY %1$s',
                 $distance
             ))
@@ -411,7 +411,7 @@ class Perimetersearch extends SimpleLookup
         $lat      = $container->getLatitude();
         $lng      = $container->getLongitude();
         $intDist  = $container->getDistance();
-        $distance = sprintf(
+        $distance = \sprintf(
             'round(sqrt(' .
             'power(2 * pi() / 360 * (%1$s - %3$s) * 6371,2)' .
             '+ power(2 * pi() / 360 * (%2$s - %4$s) * 6371 * COS( 2 * pi() / 360 * (%1$s + %3$s) * 0.5), 2)' .
@@ -424,7 +424,7 @@ class Perimetersearch extends SimpleLookup
 
         $objResult = \Database::getInstance()
             ->prepare(
-                sprintf(
+                \sprintf(
                     'SELECT id FROM %1$s WHERE %2$s<=? ORDER BY %2$s',
                     $this->getMetaModel()->getTableName(),
                     $distance
@@ -450,8 +450,8 @@ class Perimetersearch extends SimpleLookup
     protected function lookupGeo($strAddress, $strCountry)
     {
         // Trim the data. Better!
-        $strAddress = trim($strAddress);
-        $strCountry = trim($strCountry);
+        $strAddress = \trim($strAddress);
+        $strCountry = \trim($strCountry);
 
         // First check cache.
         $objCacheResult = $this->getFromCache($strAddress, $strCountry);
@@ -460,7 +460,7 @@ class Perimetersearch extends SimpleLookup
         }
 
         // If there is no data from the cache ask google.
-        $arrLookupServices = deserialize($this->get('lookupservice'), true);
+        $arrLookupServices = \deserialize($this->get('lookupservice'), true);
         if (!count($arrLookupServices)) {
             return false;
         }

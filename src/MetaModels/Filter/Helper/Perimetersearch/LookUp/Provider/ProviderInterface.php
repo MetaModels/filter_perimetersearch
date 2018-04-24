@@ -52,7 +52,7 @@ abstract class ProviderInterface
     public function getFullCountryName($strShort)
     {
         $arrCountries = $this->getCountries();
-        if (array_key_exists($strShort, $arrCountries)) {
+        if (\array_key_exists($strShort, $arrCountries)) {
             return $arrCountries[$strShort];
         }
 
@@ -81,10 +81,10 @@ abstract class ProviderInterface
         if ($fullAddress) {
             // If there is a country try to use the long form.
             if ($country !== null && ($fullCountryName = $this->getFullCountryName($country)) !== null) {
-                return sprintf('%s, %s', $fullAddress, $fullCountryName);
+                return \sprintf('%s, %s', $fullAddress, $fullCountryName);
             } elseif ($country !== null) {
                 // If there is no long form use it as is it.
-                return sprintf('%s, %s', $fullAddress, $country);
+                return \sprintf('%s, %s', $fullAddress, $country);
             } else {
                 // Or just the full one.
                 return $fullAddress;
@@ -95,7 +95,7 @@ abstract class ProviderInterface
                 $country = $fullCountryName;
             }
 
-            return sprintf(
+            return \sprintf(
                 '%s, %s %s, %s',
                 $street,
                 $postal,

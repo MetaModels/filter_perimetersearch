@@ -55,8 +55,8 @@ class OpenStreetMaps extends ProviderInterface
         $oRequest = null;
         $oRequest = new \Request();
 
-        $oRequest->send(sprintf($this->strUrl, rawurlencode($sQuery)));
-        $aResponse   = json_decode($oRequest->response);
+        $oRequest->send(\sprintf($this->strUrl, \rawurlencode($sQuery)));
+        $aResponse   = \json_decode($oRequest->response);
         $objResponse = $aResponse[0];
 
         if ($oRequest->code == 200) {

@@ -57,11 +57,11 @@ class GoogleMaps extends ProviderInterface
         $oRequest = new \Request();
 
         $apiUrlParameter = $apiToken ? '&key=' . $apiToken : '';
-        $oRequest->send(sprintf($this->strGoogleUrl . '%s', rawurlencode($sQuery), $apiUrlParameter));
-        $objReturn->setUri(sprintf($this->strGoogleUrl . '%s', rawurlencode($sQuery), $apiUrlParameter));
+        $oRequest->send(\sprintf($this->strGoogleUrl . '%s', \rawurlencode($sQuery), $apiUrlParameter));
+        $objReturn->setUri(\sprintf($this->strGoogleUrl . '%s', \rawurlencode($sQuery), $apiUrlParameter));
 
         if ($oRequest->code == 200) {
-            $aResponse = json_decode($oRequest->response, 1);
+            $aResponse = \json_decode($oRequest->response, 1);
 
             if (!empty($aResponse['status']) && $aResponse['status'] == 'OK') {
                 $objReturn->setLatitude($aResponse['results'][0]['geometry']['location']['lat']);
