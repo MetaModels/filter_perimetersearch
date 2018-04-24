@@ -63,7 +63,7 @@ $GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['lookupservice']   = [
     'Here you can choose a look up service for resolving adress data.'
 ];
 $GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['lookupservice']['api_token']  = [
-    'Api token',
+    'API token',
     'Here you can add a the api token.'
 ];
 $GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['range_label']     = [
@@ -80,7 +80,7 @@ $GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['range_template']  = [
 ];
 $GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['countrymode']     = [
     'Countrymode',
-    'Here you can choose how the language will used.'
+    'Here you can choose how the country will used.'
 ];
 $GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['country_preset']  = [
     'Country preset',
