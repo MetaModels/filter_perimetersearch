@@ -158,6 +158,7 @@ class Subscriber extends BaseSubscriber
         // Check the context.
         $allowedProperties = array('lookupservice');
         if (!$this->isAllowedProperty($event, 'tl_metamodel_filtersetting', $allowedProperties)
+            || 'lookupservice' !== $event->getSubPropertyName()
         ) {
             return;
         }

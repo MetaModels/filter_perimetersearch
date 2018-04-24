@@ -37,8 +37,14 @@ class OpenStreetMaps extends ProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function getCoordinates($street = null, $postal = null, $city = null, $country = null, $fullAddress = null)
-    {
+    public function getCoordinates(
+        $street = null,
+        $postal = null,
+        $city = null,
+        $country = null,
+        $fullAddress = null,
+        $apiToken = null
+    ) {
         // Generate a new container.
         $objReturn = new Container();
 

@@ -475,7 +475,15 @@ class Perimetersearch extends SimpleLookup
                 // Call the main function.
                 if ($objCallbackClass != null) {
                     /** @var Container $objResult */
-                    $objResult = $objCallbackClass->getCoordinates(null, null, null, $strCountry, $strAddress);
+                    $objResult = $objCallbackClass
+                        ->getCoordinates(
+                            null,
+                            null,
+                            null,
+                            $strCountry,
+                            $strAddress,
+                            $arrSettings['apiToken'] ?: null
+                        );
 
                     // Check if we have a result.
                     if (!$objResult->hasError()) {

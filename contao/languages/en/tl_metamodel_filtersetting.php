@@ -62,6 +62,10 @@ $GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['lookupservice']   = array(
     'LookUp Services',
     'Here you can choose a look up service for resolving adress data.'
 );
+$GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['lookupservice']['api_token']  = array(
+    'Api token',
+    'Here you can add a the api token.'
+);
 $GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['range_label']     = array(
     'Range Label',
     'Show range label instead of attribute name.'

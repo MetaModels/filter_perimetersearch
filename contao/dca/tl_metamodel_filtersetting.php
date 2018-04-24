@@ -243,7 +243,8 @@ $GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['fields']['lookupservice'] = ar
     'inputType' => 'multiColumnWizard',
     'eval'      => array
     (
-        'tl_class'     => 'w50 w50x',
+        'tl_class'     => 'clr',
+        'helpwizard'   => true,
         'columnFields' => array
         (
             'lookupservice' => array
@@ -259,9 +260,20 @@ $GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['fields']['lookupservice'] = ar
                     'style'              => 'width:250px',
                 )
             ),
+            'apiToken' => array
+            (
+                'label'     => &$GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['lookupservice']['api_token'],
+                'exclude'   => true,
+                'inputType' => 'text',
+                'eval'      => array
+                (
+                    'tl_class' => 'w50'
+                )
+            )
         ),
     ),
-    'sql'      => 'text NULL'
+    'explanation' => 'filter_lookupservice',
+    'sql'         => 'text NULL'
 );
 
 $GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['fields']['single_attr_id'] = array

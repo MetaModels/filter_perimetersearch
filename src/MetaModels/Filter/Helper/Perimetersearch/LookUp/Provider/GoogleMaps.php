@@ -38,20 +38,27 @@ class GoogleMaps extends ProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function getCoordinates($street = null, $postal = null, $city = null, $country = null, $fullAddress = null)
-    {
+    public function getCoordinates(
+        $street = null,
+        $postal = null,
+        $city = null,
+        $country = null,
+        $fullAddress = null,
+        $apiToken = null
+    ) {
         // Generate a new container.
         $objReturn = new Container();
 
         // Set the query string.
-        $sQuery = $this->getQueryString($street, $postal, $city, $country, $fullAddress);
+        $sQuery = $this->getQueryString($street, $postal, $city, $country, $fullAddress, $apiToken);
         $objReturn->setSearchParam($sQuery);
 
         $oRequest = null;
         $oRequest = new \Request();
 
-        $oRequest->send(sprintf($this->strGoogleUrl, rawurlencode($sQuery)));
-        $objReturn->setUri(sprintf($this->strGoogleUrl, rawurlencode($sQuery)));
+        $apiUrlParameter = $apiToken ? '&key=' . $apiToken : '';
+        $oRequest->send(sprintf($this->strGoogleUrl . '%s', rawurlencode($sQuery), $apiUrlParameter));
+        $objReturn->setUri(sprintf($this->strGoogleUrl . '%s', rawurlencode($sQuery), $apiUrlParameter));
 
         if ($oRequest->code == 200) {
             $aResponse = json_decode($oRequest->response, 1);

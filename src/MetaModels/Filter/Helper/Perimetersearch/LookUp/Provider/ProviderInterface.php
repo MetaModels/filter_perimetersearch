@@ -120,6 +120,8 @@ abstract class ProviderInterface
      *
      * @param string $fullAddress Address string without specific format.
      *
+     * @param string $apiToken    Optional the API token.
+     *
      * @return Container
      */
     abstract public function getCoordinates(
@@ -127,6 +129,7 @@ abstract class ProviderInterface
         $postal = null,
         $city = null,
         $country = null,
-        $fullAddress = null
+        $fullAddress = null,
+        $apiToken = null
     );
 }
