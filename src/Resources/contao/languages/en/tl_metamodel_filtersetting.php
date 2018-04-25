@@ -23,15 +23,15 @@
 /**
  * Legend
  */
-$GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['geolocation_legend'] = 'Geolocation Settings';
-$GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['range_legend']       = 'Range Settings';
-$GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['fefilter_legend']    = 'Frontendfilter Settings';
+$GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['geolocation_legend'] = 'Geolocation settings';
+$GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['range_legend']       = 'Range settings';
+$GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['fefilter_legend']    = 'Frontendfilter settings';
 
 /**
  * Fields
  */
 $GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['datamode']        = [
-    'Datamode',
+    'Data mode',
     'Here you can choose if you have one single attribute or two attributes.'
 ];
 $GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['single_attr_id']  = [
@@ -47,7 +47,7 @@ $GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['second_attr_id']  = [
     'Choose the attribute for the longitude values.'
 ];
 $GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['rangemode']       = [
-    'Rangemode',
+    'Range mode',
     'Here you can choose how the range will be displayed.'
 ];
 $GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['range_preset']    = [
@@ -59,36 +59,36 @@ $GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['range_selection'] = [
     'Here you can add values.'
 ];
 $GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['lookupservice']   = [
-    'LookUp Services',
+    'LookUp services',
     'Here you can choose a look up service for resolving adress data.'
 ];
 $GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['lookupservice']['api_token']  = [
     'API token',
-    'Here you can add a the api token.'
+    'Here you can add a the API token.'
 ];
 $GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['range_label']     = [
-    'Range Label',
+    'Range label',
     'Show range label instead of attribute name.'
 ];
 $GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['range_placeholder']     = [
-    'Range-Placeholder',
+    'Range placeholder',
     'Show this text as long as the field is empty (requires HTML5).'
 ];
 $GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['range_template']  = [
-    'Range Template',
+    'Range template',
     'Sub template for this range filter element. Standard: form widget.'
 ];
 $GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['countrymode']     = [
-    'Countrymode',
+    'Country mode',
     'Here you can choose how the country will used.'
 ];
 $GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['country_preset']  = [
     'Country preset',
-    'Here you can add a preset for the language.'
+    'Here you can add a preset for the country.'
 ];
 $GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['country_get']     = [
-    'Country GET Parameter',
-    'Here you can add a get parameter.'
+    'GET-Parameter for country',
+    'Here you can add the GET-Parameter name for the country lookup.'
 ];
 
 /**
