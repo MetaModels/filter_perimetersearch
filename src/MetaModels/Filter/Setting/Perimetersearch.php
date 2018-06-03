@@ -3,7 +3,7 @@
 /**
  * This file is part of MetaModels/filter_perimetersearch.
  *
- * (c) 2012-2017 The MetaModels team.
+ * (c) 2012-2018 The MetaModels team.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -15,13 +15,16 @@
  * @author     Christian Schiffler <c.schiffler@cyberspectrum.de>
  * @author     Stefan Heimes <stefan_heimes@hotmail.com>
  * @author     Christopher Bölter <christopher@boelter.eu>
- * @copyright  2012-2017 The MetaModels team.
- * @license    https://github.com/MetaModels/filter_perimetersearch/blob/master/LICENSE LGPL-3.0
+ * @author     Sven Baumann <baumann.sv@gmail.com>
+ * @copyright  2012-2018 The MetaModels team.
+ * @license    https://github.com/MetaModels/filter_perimetersearch/blob/master/LICENSE LGPL-3.0-or-later
  * @filesource
  */
 
 namespace MetaModels\Filter\Setting;
 
+use Contao\Database;
+use Contao\Input;
 use MetaModels\Attribute\IAttribute;
 use MetaModels\Filter\Helper\Perimetersearch\LookUp\Provider\Container;
 use MetaModels\Filter\IFilter;
@@ -97,7 +100,7 @@ class Perimetersearch extends SimpleLookup
         $strParamName      = $this->getParamName();
         $strParamNameRange = $this->getParamNameRange();
         $strParamValue     = $arrFilterUrl[$strParamName];
-        $intDist           = intval($arrFilterUrl[$strParamNameRange]);
+        $intDist           = (int) $arrFilterUrl[$strParamNameRange];
 
         // Check if we have a value.
         if (empty($strParamValue)) {
@@ -106,11 +109,11 @@ class Perimetersearch extends SimpleLookup
 
         // If range mode is preset use this value.
         if ($this->get('rangemode') == 'preset') {
-            $intDist = intval($this->get('range_preset'));
+            $intDist = (int) $this->get('range_preset');
         }
 
         // Try to get a country.
-        $strCountry = $this->getCountyInformation();
+        $strCountry = $this->getCountryInformation();
 
         // Search for the geolocation.
         $objContainer = $this->lookupGeo($strParamValue, $strCountry);
@@ -146,20 +149,14 @@ class Perimetersearch extends SimpleLookup
      *
      * @return string|null The country short tag (2-letters) or null.
      */
-    protected function getCountyInformation()
+    protected function getCountryInformation()
     {
         // Get the country for the lookup.
         $strCountry = null;
 
         if ($this->get('countrymode') === 'get' && $this->get('country_get')) {
-            $getValue = \Input::get($this->get('country_get'));
-            $getValue = trim($getValue);
-            if (!empty($getValue)) {
-                $strCountry = $getValue;
-            }
-        } elseif ($this->get('countrymode') === 'get' && $this->get('country_get')) {
-            $getValue = \Input::post($this->get('country_get'));
-            $getValue = trim($getValue);
+            $getValue = Input::get($this->get('country_get')) ?: Input::post($this->get('country_get'));
+            $getValue = \trim($getValue);
             if (!empty($getValue)) {
                 $strCountry = $getValue;
             }
@@ -209,10 +206,10 @@ class Perimetersearch extends SimpleLookup
     ) {
         // If defined as static, return nothing as not to be manipulated via editors.
         if (!$this->enableFEFilterWidget()) {
-            return array();
+            return [];
         }
 
-        $arrReturn                     = array();
+        $arrReturn                     = [];
         $GLOBALS['MM_FILTER_PARAMS'][] = $this->getParamName();
         $GLOBALS['MM_FILTER_PARAMS'][] = $this->getParamNameRange();
 
@@ -243,22 +240,22 @@ class Perimetersearch extends SimpleLookup
      */
     private function getSearchWidget(FrontendFilterOptions $objFrontendFilterOptions)
     {
-        $arrCount  = array();
-        $arrWidget = array(
-            'label'     => array(
+        $arrCount  = [];
+        $arrWidget = [
+            'label'     => [
                 ($this->get('label') ? $this->get('label') : $this->getAttributeName()),
                 'GET: ' . $this->getParamName()
-            ),
+            ],
             'inputType' => 'text',
             'count'     => $arrCount,
             'showCount' => $objFrontendFilterOptions->isShowCountValues(),
-            'eval'      => array(
+            'eval'      => [
                 'colname'     => $this->getColname(),
                 'urlparam'    => $this->getParamName(),
                 'template'    => $this->get('template'),
                 'placeholder' => $this->get('placeholder'),
-            )
-        );
+            ]
+        ];
 
         return $arrWidget;
     }
@@ -359,7 +356,6 @@ class Perimetersearch extends SimpleLookup
      * Run the search for the complex attribute geolocation.
      *
      * @param Container $container The container with all information.
-     *
      * @param IFilter   $filter    The filter container.
      *
      * @return void
@@ -370,7 +366,7 @@ class Perimetersearch extends SimpleLookup
         $lat      = $container->getLatitude();
         $lng      = $container->getLongitude();
         $intDist  = $container->getDistance();
-        $distance = sprintf(
+        $distance = \sprintf(
             'round(sqrt(' .
             'power(2 * pi() / 360 * (%1$s - latitude) * 6371,2)' .
             '+ power(2 * pi() / 360 * (%2$s - longitude) * 6371 * COS( 2 * pi() / 360 * (%1$s + latitude) * 0.5), 2)' .
@@ -379,8 +375,8 @@ class Perimetersearch extends SimpleLookup
             $lng
         );
 
-        $objResult = \Database::getInstance()
-            ->prepare(sprintf(
+        $objResult = Database::getInstance()
+            ->prepare(\sprintf(
                 'SELECT item_id FROM tl_metamodel_geolocation WHERE %1$s<=? AND att_id=? ORDER BY %1$s',
                 $distance
             ))
@@ -397,11 +393,8 @@ class Perimetersearch extends SimpleLookup
      * Run the search for the complex attribute geolocation.
      *
      * @param Container  $container     The container with all information.
-     *
      * @param IFilter    $filter        The filter container.
-     *
      * @param IAttribute $latAttribute  The attribute to filter on.
-     *
      * @param IAttribute $longAttribute The attribute to filter on.
      *
      * @return void
@@ -412,7 +405,7 @@ class Perimetersearch extends SimpleLookup
         $lat      = $container->getLatitude();
         $lng      = $container->getLongitude();
         $intDist  = $container->getDistance();
-        $distance = sprintf(
+        $distance = \sprintf(
             'round(sqrt(' .
             'power(2 * pi() / 360 * (%1$s - %3$s) * 6371,2)' .
             '+ power(2 * pi() / 360 * (%2$s - %4$s) * 6371 * COS( 2 * pi() / 360 * (%1$s + %3$s) * 0.5), 2)' .
@@ -425,7 +418,7 @@ class Perimetersearch extends SimpleLookup
 
         $objResult = \Database::getInstance()
             ->prepare(
-                sprintf(
+                \sprintf(
                     'SELECT id FROM %1$s WHERE %2$s<=? ORDER BY %2$s',
                     $this->getMetaModel()->getTableName(),
                     $distance
@@ -444,7 +437,6 @@ class Perimetersearch extends SimpleLookup
      * User the provider classes to make a look up.
      *
      * @param string $strAddress The full address to search for.
-     *
      * @param string $strCountry The country as 2-letters form.
      *
      * @return Container|null Return the container with all information or null on error.
@@ -452,8 +444,8 @@ class Perimetersearch extends SimpleLookup
     protected function lookupGeo($strAddress, $strCountry)
     {
         // Trim the data. Better!
-        $strAddress = trim($strAddress);
-        $strCountry = trim($strCountry);
+        $strAddress = \trim($strAddress);
+        $strCountry = \trim($strCountry);
 
         // First check cache.
         $objCacheResult = $this->getFromCache($strAddress, $strCountry);
@@ -462,7 +454,7 @@ class Perimetersearch extends SimpleLookup
         }
 
         // If there is no data from the cache ask google.
-        $arrLookupServices = deserialize($this->get('lookupservice'), true);
+        $arrLookupServices = \deserialize($this->get('lookupservice'), true);
         if (!count($arrLookupServices)) {
             return false;
         }
@@ -474,7 +466,15 @@ class Perimetersearch extends SimpleLookup
                 // Call the main function.
                 if ($objCallbackClass != null) {
                     /** @var Container $objResult */
-                    $objResult = $objCallbackClass->getCoordinates(null, null, null, $strCountry, $strAddress);
+                    $objResult = $objCallbackClass
+                        ->getCoordinates(
+                            null,
+                            null,
+                            null,
+                            $strCountry,
+                            $strAddress,
+                            $arrSettings['apiToken'] ?: null
+                        );
 
                     // Check if we have a result.
                     if (!$objResult->hasError()) {
@@ -550,9 +550,7 @@ class Perimetersearch extends SimpleLookup
      * Add data to the cache.
      *
      * @param string    $address The address which where use for the search.
-     *
      * @param string    $country The country.
-     *
      * @param Container $result  The container with all information.
      *
      * @return void
@@ -574,7 +572,6 @@ class Perimetersearch extends SimpleLookup
      * Get data from cache.
      *
      * @param string $address The address which where use for the search.
-     *
      * @param string $country The country.
      *
      * @return Container|null

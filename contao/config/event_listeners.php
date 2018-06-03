@@ -3,7 +3,7 @@
 /**
  * This file is part of MetaModels/filter_perimetersearch.
  *
- * (c) 2012-2017 The MetaModels team.
+ * (c) 2012-2018 The MetaModels team.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -14,8 +14,9 @@
  * @subpackage FilterPerimetersearch
  * @author     Christian Schiffler <c.schiffler@cyberspectrum.de>
  * @author     Stefan Heimes <stefan_heimes@hotmail.com>
- * @copyright  2012-2017 The MetaModels team.
- * @license    https://github.com/MetaModels/filter_perimetersearch/blob/master/LICENSE LGPL-3.0
+ * @author     Sven Baumann <baumann.sv@gmail.com>
+ * @copyright  2012-2018 The MetaModels team.
+ * @license    https://github.com/MetaModels/filter_perimetersearch/blob/master/LICENSE LGPL-3.0-or-later
  * @filesource
  */
 
@@ -25,16 +26,15 @@ use MetaModels\Filter\Setting\Events\CreateFilterSettingFactoryEvent;
 use MetaModels\Filter\Setting\PerimetersearchFilterSettingTypeFactory;
 use MetaModels\MetaModelsEvents;
 
-return array
-(
-    MetaModelsEvents::SUBSYSTEM_BOOT_BACKEND => array(
+return [
+    MetaModelsEvents::SUBSYSTEM_BOOT_BACKEND        => [
         function (MetaModelsBootEvent $event) {
             new Subscriber($event->getServiceContainer());
         }
-    ),
-    MetaModelsEvents::FILTER_SETTING_FACTORY_CREATE => array(
+    ],
+    MetaModelsEvents::FILTER_SETTING_FACTORY_CREATE => [
         function (CreateFilterSettingFactoryEvent $event) {
             $event->getFactory()->addTypeFactory(new PerimetersearchFilterSettingTypeFactory());
         }
-    )
-);
+    ]
+];

@@ -3,7 +3,7 @@
 /**
  * This file is part of MetaModels/filter_perimetersearch.
  *
- * (c) 2012-2017 The MetaModels team.
+ * (c) 2012-2018 The MetaModels team.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -14,8 +14,9 @@
  * @subpackage FilterPerimetersearch
  * @author     Christian Schiffler <c.schiffler@cyberspectrum.de>
  * @author     Stefan Heimes <stefan_heimes@hotmail.com>
- * @copyright  2012-2017 The MetaModels team.
- * @license    https://github.com/MetaModels/filter_perimetersearch/blob/master/LICENSE LGPL-3.0
+ * @author     Sven Baumann <baumann.sv@gmail.com>
+ * @copyright  2012-2018 The MetaModels team.
+ * @license    https://github.com/MetaModels/filter_perimetersearch/blob/master/LICENSE LGPL-3.0-or-later
  * @filesource
  */
 
@@ -41,15 +42,15 @@ class Subscriber extends BaseSubscriber
         $this
             ->addListener(
                 GetPropertyOptionsEvent::NAME,
-                array($this, 'getAttributeIdOptions')
+                [$this, 'getAttributeIdOptions']
             )
             ->addListener(
                 GetOptionsEvent::NAME,
-                array($this, 'getResolverClass')
+                [$this, 'getResolverClass']
             )
             ->addListener(
                 GetPropertyOptionsEvent::NAME,
-                array($this, 'getTemplateOptions')
+                [$this, 'getTemplateOptions']
             );
     }
 
@@ -57,9 +58,7 @@ class Subscriber extends BaseSubscriber
      * Check if the current context is valid.
      *
      * @param GetPropertyOptionsEvent|GetOptionsEvent $event              The event.
-     *
      * @param string                                  $dataDefinitionName The allowed name of the data definition.
-     *
      * @param array                                   $properties         A list of allowed properties.
      *
      * @return bool
@@ -70,7 +69,7 @@ class Subscriber extends BaseSubscriber
             return false;
         }
 
-        if (!in_array($event->getPropertyName(), $properties)) {
+        if (!\in_array($event->getPropertyName(), $properties)) {
             return false;
         }
 
@@ -103,13 +102,13 @@ class Subscriber extends BaseSubscriber
     public function getAttributeIdOptions(GetPropertyOptionsEvent $event)
     {
         // Check the context.
-        $allowedProperties = array('first_attr_id', 'second_attr_id', 'single_attr_id');
+        $allowedProperties = ['first_attr_id', 'second_attr_id', 'single_attr_id'];
         if (!$this->isAllowedProperty($event, 'tl_metamodel_filtersetting', $allowedProperties)
         ) {
             return;
         }
 
-        $result      = array();
+        $result      = [];
         $model       = $event->getModel();
         $metaModel   = $this->getMetaModel($model);
         $typeFactory = $this
@@ -123,9 +122,9 @@ class Subscriber extends BaseSubscriber
         }
 
         if ($event->getPropertyName() === 'single_attr_id') {
-            $typeFilter = array('geolocation');
+            $typeFilter = ['geolocation'];
         } else {
-            $key = array_search('geolocation', $typeFilter);
+            $key = \array_search('geolocation', $typeFilter);
             if ($key !== null) {
                 unset($typeFilter[$key]);
             }
@@ -133,7 +132,7 @@ class Subscriber extends BaseSubscriber
 
         foreach ($metaModel->getAttributes() as $attribute) {
             $typeName = $attribute->get('type');
-            if ($typeFilter && (!in_array($typeName, $typeFilter))) {
+            if ($typeFilter && (!\in_array($typeName, $typeFilter))) {
                 continue;
             }
             $strSelectVal          = $attribute->getColName();
@@ -155,16 +154,17 @@ class Subscriber extends BaseSubscriber
     public function getResolverClass(GetOptionsEvent $event)
     {
         // Check the context.
-        $allowedProperties = array('lookupservice');
+        $allowedProperties = ['lookupservice'];
         if (!$this->isAllowedProperty($event, 'tl_metamodel_filtersetting', $allowedProperties)
+            || 'lookupservice' !== $event->getSubPropertyName()
         ) {
             return;
         }
 
         $arrClasses = (array) $GLOBALS['METAMODELS']['filters']['perimetersearch']['resolve_class'];
 
-        $arrReturn = array();
-        foreach (array_keys($arrClasses) as $name) {
+        $arrReturn = [];
+        foreach (\array_keys($arrClasses) as $name) {
             $arrReturn[$name] = (isset($GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['perimetersearch'][$name]))
                 ? $GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['perimetersearch'][$name]
                 : $name;

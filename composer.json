@@ -10,7 +10,7 @@
   ],
   "type": "contao-module",
   "homepage": "http://now.metamodel.me/",
-  "license": "LGPL-3.0+",
+  "license": "LGPL-3.0-or-later",
   "authors": [
     {
       "name": "Christian Schiffler",
@@ -32,15 +32,16 @@
     "source": "https://github.com/MetaModels/filter_perimetersearch"
   },
   "require": {
-    "php": ">=5.4",
+    "php": "^5.6 || ^7.0",
     "contao/core": "^3.5.5",
-    "contao-community-alliance/composer-plugin": "~2.0",
-    "contao-community-alliance/dc-general": "~2.0",
-    "metamodels/core": "~2.0@alpha"
+    "contao-community-alliance/composer-plugin": "^2.4",
+    "contao-community-alliance/dc-general": "^2.0",
+    "metamodels/core": "^2.0",
+    "menatwork/contao-multicolumnwizard": "^3.3"
   },
   "require-dev": {
-    "cyberspectrum/contao-toolbox": "~0.6",
-    "phpcq/all-tasks": "~1.1"
+    "cyberspectrum/contao-toolbox": "^0.7",
+    "phpcq/all-tasks": "^1.2"
   },
   "conflict": {
     "contao/core": "3.4.0"

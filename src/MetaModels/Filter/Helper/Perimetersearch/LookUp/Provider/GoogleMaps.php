@@ -3,7 +3,7 @@
 /**
  * This file is part of MetaModels/filter_perimetersearch.
  *
- * (c) 2012-2017 The MetaModels team.
+ * (c) 2012-2018 The MetaModels team.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -14,8 +14,9 @@
  * @subpackage FilterPerimetersearch
  * @author     Christian Schiffler <c.schiffler@cyberspectrum.de>
  * @author     Stefan Heimes <stefan_heimes@hotmail.com>
- * @copyright  2012-2017 The MetaModels team.
- * @license    https://github.com/MetaModels/filter_perimetersearch/blob/master/LICENSE LGPL-3.0
+ * @author     Sven Baumann <baumann.sv@gmail.com>
+ * @copyright  2012-2018 The MetaModels team.
+ * @license    https://github.com/MetaModels/filter_perimetersearch/blob/master/LICENSE LGPL-3.0-or-later
  * @filesource
  */
 
@@ -31,29 +32,35 @@ class GoogleMaps extends ProviderInterface
      *
      * @var string
      */
-    protected $strGoogleUrl = 'http://maps.googleapis.com/maps/api/geocode/json?address=%s&sensor=false&language=de';
+    protected $strGoogleUrl = 'https://maps.googleapis.com/maps/api/geocode/json?address=%s&sensor=false&language=de';
 
 
     /**
      * {@inheritdoc}
      */
-    public function getCoordinates($street = null, $postal = null, $city = null, $country = null, $fullAddress = null)
-    {
+    public function getCoordinates(
+        $street = null,
+        $postal = null,
+        $city = null,
+        $country = null,
+        $fullAddress = null,
+        $apiToken = null
+    ) {
         // Generate a new container.
         $objReturn = new Container();
 
         // Set the query string.
-        $sQuery = $this->getQueryString($street, $postal, $city, $country, $fullAddress);
+        $sQuery = $this->getQueryString($street, $postal, $city, $country, $fullAddress, $apiToken);
         $objReturn->setSearchParam($sQuery);
 
-        $oRequest = null;
         $oRequest = new \Request();
 
-        $oRequest->send(sprintf($this->strGoogleUrl, rawurlencode($sQuery)));
-        $objReturn->setUri(sprintf($this->strGoogleUrl, rawurlencode($sQuery)));
+        $apiUrlParameter = $apiToken ? '&key=' . $apiToken : '';
+        $oRequest->send(\sprintf($this->strGoogleUrl . '%s', \rawurlencode($sQuery), $apiUrlParameter));
+        $objReturn->setUri(\sprintf($this->strGoogleUrl . '%s', \rawurlencode($sQuery), $apiUrlParameter));
 
         if ($oRequest->code == 200) {
-            $aResponse = json_decode($oRequest->response, 1);
+            $aResponse = \json_decode($oRequest->response, 1);
 
             if (!empty($aResponse['status']) && $aResponse['status'] == 'OK') {
                 $objReturn->setLatitude($aResponse['results'][0]['geometry']['location']['lat']);
