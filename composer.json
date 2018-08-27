@@ -37,7 +37,7 @@
     "contao-community-alliance/dc-general": "^2.1@dev",
     "metamodels/core": "^2.1@dev",
     "menatwork/contao-multicolumnwizard": "^3.3",
-    "symfony/dependency-injection": "^3.3"
+    "symfony/dependency-injection": "^3.3 || ^4.0"
   },
   "require-dev": {
     "cyberspectrum/contao-toolbox": "^0.7",
