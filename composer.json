@@ -40,7 +40,6 @@
     "metamodels/core": "^2.0"
   },
   "require-dev": {
-    "cyberspectrum/contao-toolbox": "^0.7",
     "phpcq/all-tasks": "^1.2"
   },
   "conflict": {
