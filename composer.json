@@ -33,14 +33,13 @@
   },
   "require": {
     "php": "^5.6 || ^7.0",
-    "contao/core": "^3.5.5",
     "contao-community-alliance/composer-plugin": "^2.4",
-    "contao-community-alliance/dc-general": "^2.0",
-    "metamodels/core": "^2.0",
-    "menatwork/contao-multicolumnwizard": "^3.3"
+    "contao-community-alliance/dc-general": "^2.0.0",
+    "contao/core": "^3.5.5",
+    "menatwork/contao-multicolumnwizard": "^3.3",
+    "metamodels/core": "^2.0"
   },
   "require-dev": {
-    "cyberspectrum/contao-toolbox": "^0.7",
     "phpcq/all-tasks": "^1.2"
   },
   "conflict": {
@@ -55,12 +54,6 @@
     "contao": {
       "symlinks": {
         "contao": "system/modules/metamodelsfilter_perimetersearch"
-      },
-      "transifex": {
-        "project": "metamodels",
-        "prefix": "filter_perimetersearch-",
-        "languages_cto": "contao/languages",
-        "languages_tx": ".tx"
       }
     },
     "branch-alias": {
@@ -68,6 +61,7 @@
       "dev-develop": "2.1.x-dev"
     }
   },
-  "minimum-stability": "dev",
-  "prefer-stable": true
+  "config": {
+    "sort-packages": true
+  }
 }
