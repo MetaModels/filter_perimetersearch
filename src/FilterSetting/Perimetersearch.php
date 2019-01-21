@@ -88,7 +88,7 @@ class Perimetersearch extends SimpleLookup
                 ->getAttribute($this->get('first_attr_id'));
         }
 
-        if($objAttribute === null){
+        if ($objAttribute === null) {
             return 'filter_attr_' . $this->get('id');
         }
 

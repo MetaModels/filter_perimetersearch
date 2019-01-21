@@ -12,6 +12,7 @@
  *
  * @package    MetaModels/filter_perimetersearch
  * @author     Stefan Heimes <stefan_heimes@hotmail.com>
+ * @author     Christian Schiffler <c.schiffler@cyberspectrum.de>
  * @copyright  2012-2019 The MetaModels team.
  * @license    https://github.com/MetaModels/filter_perimetersearch/blob/master/LICENSE LGPL-3.0-or-later
  * @filesource
@@ -21,10 +22,16 @@ namespace MetaModels\FilterPerimetersearchBundle\EventListener\DcGeneral\Table\F
 
 use ContaoCommunityAlliance\DcGeneral\Contao\View\Contao2BackendView\Event\GetPropertyOptionsEvent;
 use MetaModels\BackendIntegration\TemplateList;
+use MetaModels\Filter\Setting\IFilterSettingFactory;
 
+/**
+ * This fetches the template list.
+ */
 class Templates extends Base
 {
     /**
+     * The template list to use.
+     *
      * @var TemplateList
      */
     private $templateList;
@@ -32,12 +39,12 @@ class Templates extends Base
     /**
      * Templates constructor.
      *
-     * @param TemplateList                                     $templateLsit
-     * @param \MetaModels\Filter\Setting\IFilterSettingFactory $filterFactory
+     * @param TemplateList          $templateList  The template list to use.
+     * @param IFilterSettingFactory $filterFactory The filter factory to use.
      */
-    public function __construct($templateLsit, $filterFactory)
+    public function __construct($templateList, IFilterSettingFactory $filterFactory)
     {
-        $this->templateList = $templateLsit;
+        $this->templateList = $templateList;
         parent::__construct($filterFactory);
     }
 

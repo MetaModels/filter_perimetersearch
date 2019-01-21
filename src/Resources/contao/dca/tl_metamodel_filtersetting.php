@@ -59,18 +59,16 @@ $GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['metasubselectpalettes']['range
     ['range_preset'];
 $GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['metasubselectpalettes']['rangemode']['selection'] =
     ['range_selection'];
-$GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['metasubselectpalettes']['rangemode']['free'] =
+$GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['metasubselectpalettes']['rangemode']['free']      =
     ['range_placeholder'];
 $GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['metasubselectpalettes']['countrymode']['preset']  =
     ['country_preset'];
 $GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['metasubselectpalettes']['countrymode']['get']     =
     ['country_get'];
 
-/**
- * Fields
+/*
+ * Fields for land
  */
-
-// ---- Land ----
 
 $GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['fields']['countrymode'] = [
     'label'     => &$GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['countrymode'],
@@ -110,7 +108,9 @@ $GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['fields']['country_get'] = [
     'sql'      => 'text NULL'
 ];
 
-// ---- Range ----
+/*
+ * Fields for range
+ */
 
 $GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['fields']['rangemode'] = [
     'label'     => &$GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['rangemode'],
@@ -195,7 +195,9 @@ $GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['fields']['range_template'] = [
     'sql'      => 'varchar(64) NOT NULL default \'\''
 ];
 
-// ---- Data ----
+/*
+ * Fields for data
+ */
 
 $GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['fields']['datamode'] = [
     'label'     => &$GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['datamode'],
@@ -295,7 +297,9 @@ $GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['fields']['second_attr_id'] = [
     'sql'      => 'varchar(255) NOT NULL default \'\''
 ];
 
-// ---- Placeholder ----
+/*
+ * Placeholder
+ */
 
 $GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['fields']['placeholder'] = [
     'label'     => &$GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['placeholder'],

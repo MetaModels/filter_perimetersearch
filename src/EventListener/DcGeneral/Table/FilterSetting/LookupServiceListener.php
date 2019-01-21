@@ -12,6 +12,7 @@
  *
  * @package    MetaModels/filter_perimetersearch
  * @author     Christian Schiffler <c.schiffler@cyberspectrum.de>
+ * @author     Stefan Heimes <stefan_heimes@hotmail.com>
  * @copyright  2012-2019 The MetaModels team.
  * @license    https://github.com/MetaModels/filter_perimetersearch/blob/master/LICENSE LGPL-3.0-or-later
  * @filesource
@@ -32,6 +33,9 @@ class LookupServiceListener extends Base
      * @param GetOptionsEvent $event The event.
      *
      * @return void
+     *
+     * @SuppressWarnings(PHPMD.Superglobals)
+     * @SuppressWarnings(PHPMD.CamelCaseVariableName)
      */
     public function getOptions(GetOptionsEvent $event)
     {
@@ -47,9 +51,7 @@ class LookupServiceListener extends Base
 
         $arrReturn = array();
         foreach (array_keys($arrClasses) as $name) {
-            $arrReturn[$name] = (isset($GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['perimetersearch'][$name]))
-                ? $GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['perimetersearch'][$name]
-                : $name;
+            $arrReturn[$name] = ($GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['perimetersearch'][$name] ?? $name);
         }
 
         $event->setOptions($arrReturn);

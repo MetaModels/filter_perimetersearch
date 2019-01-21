@@ -22,9 +22,10 @@
 use MetaModels\FilterPerimetersearchBundle\FilterHelper\GoogleMaps;
 use MetaModels\FilterPerimetersearchBundle\FilterHelper\OpenStreetMaps;
 
-/**
+/*
  * Plugins for geo resolving.
  */
+
 $GLOBALS['METAMODELS']['filters']['perimetersearch']['resolve_class']['google_maps']      =
     GoogleMaps::class;
 $GLOBALS['METAMODELS']['filters']['perimetersearch']['resolve_class']['open_street_maps'] =

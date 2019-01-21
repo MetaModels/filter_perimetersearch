@@ -12,6 +12,7 @@
  *
  * @package    MetaModels/filter_perimetersearch
  * @author     Stefan Heimes <stefan_heimes@hotmail.com>
+ * @author     Christian Schiffler <c.schiffler@cyberspectrum.de>
  * @copyright  2012-2019 The MetaModels team.
  * @license    https://github.com/MetaModels/filter_perimetersearch/blob/master/LICENSE LGPL-3.0-or-later
  * @filesource
@@ -23,9 +24,14 @@ use ContaoCommunityAlliance\DcGeneral\Contao\View\Contao2BackendView\Event\GetPr
 use MenAtWork\MultiColumnWizard\Event\GetOptionsEvent;
 use MetaModels\Filter\Setting\IFilterSettingFactory;
 
+/**
+ * This is the abstract base for the listeners.
+ */
 class Base
 {
     /**
+     * The filter factory to use.
+     *
      * @var IFilterSettingFactory
      */
     protected $filterFactory;

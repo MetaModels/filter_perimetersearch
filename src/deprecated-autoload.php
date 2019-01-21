@@ -13,20 +13,22 @@
  * @package    MetaModels
  * @subpackage FilterPerimetersearchBundle
  * @author     Stefan Heimes <stefan_heimes@hotmail.com>
+ * @author     Christian Schiffler <c.schiffler@cyberspectrum.de>
  * @copyright  2012-2017 The MetaModels team.
  * @license    https://github.com/MetaModels/filter_perimetersearch/blob/master/LICENSE LGPL-3.0
  * @filesource
  */
 
-// This hack is to load the "old locations" of the classes.
 use MetaModels\FilterPerimetersearchBundle\FilterSetting\Perimetersearch;
 use MetaModels\FilterPerimetersearchBundle\FilterSetting\PerimetersearchFilterSettingTypeFactory;
 
+// This hack is to load the "old locations" of the classes.
 spl_autoload_register(
     function ($class) {
         static $classes = [
             'MetaModels\Filter\Setting\Perimetersearch'                         => Perimetersearch::class,
-            'MetaModels\Filter\Setting\PerimetersearchFilterSettingTypeFactory' => PerimetersearchFilterSettingTypeFactory::class,
+            'MetaModels\Filter\Setting\PerimetersearchFilterSettingTypeFactory' =>
+                PerimetersearchFilterSettingTypeFactory::class,
         ];
 
         if (isset($classes[$class])) {
