@@ -11,11 +11,19 @@ php:
   - "7.3"
   - "7.2"
   - "7.1"
-  - "7.0"
-  - "5.6"
+  - "nightly"
 
 env:
+  - CONTAO_VERSION=~4.6.0
+  - CONTAO_VERSION=~4.5.0
   - CONTAO_VERSION=~4.4.0
+
+# Exclude impossible Contao Version combinations.
+matrix:
+  exclude:
+  allow_failures:
+    - env: CONTAO_VERSION=~4.6.0
+    - env: CONTAO_VERSION=~4.5.0
 
 before_script:
   - echo "memory_limit=-1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
