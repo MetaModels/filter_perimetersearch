@@ -1,14 +1,14 @@
 ignore:
-#  Mini Model <minimodel@metamodel.me>
+  - 'Mini Model <minimodel@metamodel.me>'
 
 exclude:
-  languages
+  - /^src\/Resources\/contao\/languages/
 
 mapping:
-  "Andreas Isaak <info@andreas-isaak.de>": "Andreas Isaak <andy.jared@googlemail.com>"
-  "Stefan Heimes <stefan_heimes@hotmail.com>":
-      - "Stefan heimes <stefan_heimes@hotmail.com>"
-      - "chibineko <stefan_heimes@hotmail.com>"
-      - "stefanheimes <stefan_heimes@hotmail.com>"
-      - "Stefan Heimes <cms@men-at-work.de>"
-  "cboelter <christopher@boelter.eu>": "Christopher Bölter <christopher@boelter.eu>"
+  'Andreas Isaak <info@andreas-isaak.de>': 'Andreas Isaak <andy.jared@googlemail.com>'
+  'Stefan Heimes <stefan_heimes@hotmail.com>':
+    - 'Stefan heimes <stefan_heimes@hotmail.com>'
+    - 'chibineko <stefan_heimes@hotmail.com>'
+    - 'stefanheimes <stefan_heimes@hotmail.com>'
+    - 'Stefan Heimes <cms@men-at-work.de>'
+  'cboelter <christopher@boelter.eu>': 'Christopher Bölter <christopher@boelter.eu>'
