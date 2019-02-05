@@ -14,6 +14,7 @@
  * @author     Christian Schiffler <c.schiffler@cyberspectrum.de>
  * @author     Stefan Heimes <stefan_heimes@hotmail.com>
  * @author     Sven Baumann <baumann.sv@gmail.com>
+ * @author     David Molineus <david.molineus@netzmacht.de>
  * @copyright  2012-2019 The MetaModels team.
  * @license    https://github.com/MetaModels/filter_perimetersearch/blob/master/LICENSE LGPL-3.0-or-later
  * @filesource
@@ -21,7 +22,9 @@
 
 namespace MetaModels\FilterPerimetersearchBundle\FilterSetting;
 
+use Doctrine\DBAL\Connection;
 use MetaModels\Filter\Setting\AbstractFilterSettingTypeFactory;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * Attribute type factory for text filter settings.
@@ -29,9 +32,27 @@ use MetaModels\Filter\Setting\AbstractFilterSettingTypeFactory;
 class PerimetersearchFilterSettingTypeFactory extends AbstractFilterSettingTypeFactory
 {
     /**
-     * {@inheritDoc}
+     * The Database connection.
+     *
+     * @var Connection
      */
-    public function __construct()
+    private $connection;
+
+    /**
+     * The event dispatcher.
+     *
+     * @var EventDispatcherInterface
+     */
+    private $eventDispatcher;
+
+    /**
+     * Construct.
+     *
+     * @param EventDispatcherInterface $eventDispatcher The event dispatcher.
+     *
+     * @param Connection               $connection      The database connection.
+     */
+    public function __construct(EventDispatcherInterface $eventDispatcher, Connection $connection)
     {
         parent::__construct();
 
@@ -48,5 +69,18 @@ class PerimetersearchFilterSettingTypeFactory extends AbstractFilterSettingTypeF
             ] as $attribute) {
             $this->addKnownAttributeType($attribute);
         }
+
+        $this->eventDispatcher = $eventDispatcher;
+        $this->connection      = $connection;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function createInstance($information, $filterSettings)
+    {
+        $typeClass = $this->getTypeClass();
+
+        return new $typeClass($filterSettings, $information, $this->eventDispatcher, $this->connection);
     }
 }

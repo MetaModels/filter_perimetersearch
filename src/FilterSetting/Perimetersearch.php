@@ -15,6 +15,7 @@
  * @author     Stefan Heimes <stefan_heimes@hotmail.com>
  * @author     Christopher Bölter <christopher@boelter.eu>
  * @author     Sven Baumann <baumann.sv@gmail.com>
+ * @author     David Molineus <david.molineus@netzmacht.de>
  * @copyright  2012-2019 The MetaModels team.
  * @license    https://github.com/MetaModels/filter_perimetersearch/blob/master/LICENSE LGPL-3.0-or-later
  * @filesource
@@ -24,12 +25,16 @@ namespace MetaModels\FilterPerimetersearchBundle\FilterSetting;
 
 use Contao\Database;
 use Contao\Input;
+use Contao\System;
+use Doctrine\DBAL\Connection;
 use MetaModels\Attribute\IAttribute;
 use MetaModels\Filter\IFilter;
 use MetaModels\Filter\Rules\StaticIdList;
+use MetaModels\Filter\Setting\ICollection;
 use MetaModels\Filter\Setting\SimpleLookup;
 use MetaModels\FilterPerimetersearchBundle\FilterHelper\Container;
 use MetaModels\FrontendIntegration\FrontendFilterOptions;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * Filter "select field" for FE-filtering, based on filters by the meta models team.
@@ -37,16 +42,42 @@ use MetaModels\FrontendIntegration\FrontendFilterOptions;
 class Perimetersearch extends SimpleLookup
 {
     /**
-     * Retrieve the database.
+     * Database connection.
      *
-     * @return \Contao\Database
+     * @var Connection
      */
-    private function getDataBase()
-    {
-        return $this
-            ->getMetaModel()
-            ->getServiceContainer()
-            ->getDatabase();
+    private $connection;
+
+    /**
+     * Constructor - initialize the object and store the parameters.
+     *
+     * @param ICollection                   $collection      The parenting filter settings object.
+     *
+     * @param array                         $data            The attributes for this filter setting.
+     *
+     * @param EventDispatcherInterface|null $eventDispatcher The event dispatcher.
+     *
+     * @param Connection|null               $connection      The database connection.
+     */
+    public function __construct(
+        ICollection $collection,
+        array $data,
+        EventDispatcherInterface $eventDispatcher = null,
+        Connection $connection = null
+    ) {
+        parent::__construct($collection, $data, $eventDispatcher);
+
+        if (null === $connection) {
+            // @codingStandardsIgnoreStart
+            @trigger_error(
+                'Connection is not passed as constructor argument.',
+                E_USER_DEPRECATED
+            );
+            // @codingStandardsIgnoreEnd
+            $connection = System::getContainer()->get('database_connection');
+        }
+
+        $this->connection = $connection;
     }
 
     /**
@@ -188,15 +219,15 @@ class Perimetersearch extends SimpleLookup
     public function getParameterFilterNames()
     {
         if (($strParamName = $this->getParamName())) {
-            return array(
+            return [
                 $strParamName              => ($this->get('label') ? $this->get('label') : $this->getAttributeName()),
                 $this->getParamNameRange() => ($this->get('label') ?
                         $this->get('label') :
-                        $this->getAttributeName()) . ' - Range'
-            );
+                        $this->getAttributeName()) . ' - Range',
+            ];
         }
 
-        return array();
+        return [];
     }
 
     /**
@@ -204,7 +235,7 @@ class Perimetersearch extends SimpleLookup
      */
     public function getParameterDCA()
     {
-        return array();
+        return [];
     }
 
     /**
@@ -259,7 +290,7 @@ class Perimetersearch extends SimpleLookup
         $arrWidget = [
             'label'     => [
                 ($this->get('label') ? $this->get('label') : $this->getAttributeName()),
-                'GET: ' . $this->getParamName()
+                'GET: ' . $this->getParamName(),
             ],
             'inputType' => 'text',
             'count'     => $arrCount,
@@ -269,7 +300,7 @@ class Perimetersearch extends SimpleLookup
                 'urlparam'    => $this->getParamName(),
                 'template'    => $this->get('template'),
                 'placeholder' => $this->get('placeholder'),
-            ]
+            ],
         ];
 
         return $arrWidget;
@@ -285,42 +316,42 @@ class Perimetersearch extends SimpleLookup
     {
         if ($this->get('rangemode') == 'selection') {
             // Get all range options.
-            $arrRangeOptions = array();
+            $arrRangeOptions = [];
 
             foreach (deserialize($this->get('range_selection'), true) as $arrRange) {
                 $arrRangeOptions[$arrRange['range']] = $arrRange['range'] . 'km';
             }
 
-            $arrRangeWidget = array(
-                'label'     => array(
+            $arrRangeWidget = [
+                'label'     => [
                     ($this->get('range_label') ? $this->get('range_label') : $this->getAttributeName() . ' Range '),
-                    'GET: ' . $this->getParamNameRange()
-                ),
+                    'GET: ' . $this->getParamNameRange(),
+                ],
                 'inputType' => 'select',
                 'options'   => $arrRangeOptions,
-                'eval'      => array(
+                'eval'      => [
                     'includeBlankOption' => true,
                     'colname'            => $this->getColname(),
                     'urlparam'           => $this->getParamNameRange(),
                     'template'           => $this->get('range_template'),
-                )
-            );
+                ],
+            ];
 
             return $arrRangeWidget;
         } elseif ($this->get('rangemode') == 'free') {
-            $arrRangeWidget = array(
-                'label'     => array(
+            $arrRangeWidget = [
+                'label'     => [
                     ($this->get('range_label') ? $this->get('range_label') : $this->getAttributeName() . ' Range '),
-                    'GET: ' . $this->getParamNameRange()
-                ),
+                    'GET: ' . $this->getParamNameRange(),
+                ],
                 'inputType' => 'text',
-                'eval'      => array(
+                'eval'      => [
                     'colname'     => $this->getColname(),
                     'urlparam'    => $this->getParamNameRange(),
                     'template'    => $this->get('range_template'),
                     'placeholder' => $this->get('range_placeholder'),
-                )
-            );
+                ],
+            ];
 
             return $arrRangeWidget;
         }
@@ -391,14 +422,16 @@ class Perimetersearch extends SimpleLookup
         );
 
         $objResult = Database::getInstance()
-            ->prepare(\sprintf(
-                'SELECT item_id FROM tl_metamodel_geolocation WHERE %1$s<=? AND att_id=? ORDER BY %1$s',
-                $distance
-            ))
+            ->prepare(
+                \sprintf(
+                    'SELECT item_id FROM tl_metamodel_geolocation WHERE %1$s<=? AND att_id=? ORDER BY %1$s',
+                    $distance
+                )
+            )
             ->execute($intDist, $this->getMetaModel()->getAttribute($this->get('single_attr_id'))->get('id'));
 
         if ($objResult->numRows == 0) {
-            $filter->addFilterRule(new StaticIdList(array()));
+            $filter->addFilterRule(new StaticIdList([]));
         } else {
             $filter->addFilterRule(new StaticIdList($objResult->fetchEach('item_id')));
         }
@@ -442,7 +475,7 @@ class Perimetersearch extends SimpleLookup
             ->execute($intDist);
 
         if ($objResult->numRows == 0) {
-            $filter->addFilterRule(new StaticIdList(array()));
+            $filter->addFilterRule(new StaticIdList([]));
         } else {
             $filter->addFilterRule(new StaticIdList($objResult->fetchEach('id')));
         }
@@ -494,6 +527,7 @@ class Perimetersearch extends SimpleLookup
                     // Check if we have a result.
                     if (!$objResult->hasError()) {
                         $this->addToCache($strAddress, $strCountry, $objResult);
+
                         return $objResult;
                     }
                 }
@@ -536,14 +570,17 @@ class Perimetersearch extends SimpleLookup
             // Create a new instance.
             if ($getInstanceMethod->isStatic()) {
                 $objCallbackClass = $getInstanceMethod->invoke(null);
+
                 return $objCallbackClass;
             } else {
                 $objCallbackClass = $oClass->newInstance();
+
                 return $objCallbackClass;
             }
         } else {
             // Create a normal object.
             $objCallbackClass = $oClass->newInstance();
+
             return $objCallbackClass;
         }
     }
@@ -556,18 +593,20 @@ class Perimetersearch extends SimpleLookup
      * @param Container $result  The container with all information.
      *
      * @return void
+     *
+     * @throws \Doctrine\DBAL\DBALException When insert fails.
      */
     protected function addToCache($address, $country, $result)
     {
-        $this->getDataBase()
-            ->prepare('INSERT INTO tl_metamodel_perimetersearch %s')
-            ->set(array(
+        $this->connection->insert(
+            'tl_metamodel_perimetersearch',
+            [
                 'search'   => $address,
                 'country'  => $country,
                 'geo_lat'  => $result->getLatitude(),
                 'geo_long' => $result->getLongitude(),
-            ))
-            ->execute();
+            ]
+        );
     }
 
     /**
@@ -580,22 +619,25 @@ class Perimetersearch extends SimpleLookup
      */
     protected function getFromCache($address, $country)
     {
-        // Check cache.
-        $result = $this
-            ->getDataBase()
-            ->prepare('SELECT * FROM tl_metamodel_perimetersearch WHERE search = ? AND country = ?')
-            ->execute($address, $country);
+        $query     = 'SELECT * FROM tl_metamodel_perimetersearch WHERE search = :search AND country = :country';
+        $statement = $this->connection->prepare($query);
+        $statement->bindValue('search', $address);
+        $statement->bindValue('country', $country);
+        $statement->execute();
 
         // If we have no data just return null.
-        if ($result->count() === 0) {
+        if ($statement->rowCount() === 0) {
             return null;
         }
+
+        // Check cache.
+        $result = $statement->fetch(\PDO::FETCH_OBJ);
 
         // Build a new container.
         $container = new Container();
         $container->setLatitude($result->geo_lat);
         $container->setLongitude($result->geo_long);
-        $container->setSearchParam($result->query);
+        $container->setSearchParam($query);
 
         return $container;
     }
