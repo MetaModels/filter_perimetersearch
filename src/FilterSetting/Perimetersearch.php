@@ -28,6 +28,7 @@ use Contao\Input;
 use Contao\System;
 use Doctrine\DBAL\Connection;
 use MetaModels\Attribute\IAttribute;
+use MetaModels\Filter\FilterUrlBuilder;
 use MetaModels\Filter\IFilter;
 use MetaModels\Filter\Rules\StaticIdList;
 use MetaModels\Filter\Setting\ICollection;
@@ -51,21 +52,20 @@ class Perimetersearch extends SimpleLookup
     /**
      * Constructor - initialize the object and store the parameters.
      *
-     * @param ICollection                   $collection      The parenting filter settings object.
-     *
-     * @param array                         $data            The attributes for this filter setting.
-     *
-     * @param EventDispatcherInterface|null $eventDispatcher The event dispatcher.
-     *
-     * @param Connection|null               $connection      The database connection.
+     * @param ICollection                   $collection       The parenting filter settings object.
+     * @param array                         $data             The attributes for this filter setting.
+     * @param EventDispatcherInterface|null $eventDispatcher  The event dispatcher.
+     * @param Connection|null               $connection       The database connection.
+     * @param FilterUrlBuilder              $filterUrlBuilder The filter URL builder.
      */
     public function __construct(
         ICollection $collection,
         array $data,
         EventDispatcherInterface $eventDispatcher = null,
-        Connection $connection = null
+        Connection $connection = null,
+        FilterUrlBuilder $filterUrlBuilder = null
     ) {
-        parent::__construct($collection, $data, $eventDispatcher);
+        parent::__construct($collection, $data, $eventDispatcher, $filterUrlBuilder);
 
         if (null === $connection) {
             // @codingStandardsIgnoreStart
