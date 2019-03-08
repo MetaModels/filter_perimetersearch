@@ -4,6 +4,7 @@ services:
         arguments:
           - '@event_dispatcher'
           - '@database_connection'
+          - '@MetaModels\Filter\FilterUrlBuilder'
         tags:
           - { name: metamodels.filter_factory }
 

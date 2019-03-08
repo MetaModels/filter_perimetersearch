@@ -23,6 +23,7 @@
 namespace MetaModels\FilterPerimetersearchBundle\FilterSetting;
 
 use Doctrine\DBAL\Connection;
+use MetaModels\Filter\FilterUrlBuilder;
 use MetaModels\Filter\Setting\AbstractFilterSettingTypeFactory;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -46,14 +47,24 @@ class PerimetersearchFilterSettingTypeFactory extends AbstractFilterSettingTypeF
     private $eventDispatcher;
 
     /**
+     * The filter URL builder.
+     *
+     * @var FilterUrlBuilder
+     */
+    private $filterUrlBuilder;
+
+    /**
      * Construct.
      *
-     * @param EventDispatcherInterface $eventDispatcher The event dispatcher.
-     *
-     * @param Connection               $connection      The database connection.
+     * @param EventDispatcherInterface $eventDispatcher  The event dispatcher.
+     * @param Connection               $connection       The database connection.
+     * @param FilterUrlBuilder         $filterUrlBuilder The filter URL builder.
      */
-    public function __construct(EventDispatcherInterface $eventDispatcher, Connection $connection)
-    {
+    public function __construct(
+        EventDispatcherInterface $eventDispatcher,
+        Connection $connection,
+        FilterUrlBuilder $filterUrlBuilder
+    ) {
         parent::__construct();
 
         $this
@@ -70,8 +81,9 @@ class PerimetersearchFilterSettingTypeFactory extends AbstractFilterSettingTypeF
             $this->addKnownAttributeType($attribute);
         }
 
-        $this->eventDispatcher = $eventDispatcher;
-        $this->connection      = $connection;
+        $this->eventDispatcher  = $eventDispatcher;
+        $this->connection       = $connection;
+        $this->filterUrlBuilder = $filterUrlBuilder;
     }
 
     /**
@@ -81,6 +93,12 @@ class PerimetersearchFilterSettingTypeFactory extends AbstractFilterSettingTypeF
     {
         $typeClass = $this->getTypeClass();
 
-        return new $typeClass($filterSettings, $information, $this->eventDispatcher, $this->connection);
+        return new $typeClass(
+            $filterSettings,
+            $information,
+            $this->eventDispatcher,
+            $this->connection,
+            $this->filterUrlBuilder
+        );
     }
 }
