@@ -25,6 +25,7 @@ namespace MetaModels\FilterPerimetersearchBundle\FilterSetting;
 
 use Contao\Database;
 use Contao\Input;
+use Contao\StringUtil;
 use Contao\System;
 use Doctrine\DBAL\Connection;
 use MetaModels\Attribute\IAttribute;
@@ -318,7 +319,7 @@ class Perimetersearch extends SimpleLookup
             // Get all range options.
             $arrRangeOptions = [];
 
-            foreach (deserialize($this->get('range_selection'), true) as $arrRange) {
+            foreach (StringUtil::deserialize($this->get('range_selection'), true) as $arrRange) {
                 $arrRangeOptions[$arrRange['range']] = $arrRange['range'] . 'km';
             }
 
@@ -502,7 +503,7 @@ class Perimetersearch extends SimpleLookup
         }
 
         // If there is no data from the cache ask google.
-        $arrLookupServices = \deserialize($this->get('lookupservice'), true);
+        $arrLookupServices = StringUtil::deserialize($this->get('lookupservice'), true);
         if (!count($arrLookupServices)) {
             return false;
         }
