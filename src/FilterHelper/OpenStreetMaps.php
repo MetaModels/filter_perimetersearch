@@ -57,7 +57,7 @@ class OpenStreetMaps extends ProviderInterface
         $aResponse   = \json_decode($oRequest->response);
         $objResponse = $aResponse[0];
 
-        if ($oRequest->code == 200) {
+        if (200 === (int) $oRequest->code) {
             if (!empty($objResponse->place_id)) {
                 $objReturn->setLatitude($objResponse->lat);
                 $objReturn->setLongitude($objResponse->lon);

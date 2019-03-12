@@ -82,12 +82,12 @@ class Perimetersearch implements IFilterRule
     /**
      * Single mode only for a geolocation attribute.
      */
-    const MODE_SINGLE = 1;
+    public const MODE_SINGLE = 1;
 
     /**
      * Multimode for two simple attributes.
      */
-    const MODE_MULTI = 2;
+    public const MODE_MULTI = 2;
 
     /**
      * Create a new instance.
@@ -129,7 +129,7 @@ class Perimetersearch implements IFilterRule
      */
     private function getDataBase()
     {
-        $attribute = ($this->mode == self::MODE_SINGLE) ? $this->singleAttribute : $this->latitudeAttribute;
+        $attribute = ((int) $this->mode === self::MODE_SINGLE) ? $this->singleAttribute : $this->latitudeAttribute;
 
         return $attribute
             ->getMetaModel()
@@ -144,7 +144,7 @@ class Perimetersearch implements IFilterRule
      */
     private function getMetaModelTableName()
     {
-        $attribute = ($this->mode == self::MODE_SINGLE) ? $this->singleAttribute : $this->latitudeAttribute;
+        $attribute = ((int) $this->mode === self::MODE_SINGLE) ? $this->singleAttribute : $this->latitudeAttribute;
 
         return $attribute
             ->getMetaModel()
@@ -181,11 +181,13 @@ class Perimetersearch implements IFilterRule
      */
     private function checkAttributeTypes($latitudeAttribute, $longitudeAttribute, $singleAttribute)
     {
-        if ($singleAttribute !== null) {
+        if (null !== $singleAttribute) {
             $this->checkMultiAttribute($singleAttribute);
             $this->mode = self::MODE_SINGLE;
             return;
-        } elseif ($latitudeAttribute !== null && $longitudeAttribute !== null) {
+        }
+
+        if ((null !== $latitudeAttribute) && (null !== $longitudeAttribute)) {
             $this->checkSingleAttributes($latitudeAttribute, $longitudeAttribute);
             $this->mode = self::MODE_MULTI;
             return;
@@ -209,7 +211,7 @@ class Perimetersearch implements IFilterRule
     private function checkMultiAttribute($singleAttribute)
     {
         // Check the multi mode attribute type.
-        if ($singleAttribute->get('type') !== 'geolocation') {
+        if ('geolocation' !== $singleAttribute->get('type')) {
             throw new \InvalidArgumentException('Only a geolocation attribute is supported for the single mode.');
         }
     }
@@ -241,7 +243,7 @@ class Perimetersearch implements IFilterRule
      */
     public function getMatchingIds()
     {
-        if ($this->mode == self::MODE_SINGLE) {
+        if ((int) $this->mode === self::MODE_SINGLE) {
             return $this->runSimpleQuery(
                 'item_id',
                 'tl_metamodel_geolocation',
@@ -249,15 +251,15 @@ class Perimetersearch implements IFilterRule
                 'longitude',
                 ['att_id=?' => $this->singleAttribute->get('id')]
             );
-        } else {
-            return $this->runSimpleQuery(
-                'id',
-                $this->getMetaModelTableName(),
-                $this->latitudeAttribute->getColName(),
-                $this->longitudeAttribute->getColName(),
-                null
-            );
         }
+
+        return $this->runSimpleQuery(
+            'id',
+            $this->getMetaModelTableName(),
+            $this->latitudeAttribute->getColName(),
+            $this->longitudeAttribute->getColName(),
+            null
+        );
     }
 
     /**
@@ -317,11 +319,11 @@ class Perimetersearch implements IFilterRule
             ->execute($values);
 
         // Check the data.
-        if ($objResult->numRows == 0) {
+        if (0 === $objResult->numRows) {
             return [];
-        } else {
-            return $objResult->fetchEach($idField);
         }
+
+        return $objResult->fetchEach($idField);
     }
 
     /**
@@ -333,12 +335,12 @@ class Perimetersearch implements IFilterRule
      */
     protected function buildAdditionalWhere($additionalWhere)
     {
-        if ($additionalWhere === null) {
+        if (null === $additionalWhere) {
             return null;
         }
 
         $sql = \implode(' AND ', \array_keys((array) $additionalWhere));
 
-        return \strlen($sql) ? $sql . ' AND ' : null;
+        return ('' !== $sql) ? $sql . ' AND ' : null;
     }
 }

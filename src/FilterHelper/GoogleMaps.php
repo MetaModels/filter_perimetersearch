@@ -58,10 +58,10 @@ class GoogleMaps extends ProviderInterface
         $oRequest->send(\sprintf($this->strGoogleUrl . '%s', \rawurlencode($sQuery), $apiUrlParameter));
         $objReturn->setUri(\sprintf($this->strGoogleUrl . '%s', \rawurlencode($sQuery), $apiUrlParameter));
 
-        if ($oRequest->code == 200) {
+        if (200 === (int) $oRequest->code) {
             $aResponse = \json_decode($oRequest->response, 1);
 
-            if (!empty($aResponse['status']) && $aResponse['status'] == 'OK') {
+            if (!empty($aResponse['status']) && ('OK' === $aResponse['status'])) {
                 $objReturn->setLatitude($aResponse['results'][0]['geometry']['location']['lat']);
                 $objReturn->setLongitude($aResponse['results'][0]['geometry']['location']['lng']);
             } elseif (!empty($aResponse['error_message'])) {

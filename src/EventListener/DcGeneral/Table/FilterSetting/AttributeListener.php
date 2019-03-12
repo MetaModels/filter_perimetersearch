@@ -13,6 +13,7 @@
  * @package    MetaModels/filter_perimetersearch
  * @author     Christian Schiffler <c.schiffler@cyberspectrum.de>
  * @author     Stefan Heimes <stefan_heimes@hotmail.com>
+ * @author     Sven Baumann <baumann.sv@gmail.com>
  * @copyright  2012-2019 The MetaModels team.
  * @license    https://github.com/MetaModels/filter_perimetersearch/blob/master/LICENSE LGPL-3.0-or-later
  * @filesource
@@ -39,7 +40,7 @@ class AttributeListener extends Base
     public function getOptions(GetPropertyOptionsEvent $event)
     {
         // Check the context.
-        $allowedProperties = array('first_attr_id', 'second_attr_id', 'single_attr_id');
+        $allowedProperties = ['first_attr_id', 'second_attr_id', 'single_attr_id'];
         if (!$this->isAllowedProperty($event, 'tl_metamodel_filtersetting', $allowedProperties)
         ) {
             return;
@@ -58,7 +59,7 @@ class AttributeListener extends Base
         foreach ($metaModel->getAttributes() as $attribute) {
             $typeName = $attribute->get('type');
 
-            if ($typeFilter && (!in_array($typeName, $typeFilter))) {
+            if ($typeFilter && (!\in_array($typeName, $typeFilter))) {
                 continue;
             }
 
@@ -78,8 +79,9 @@ class AttributeListener extends Base
      */
     public function decodeValue(DecodePropertyValueForWidgetEvent $event)
     {
-        if (('tl_metamodel_filtersetting' !== $event->getEnvironment()->getDataDefinition()->getName())
-            || ('attr_id' !== $event->getProperty())) {
+        if (('attr_id' !== $event->getProperty())
+            || ('tl_metamodel_filtersetting' !== $event->getEnvironment()->getDataDefinition()->getName())
+        ) {
             return;
         }
 
@@ -106,8 +108,9 @@ class AttributeListener extends Base
      */
     public function encodeValue(EncodePropertyValueFromWidgetEvent $event)
     {
-        if (('tl_metamodel_filtersetting' !== $event->getEnvironment()->getDataDefinition()->getName())
-            || ('attr_id' !== $event->getProperty())) {
+        if (('attr_id' !== $event->getProperty())
+            || ('tl_metamodel_filtersetting' !== $event->getEnvironment()->getDataDefinition()->getName())
+        ) {
             return;
         }
 
@@ -119,7 +122,7 @@ class AttributeListener extends Base
             return;
         }
 
-        $value = substr($value, strlen($metaModel->getTableName() . '_'));
+        $value = \substr($value, \strlen($metaModel->getTableName() . '_'));
 
         $attribute = $metaModel->getAttribute($value);
 

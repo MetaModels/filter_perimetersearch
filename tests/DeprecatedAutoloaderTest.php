@@ -12,6 +12,7 @@
  *
  * @package    MetaModels/filter_perimetersearch
  * @author     Christian Schiffler <c.schiffler@cyberspectrum.de>
+ * @author     Sven Baumann <baumann.sv@gmail.com>
  * @copyright  2012-2019 The MetaModels team.
  * @license    https://github.com/MetaModels/filter_perimetersearch/blob/master/LICENSE LGPL-3.0-or-later
  * @filesource
@@ -37,7 +38,7 @@ class DeprecatedAutoloaderTest extends TestCase
         // FilterSetting
         'MetaModels\Filter\Setting\Perimetersearch'                         => Perimetersearch::class,
         'MetaModels\Filter\Setting\PerimetersearchFilterSettingTypeFactory' =>
-            PerimetersearchFilterSettingTypeFactory::class,
+            PerimetersearchFilterSettingTypeFactory::class
     ];
 
     /**
@@ -52,7 +53,7 @@ class DeprecatedAutoloaderTest extends TestCase
         foreach (static::$classes as $select => $class) {
             $values[] = [
                 $select,
-                $class,
+                $class
             ];
         }
 
@@ -71,7 +72,7 @@ class DeprecatedAutoloaderTest extends TestCase
      */
     public function testDeprecatedClassesAreAliased($oldClass, $newClass)
     {
-        $this->assertTrue(class_exists($oldClass), sprintf('Class select "%s" is not found.', $oldClass));
+        $this->assertTrue(\class_exists($oldClass), \sprintf('Class select "%s" is not found.', $oldClass));
 
         $oldClassReflection = new \ReflectionClass($oldClass);
         $newClassReflection = new \ReflectionClass($newClass);

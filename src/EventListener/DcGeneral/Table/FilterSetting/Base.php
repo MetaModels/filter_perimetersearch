@@ -62,7 +62,7 @@ class Base
             return false;
         }
 
-        if (!in_array($event->getPropertyName(), $properties)) {
+        if (!\in_array($event->getPropertyName(), $properties)) {
             return false;
         }
 

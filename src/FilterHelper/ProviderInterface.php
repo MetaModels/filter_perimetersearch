@@ -79,29 +79,31 @@ abstract class ProviderInterface
         // If we have a full address use it.
         if ($fullAddress) {
             // If there is a country try to use the long form.
-            if ($country !== null && ($fullCountryName = $this->getFullCountryName($country)) !== null) {
+            if ((null !== $country) && (null !== ($fullCountryName = $this->getFullCountryName($country)))) {
                 return \sprintf('%s, %s', $fullAddress, $fullCountryName);
-            } elseif ($country !== null) {
-                // If there is no long form use it as is it.
-                return \sprintf('%s, %s', $fullAddress, $country);
-            } else {
-                // Or just the full one.
-                return $fullAddress;
-            }
-        } else {
-            // Try to solve the country.
-            if ($country !== null && ($fullCountryName = $this->getFullCountryName($country)) !== null) {
-                $country = $fullCountryName;
             }
 
-            return \sprintf(
-                '%s, %s %s, %s',
-                $street,
-                $postal,
-                $city,
-                $country
-            );
+            if (null !== $country) {
+                // If there is no long form use it as is it.
+                return \sprintf('%s, %s', $fullAddress, $country);
+            }
+
+            // Or just the full one.
+            return $fullAddress;
         }
+
+        // Try to solve the country.
+        if ((null !== $country) && (null !== ($fullCountryName = $this->getFullCountryName($country)))) {
+            $country = $fullCountryName;
+        }
+
+        return \sprintf(
+            '%s, %s %s, %s',
+            $street,
+            $postal,
+            $city,
+            $country
+        );
     }
 
     /**

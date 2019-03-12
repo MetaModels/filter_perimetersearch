@@ -13,6 +13,7 @@
  * @package    MetaModels/filter_perimetersearch
  * @author     Stefan Heimes <stefan_heimes@hotmail.com>
  * @author     Christian Schiffler <c.schiffler@cyberspectrum.de>
+ * @author     Sven Baumann <baumann.sv@gmail.com>
  * @copyright  2012-2019 The MetaModels team.
  * @license    https://github.com/MetaModels/filter_perimetersearch/blob/master/LICENSE LGPL-3.0-or-later
  * @filesource
@@ -57,8 +58,8 @@ class Templates extends Base
      */
     public function getOptions(GetPropertyOptionsEvent $event)
     {
-        if (($event->getEnvironment()->getDataDefinition()->getName() !== 'tl_metamodel_filtersetting')
-            || ($event->getPropertyName() !== 'range_template')
+        if (('range_template' !== $event->getPropertyName())
+            || ('tl_metamodel_filtersetting' !== $event->getEnvironment()->getDataDefinition()->getName())
         ) {
             return;
         }
