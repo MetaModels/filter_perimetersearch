@@ -22,12 +22,34 @@
 namespace MetaModels\FilterPerimetersearchBundle\EventListener\DcGeneral\Table\FilterSetting;
 
 use MenAtWork\MultiColumnWizardBundle\Event\GetOptionsEvent;
+use MetaModels\Filter\Setting\IFilterSettingFactory;
+use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * This class provides the attribute options and encodes and decodes the attribute id.
  */
 class LookupServiceListener extends Base
 {
+    /**
+     * The translator.
+     *
+     * @var TranslatorInterface
+     */
+    private $translator;
+
+    /**
+     * The constructor.
+     *
+     * @param IFilterSettingFactory $filterFactory The filter setting factory.
+     * @param TranslatorInterface   $translator    The translator.
+     */
+    public function __construct(IFilterSettingFactory $filterFactory, TranslatorInterface $translator)
+    {
+        parent::__construct($filterFactory);
+
+        $this->translator = $translator;
+    }
+
     /**
      * Provide options for default selection.
      *
@@ -50,9 +72,10 @@ class LookupServiceListener extends Base
 
         $resolveClass = (array) $GLOBALS['METAMODELS']['filters']['perimetersearch']['resolve_class'];
 
+        $domain  = 'tl_metamodel_filtersetting';
         $options = [];
         foreach (\array_keys($resolveClass) as $name) {
-            $options[$name] = ($GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['perimetersearch'][$name] ?? $name);
+            $options[$name] = $this->translator->trans($domain . '.perimetersearch.' . $name, [], 'contao_' . $domain);
         }
 
         $event->setOptions($options);

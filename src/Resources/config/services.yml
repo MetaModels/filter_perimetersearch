@@ -66,6 +66,7 @@ services:
             class: MetaModels\FilterPerimetersearchBundle\EventListener\DcGeneral\Table\FilterSetting\LookupServiceListener
             arguments:
                 - "@metamodels.filter_setting_factory"
+                - "@contao.translation.translator"
             tags:
                 - name: kernel.event_listener
                   event: men-at-work.multi-column-wizard.get-options
