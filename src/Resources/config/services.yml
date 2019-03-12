@@ -10,6 +10,7 @@ services:
 
     metamodels.filter_perimetersearch.listener.filter_setting_renderer:
         class: MetaModels\FilterPerimetersearchBundle\EventListener\PerimeterFilterSettingTypeRendererListener
+        public: true
         arguments:
           - "@metamodels.filter_setting_factory"
           - "@event_dispatcher"
@@ -24,6 +25,7 @@ services:
 
     metamodels.dc_general.table.tl_metamodel_filtersetting.first_attr_id:
         class: MetaModels\FilterPerimetersearchBundle\EventListener\DcGeneral\Table\FilterSetting\AttributeListener
+        public: true
         arguments:
             - "@metamodels.filter_setting_factory"
         tags:
@@ -39,6 +41,7 @@ services:
 
     metamodels.dc_general.table.tl_metamodel_filtersetting.second_attr_id:
             class: MetaModels\FilterPerimetersearchBundle\EventListener\DcGeneral\Table\FilterSetting\AttributeListener
+            public: true
             arguments:
                 - "@metamodels.filter_setting_factory"
             tags:
@@ -54,6 +57,7 @@ services:
 
     metamodels.dc_general.table.tl_metamodel_filtersetting.range_template:
                 class: MetaModels\FilterPerimetersearchBundle\EventListener\DcGeneral\Table\FilterSetting\Templates
+                public: true
                 arguments:
                     - "@metamodels.template_list"
                     - "@metamodels.filter_setting_factory"
@@ -64,6 +68,7 @@ services:
 
     metamodels.dc_general.table.tl_metamodel_filtersetting.lookupservice:
             class: MetaModels\FilterPerimetersearchBundle\EventListener\DcGeneral\Table\FilterSetting\LookupServiceListener
+            public: true
             arguments:
                 - "@metamodels.filter_setting_factory"
                 - "@contao.translation.translator"
