@@ -13,6 +13,7 @@
  * @package    MetaModels/filter_perimetersearch
  * @author     Christian Schiffler <c.schiffler@cyberspectrum.de>
  * @author     Stefan Heimes <stefan_heimes@hotmail.com>
+ * @author     Sven Baumann <baumann.sv@gmail.com>
  * @copyright  2012-2019 The MetaModels team.
  * @license    https://github.com/MetaModels/filter_perimetersearch/blob/master/LICENSE LGPL-3.0-or-later
  * @filesource
@@ -36,6 +37,7 @@ class MetaModelsFilterPerimetersearchExtension extends Extension
     public function load(array $configs, ContainerBuilder $container)
     {
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
-        $loader->load('services.yml');
+        $loader->load('filter-settings.yml');
+        $loader->load('listeners.yml');
     }
 }
