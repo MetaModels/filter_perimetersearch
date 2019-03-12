@@ -23,7 +23,6 @@
 
 namespace MetaModels\FilterPerimetersearchBundle\FilterSetting;
 
-use Contao\Database;
 use Contao\Input;
 use Contao\StringUtil;
 use Contao\System;
@@ -419,35 +418,37 @@ class Perimetersearch extends SimpleLookup
      * @param IFilter   $filter    The filter container.
      *
      * @return void
+     *
+     * @see https://www.movable-type.co.uk/scripts/latlong.html
      */
     protected function doSearchForAttGeolocation($container, $filter)
     {
-        // Get location.y
-        $lat           = $container->getLatitude();
-        $lng           = $container->getLongitude();
-        $distance      = $container->getDistance();
-        $distanceOrder = \sprintf(
+        // Calculate distance, bearing and more between Latitude/Longitude points
+        $distanceCalculation = \sprintf(
             'round(sqrt(' .
             'power(2 * pi() / 360 * (%1$s - latitude) * 6371,2)' .
             '+ power(2 * pi() / 360 * (%2$s - longitude) * 6371 * COS( 2 * pi() / 360 * (%1$s + latitude) * 0.5), 2)' .
             '))',
-            $lat,
-            $lng
+            $container->getLatitude(),
+            $container->getLongitude()
         );
 
-        $result = Database::getInstance()
-            ->prepare(
-                \sprintf(
-                    'SELECT item_id FROM tl_metamodel_geolocation WHERE %1$s<=? AND att_id=? ORDER BY %1$s',
-                    $distanceOrder
-                )
-            )
-            ->execute($distance, $this->getMetaModel()->getAttribute($this->get('single_attr_id'))->get('id'));
+        $builder = $this->connection->createQueryBuilder();
+        $builder
+            ->select('item_id')
+            ->from('tl_metamodel_geolocation')
+            ->where($builder->expr()->lte($distanceCalculation, ':distance'))
+            ->andWhere($builder->expr()->eq('att_id', ':attributeID'))
+            ->orderBy($distanceCalculation)
+            ->setParameter('distance', $container->getDistance())
+            ->setParameter('attributeID', $this->getMetaModel()->getAttribute($this->get('single_attr_id'))->get('id'));
 
-        if (0 === $result->numRows) {
+        $statement = $builder->execute();
+
+        if (!$statement->rowCount()) {
             $filter->addFilterRule(new StaticIdList([]));
         } else {
-            $filter->addFilterRule(new StaticIdList($result->fetchEach('item_id')));
+            $filter->addFilterRule(new StaticIdList($statement->fetchAll(\PDO::FETCH_COLUMN)));
         }
     }
 
@@ -460,38 +461,37 @@ class Perimetersearch extends SimpleLookup
      * @param IAttribute $longAttribute The attribute to filter on.
      *
      * @return void
+     *
+     * @see https://www.movable-type.co.uk/scripts/latlong.html
      */
     protected function doSearchForTwoSimpleAtt($container, $filter, $latAttribute, $longAttribute)
     {
-        // Get location.
-        $lat           = $container->getLatitude();
-        $lng           = $container->getLongitude();
-        $distance      = $container->getDistance();
-        $distanceOrder = \sprintf(
+        // Calculate distance, bearing and more between Latitude/Longitude points
+        $distanceCalculation = \sprintf(
             'round(sqrt(' .
             'power(2 * pi() / 360 * (%1$s - %3$s) * 6371,2)' .
             '+ power(2 * pi() / 360 * (%2$s - %4$s) * 6371 * COS( 2 * pi() / 360 * (%1$s + %3$s) * 0.5), 2)' .
             '))',
-            $lat,
-            $lng,
+            $container->getLatitude(),
+            $container->getLongitude(),
             $latAttribute->getColName(),
             $longAttribute->getColName()
         );
 
-        $result = \Database::getInstance()
-            ->prepare(
-                \sprintf(
-                    'SELECT id FROM %1$s WHERE %2$s<=? ORDER BY %2$s',
-                    $this->getMetaModel()->getTableName(),
-                    $distanceOrder
-                )
-            )
-            ->execute($distance);
+        $builder = $this->connection->createQueryBuilder();
+        $builder
+            ->select('id')
+            ->from($this->getMetaModel()->getTableName())
+            ->where($builder->expr()->lte($distanceCalculation, ':distance'))
+            ->orderBy($distanceCalculation)
+            ->setParameter('distance', $container->getDistance());
 
-        if (0 === $result->numRows) {
+        $statement = $builder->execute();
+
+        if (!$statement->rowCount()) {
             $filter->addFilterRule(new StaticIdList([]));
         } else {
-            $filter->addFilterRule(new StaticIdList($result->fetchEach('id')));
+            $filter->addFilterRule(new StaticIdList($statement->fetchAll(\PDO::FETCH_COLUMN)));
         }
     }
 
@@ -626,25 +626,37 @@ class Perimetersearch extends SimpleLookup
      */
     protected function getFromCache($address, $country)
     {
-        $query     = 'SELECT * FROM tl_metamodel_perimetersearch WHERE search = :search AND country = :country';
-        $statement = $this->connection->prepare($query);
-        $statement->bindValue('search', $address);
-        $statement->bindValue('country', $country);
-        $statement->execute();
+        $builder = $this->connection->createQueryBuilder();
+        $builder
+            ->select('*')
+            ->from('tl_metamodel_perimetersearch')
+            ->where($builder->expr()->eq('search', ':search'))
+            ->andWhere($builder->expr()->eq('country', ':country'))
+            ->setParameter('search', $address)
+            ->setParameter('country', $country);
+
+        $statement = $builder->execute();
 
         // If we have no data just return null.
-        if (0 === $statement->rowCount()) {
+        if (!$statement->rowCount()) {
             return null;
         }
 
-        // Check cache.
         $result = $statement->fetch(\PDO::FETCH_OBJ);
 
         // Build a new container.
         $container = new Container();
         $container->setLatitude($result->geo_lat);
         $container->setLongitude($result->geo_long);
-        $container->setSearchParam($query);
+        $container->setSearchParam(
+            \strtr(
+                $builder->getSQL(),
+                [
+                    ':search'  => $this->connection->quote($address),
+                    ':country' => $this->connection->quote($country)
+                ]
+            )
+        );
 
         return $container;
     }
