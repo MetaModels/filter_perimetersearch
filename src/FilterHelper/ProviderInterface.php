@@ -44,15 +44,15 @@ abstract class ProviderInterface
     /**
      * Search the full name of a country.
      *
-     * @param string $strShort The short tag for the country.
+     * @param string $shortTag The short tag for the country.
      *
      * @return null|string Null on error or the full name as string.
      */
-    public function getFullCountryName($strShort)
+    public function getFullCountryName($shortTag)
     {
-        $arrCountries = $this->getCountries();
-        if (\array_key_exists($strShort, $arrCountries)) {
-            return $arrCountries[$strShort];
+        $countries = $this->getCountries();
+        if (\array_key_exists($shortTag, $countries)) {
+            return $countries[$shortTag];
         }
 
         return null;

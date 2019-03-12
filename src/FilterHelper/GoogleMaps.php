@@ -31,6 +31,15 @@ class GoogleMaps extends ProviderInterface
      *
      * @var string
      */
+    protected $googleUrl = 'https://maps.googleapis.com/maps/api/geocode/json?address=%s&sensor=false&language=de';
+
+    /**
+     * Google API call.
+     *
+     * @var string
+     *
+     * @deprecated Deprecated since 2.1 and where removed in 3.0. Use $googleUrl instead.
+     */
     protected $strGoogleUrl = 'https://maps.googleapis.com/maps/api/geocode/json?address=%s&sensor=false&language=de';
 
 
@@ -46,37 +55,37 @@ class GoogleMaps extends ProviderInterface
         $apiToken = null
     ) {
         // Generate a new container.
-        $objReturn = new Container();
+        $container = new Container();
 
         // Set the query string.
-        $sQuery = $this->getQueryString($street, $postal, $city, $country, $fullAddress, $apiToken);
-        $objReturn->setSearchParam($sQuery);
+        $query = $this->getQueryString($street, $postal, $city, $country, $fullAddress, $apiToken);
+        $container->setSearchParam($query);
 
-        $oRequest = new \Request();
+        $request = new \Request();
 
         $apiUrlParameter = $apiToken ? '&key=' . $apiToken : '';
-        $oRequest->send(\sprintf($this->strGoogleUrl . '%s', \rawurlencode($sQuery), $apiUrlParameter));
-        $objReturn->setUri(\sprintf($this->strGoogleUrl . '%s', \rawurlencode($sQuery), $apiUrlParameter));
+        $request->send(\sprintf($this->googleUrl . '%s', \rawurlencode($query), $apiUrlParameter));
+        $container->setUri(\sprintf($this->googleUrl . '%s', \rawurlencode($query), $apiUrlParameter));
 
-        if (200 === (int) $oRequest->code) {
-            $aResponse = \json_decode($oRequest->response, 1);
+        if (200 === (int) $request->code) {
+            $response = \json_decode($request->response, 1);
 
-            if (!empty($aResponse['status']) && ('OK' === $aResponse['status'])) {
-                $objReturn->setLatitude($aResponse['results'][0]['geometry']['location']['lat']);
-                $objReturn->setLongitude($aResponse['results'][0]['geometry']['location']['lng']);
-            } elseif (!empty($aResponse['error_message'])) {
-                $objReturn->setError(true);
-                $objReturn->setErrorMsg($aResponse['error_message']);
+            if (!empty($response['status']) && ('OK' === $response['status'])) {
+                $container->setLatitude($response['results'][0]['geometry']['location']['lat']);
+                $container->setLongitude($response['results'][0]['geometry']['location']['lng']);
+            } elseif (!empty($response['error_message'])) {
+                $container->setError(true);
+                $container->setErrorMsg($response['error_message']);
             } else {
-                $objReturn->setError(true);
-                $objReturn->setErrorMsg($aResponse['Status']['error_message']);
+                $container->setError(true);
+                $container->setErrorMsg($response['Status']['error_message']);
             }
         } else {
             // Okay nothing work. So set all to Error.
-            $objReturn->setError(true);
-            $objReturn->setErrorMsg('Could not find coordinates for address "' . $sQuery . '"');
+            $container->setError(true);
+            $container->setErrorMsg('Could not find coordinates for address "' . $query . '"');
         }
 
-        return $objReturn;
+        return $container;
     }
 }

@@ -63,8 +63,8 @@ class AttributeListener extends Base
                 continue;
             }
 
-            $strSelectVal          = $attribute->getColName();
-            $result[$strSelectVal] = $attribute->getName() . ' [' . $typeName . ']';
+            $selectValue          = $attribute->getColName();
+            $result[$selectValue] = $attribute->getName() . ' [' . $typeName . ']';
         }
 
         $event->setOptions($result);

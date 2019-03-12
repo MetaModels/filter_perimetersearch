@@ -111,21 +111,21 @@ class Perimetersearch extends SimpleLookup
         }
 
         if ('single' === $this->get('datamode')) {
-            $objAttribute = $this
+            $attribute = $this
                 ->getMetaModel()
                 ->getAttribute($this->get('single_attr_id'));
         } elseif ('multi' === $this->get('datamode')) {
-            $objAttribute = $this
+            $attribute = $this
                 ->getMetaModel()
                 ->getAttribute($this->get('first_attr_id'));
         }
 
-        if (null === $objAttribute) {
+        if (null === $attribute) {
             return 'filter_attr_' . $this->get('id');
         }
 
         // Return name if we have a result.
-        return $objAttribute->getColName();
+        return $attribute->getColName();
     }
 
     /**
@@ -143,51 +143,51 @@ class Perimetersearch extends SimpleLookup
      */
     public function prepareRules(IFilter $objFilter, $arrFilterUrl)
     {
-        $objMetaModel      = $this->getMetaModel();
-        $strParamName      = $this->getParamName();
-        $strParamNameRange = $this->getParamNameRange();
-        $strParamValue     = $arrFilterUrl[$strParamName];
-        $intDist           = (int) $arrFilterUrl[$strParamNameRange];
+        $metaModel      = $this->getMetaModel();
+        $paramName      = $this->getParamName();
+        $paramNameRange = $this->getParamNameRange();
+        $paramValue     = $arrFilterUrl[$paramName];
+        $distance       = (int) $arrFilterUrl[$paramNameRange];
 
         // Check if we have a value.
-        if (empty($strParamValue)) {
+        if (empty($paramValue)) {
             return;
         }
 
         // If range mode is preset use this value.
         if ('preset' === $this->get('rangemode')) {
-            $intDist = (int) $this->get('range_preset');
+            $distance = (int) $this->get('range_preset');
         }
 
         // Try to get a country.
-        $strCountry = $this->getCountryInformation();
+        $country = $this->getCountryInformation();
 
         // Search for the geolocation.
-        $objContainer = $this->lookupGeo($strParamValue, $strCountry);
+        $container = $this->lookupGeo($paramValue, $country);
 
         // Okay we cant find a entry. So search for nothing.
-        if ((null === $objContainer) || $objContainer->hasError()) {
+        if ((null === $container) || $container->hasError()) {
             return;
         }
 
         // Set the distance for the search.
-        $objContainer->setDistance($intDist);
+        $container->setDistance($distance);
 
         if ('single' === $this->get('datamode')) {
             // Get the attribute.
-            $objAttribute = $objMetaModel->getAttribute($this->get('single_attr_id'));
+            $attribute = $metaModel->getAttribute($this->get('single_attr_id'));
 
             // Search for the geolocation attribute.
-            if ('geolocation' === $objAttribute->get('type')) {
-                $this->doSearchForAttGeolocation($objContainer, $objFilter);
+            if ('geolocation' === $attribute->get('type')) {
+                $this->doSearchForAttGeolocation($container, $objFilter);
             }
         } elseif ('multi' === $this->get('datamode')) {
             // Get the attributes.
-            $objFirstAttribute  = $objMetaModel->getAttribute($this->get('first_attr_id'));
-            $objSecondAttribute = $objMetaModel->getAttribute($this->get('second_attr_id'));
+            $firstAttribute  = $metaModel->getAttribute($this->get('first_attr_id'));
+            $secondAttribute = $metaModel->getAttribute($this->get('second_attr_id'));
 
             // Search for two simple attributes.
-            $this->doSearchForTwoSimpleAtt($objContainer, $objFilter, $objFirstAttribute, $objSecondAttribute);
+            $this->doSearchForTwoSimpleAtt($container, $objFilter, $firstAttribute, $secondAttribute);
         }
     }
 
@@ -199,19 +199,19 @@ class Perimetersearch extends SimpleLookup
     protected function getCountryInformation()
     {
         // Get the country for the lookup.
-        $strCountry = null;
+        $country = null;
 
         if (('get' === $this->get('countrymode')) && $this->get('country_get')) {
             $getValue = Input::get($this->get('country_get')) ?: Input::post($this->get('country_get'));
             $getValue = \trim($getValue);
             if (!empty($getValue)) {
-                $strCountry = $getValue;
+                $country = $getValue;
             }
         } elseif ('preset' === $this->get('countrymode')) {
-            $strCountry = $this->get('country_preset');
+            $country = $this->get('country_preset');
         }
 
-        return $strCountry;
+        return $country;
     }
 
     /**
@@ -219,9 +219,9 @@ class Perimetersearch extends SimpleLookup
      */
     public function getParameterFilterNames()
     {
-        if (($strParamName = $this->getParamName())) {
+        if (($paramName = $this->getParamName())) {
             return [
-                $strParamName              => ($this->get('label') ?: $this->getAttributeName()),
+                $paramName                 => ($this->get('label') ?: $this->getAttributeName()),
                 $this->getParamNameRange() => ($this->get('label') ?: $this->getAttributeName()) . ' - Range'
             ];
         }
@@ -244,56 +244,56 @@ class Perimetersearch extends SimpleLookup
      * @SuppressWarnings(PHPMD.CamelCaseVariableName)
      */
     public function getParameterFilterWidgets(
-        $arrIds,
-        $arrFilterUrl,
-        $arrJumpTo,
-        FrontendFilterOptions $objFrontendFilterOptions
+        $idList,
+        $filterUrlList,
+        $jumpToList,
+        FrontendFilterOptions $frontendFilterOptions
     ) {
         // If defined as static, return nothing as not to be manipulated via editors.
         if (!$this->enableFEFilterWidget()) {
             return [];
         }
 
-        $arrReturn                     = [];
+        $filterWidgets                 = [];
         $GLOBALS['MM_FILTER_PARAMS'][] = $this->getParamName();
         $GLOBALS['MM_FILTER_PARAMS'][] = $this->getParamNameRange();
 
         // Address search.
-        $arrWidget      = $this->getSearchWidget($objFrontendFilterOptions);
-        $arrRangeWidget = $this->getRangeWidget();
+        $widgets      = $this->getSearchWidget($frontendFilterOptions);
+        $rangeWidgets = $this->getRangeWidget();
 
         // Add filter.
-        $arrReturn[$this->getParamName()] = $this
-            ->prepareFrontendFilterWidget($arrWidget, $arrFilterUrl, $arrJumpTo, $objFrontendFilterOptions);
+        $filterWidgets[$this->getParamName()] = $this
+            ->prepareFrontendFilterWidget($widgets, $filterUrlList, $jumpToList, $frontendFilterOptions);
 
         // Add range filter if we have one.
-        if ($arrRangeWidget) {
-            $arrReturn[$this->getParamNameRange()] = $this
-                ->prepareFrontendFilterWidget($arrRangeWidget, $arrFilterUrl, $arrJumpTo, $objFrontendFilterOptions);
+        if ($rangeWidgets) {
+            $filterWidgets[$this->getParamNameRange()] = $this
+                ->prepareFrontendFilterWidget($rangeWidgets, $filterUrlList, $jumpToList, $frontendFilterOptions);
         }
 
-        return $arrReturn;
+        return $filterWidgets;
     }
 
 
     /**
      * Get the widget information for the search field.
      *
-     * @param FrontendFilterOptions $objFrontendFilterOptions The FE options.
+     * @param FrontendFilterOptions $frontendFilterOptions The FE options.
      *
      * @return array
      */
-    private function getSearchWidget(FrontendFilterOptions $objFrontendFilterOptions)
+    private function getSearchWidget(FrontendFilterOptions $frontendFilterOptions)
     {
-        $arrCount  = [];
-        $arrWidget = [
+        $count  = [];
+        $widget = [
             'label'     => [
                 ($this->get('label') ?: $this->getAttributeName()),
                 'GET: ' . $this->getParamName(),
             ],
             'inputType' => 'text',
-            'count'     => $arrCount,
-            'showCount' => $objFrontendFilterOptions->isShowCountValues(),
+            'count'     => $count,
+            'showCount' => $frontendFilterOptions->isShowCountValues(),
             'eval'      => [
                 'colname'     => $this->getColname(),
                 'urlparam'    => $this->getParamName(),
@@ -302,7 +302,7 @@ class Perimetersearch extends SimpleLookup
             ]
         ];
 
-        return $arrWidget;
+        return $widget;
     }
 
 
@@ -315,19 +315,19 @@ class Perimetersearch extends SimpleLookup
     {
         if ('selection' === $this->get('rangemode')) {
             // Get all range options.
-            $arrRangeOptions = [];
+            $rangeOptions = [];
 
-            foreach (StringUtil::deserialize($this->get('range_selection'), true) as $arrRange) {
-                $arrRangeOptions[$arrRange['range']] = $arrRange['range'] . 'km';
+            foreach (StringUtil::deserialize($this->get('range_selection'), true) as $rangeItem) {
+                $rangeOptions[$rangeItem['range']] = $rangeItem['range'] . 'km';
             }
 
-            $arrRangeWidget = [
+            $rangeWidget = [
                 'label'     => [
                     ($this->get('range_label') ?: $this->getAttributeName() . ' Range '),
                     'GET: ' . $this->getParamNameRange()
                 ],
                 'inputType' => 'select',
-                'options'   => $arrRangeOptions,
+                'options'   => $rangeOptions,
                 'eval'      => [
                     'includeBlankOption' => true,
                     'colname'            => $this->getColname(),
@@ -336,11 +336,11 @@ class Perimetersearch extends SimpleLookup
                 ]
             ];
 
-            return $arrRangeWidget;
+            return $rangeWidget;
         }
 
         if ('free' === $this->get('rangemode')) {
-            $arrRangeWidget = [
+            $rangeWidget = [
                 'label'     => [
                     ($this->get('range_label') ?: $this->getAttributeName() . ' Range '),
                     'GET: ' . $this->getParamNameRange(),
@@ -354,7 +354,7 @@ class Perimetersearch extends SimpleLookup
                 ]
             ];
 
-            return $arrRangeWidget;
+            return $rangeWidget;
         }
 
         return null;
@@ -367,11 +367,11 @@ class Perimetersearch extends SimpleLookup
      */
     protected function getColname()
     {
-        if (($strParamName = $this->getParamName()) && ('single' === $this->get('datamode'))) {
+        if ($this->getParamName() && ('single' === $this->get('datamode'))) {
             return $this->getMetaModel()->getAttribute($this->get('single_attr_id'))->getColname();
         }
 
-        if (($strParamName = $this->getParamName()) && ('multi' === $this->get('datamode'))) {
+        if ($this->getParamName() && ('multi' === $this->get('datamode'))) {
             return $this->getMetaModel()->getAttribute($this->get('first_attr_id'))->getColname();
         }
 
@@ -385,18 +385,18 @@ class Perimetersearch extends SimpleLookup
      */
     protected function getAttributeName()
     {
-        if (($strParamName = $this->getParamName()) && ('single' === $this->get('datamode'))) {
+        if ($this->getParamName() && ('single' === $this->get('datamode'))) {
             return $this->getMetaModel()->getAttribute($this->get('single_attr_id'))->getName();
         }
 
-        if (($strParamName = $this->getParamName()) && ('multi' === $this->get('datamode'))) {
-            $objFirstAttribute  = $this->getMetaModel()->getAttribute($this->get('first_attr_id'));
-            $objSecondAttribute = $this->getMetaModel()->getAttribute($this->get('second_attr_id'));
+        if ($this->getParamName() && ('multi' === $this->get('datamode'))) {
+            $firstAttribute  = $this->getMetaModel()->getAttribute($this->get('first_attr_id'));
+            $secondAttribute = $this->getMetaModel()->getAttribute($this->get('second_attr_id'));
 
-            $strLatName = $objFirstAttribute->getName();
-            $strLngName = $objSecondAttribute->getName();
+            $latName = $firstAttribute->getName();
+            $lngName = $secondAttribute->getName();
 
-            return $strLatName . '/' . $strLngName;
+            return $latName . '/' . $lngName;
         }
 
         return null;
@@ -413,10 +413,10 @@ class Perimetersearch extends SimpleLookup
     protected function doSearchForAttGeolocation($container, $filter)
     {
         // Get location.y
-        $lat      = $container->getLatitude();
-        $lng      = $container->getLongitude();
-        $intDist  = $container->getDistance();
-        $distance = \sprintf(
+        $lat           = $container->getLatitude();
+        $lng           = $container->getLongitude();
+        $distance      = $container->getDistance();
+        $distanceOrder = \sprintf(
             'round(sqrt(' .
             'power(2 * pi() / 360 * (%1$s - latitude) * 6371,2)' .
             '+ power(2 * pi() / 360 * (%2$s - longitude) * 6371 * COS( 2 * pi() / 360 * (%1$s + latitude) * 0.5), 2)' .
@@ -425,19 +425,19 @@ class Perimetersearch extends SimpleLookup
             $lng
         );
 
-        $objResult = Database::getInstance()
+        $result = Database::getInstance()
             ->prepare(
                 \sprintf(
                     'SELECT item_id FROM tl_metamodel_geolocation WHERE %1$s<=? AND att_id=? ORDER BY %1$s',
-                    $distance
+                    $distanceOrder
                 )
             )
-            ->execute($intDist, $this->getMetaModel()->getAttribute($this->get('single_attr_id'))->get('id'));
+            ->execute($distance, $this->getMetaModel()->getAttribute($this->get('single_attr_id'))->get('id'));
 
-        if (0 === $objResult->numRows) {
+        if (0 === $result->numRows) {
             $filter->addFilterRule(new StaticIdList([]));
         } else {
-            $filter->addFilterRule(new StaticIdList($objResult->fetchEach('item_id')));
+            $filter->addFilterRule(new StaticIdList($result->fetchEach('item_id')));
         }
     }
 
@@ -454,10 +454,10 @@ class Perimetersearch extends SimpleLookup
     protected function doSearchForTwoSimpleAtt($container, $filter, $latAttribute, $longAttribute)
     {
         // Get location.
-        $lat      = $container->getLatitude();
-        $lng      = $container->getLongitude();
-        $intDist  = $container->getDistance();
-        $distance = \sprintf(
+        $lat           = $container->getLatitude();
+        $lng           = $container->getLongitude();
+        $distance      = $container->getDistance();
+        $distanceOrder = \sprintf(
             'round(sqrt(' .
             'power(2 * pi() / 360 * (%1$s - %3$s) * 6371,2)' .
             '+ power(2 * pi() / 360 * (%2$s - %4$s) * 6371 * COS( 2 * pi() / 360 * (%1$s + %3$s) * 0.5), 2)' .
@@ -468,71 +468,71 @@ class Perimetersearch extends SimpleLookup
             $longAttribute->getColName()
         );
 
-        $objResult = \Database::getInstance()
+        $result = \Database::getInstance()
             ->prepare(
                 \sprintf(
                     'SELECT id FROM %1$s WHERE %2$s<=? ORDER BY %2$s',
                     $this->getMetaModel()->getTableName(),
-                    $distance
+                    $distanceOrder
                 )
             )
-            ->execute($intDist);
+            ->execute($distance);
 
-        if (0 === $objResult->numRows) {
+        if (0 === $result->numRows) {
             $filter->addFilterRule(new StaticIdList([]));
         } else {
-            $filter->addFilterRule(new StaticIdList($objResult->fetchEach('id')));
+            $filter->addFilterRule(new StaticIdList($result->fetchEach('id')));
         }
     }
 
     /**
      * User the provider classes to make a look up.
      *
-     * @param string $strAddress The full address to search for.
-     * @param string $strCountry The country as 2-letters form.
+     * @param string $address The full address to search for.
+     * @param string $country The country as 2-letters form.
      *
      * @return Container|null Return the container with all information or null on error.
      */
-    protected function lookupGeo($strAddress, $strCountry)
+    protected function lookupGeo($address, $country)
     {
         // Trim the data. Better!
-        $strAddress = \trim($strAddress);
-        $strCountry = \trim($strCountry);
+        $address = \trim($address);
+        $country = \trim($country);
 
         // First check cache.
-        $objCacheResult = $this->getFromCache($strAddress, $strCountry);
-        if ($objCacheResult !== null) {
-            return $objCacheResult;
+        $cacheResult = $this->getFromCache($address, $country);
+        if (null !== $cacheResult) {
+            return $cacheResult;
         }
 
         // If there is no data from the cache ask google.
-        $arrLookupServices = StringUtil::deserialize($this->get('lookupservice'), true);
-        if (!\count($arrLookupServices)) {
+        $lookupServices = (array) StringUtil::deserialize($this->get('lookupservice'), true);
+        if (!\count($lookupServices)) {
             return null;
         }
 
-        foreach ($arrLookupServices as $arrSettings) {
+        foreach ($lookupServices as $lookupService) {
             try {
-                $objCallbackClass = $this->getObjectFromName($arrSettings['lookupservice']);
+                $callback = $this->getObjectFromName($lookupService['lookupservice']);
 
                 // Call the main function.
-                if (null !== $objCallbackClass) {
-                    /** @var Container $objResult */
-                    $objResult = $objCallbackClass
+                if (null !== $callback) {
+                    /** @var Container $result */
+                    $result = $callback
                         ->getCoordinates(
                             null,
                             null,
                             null,
-                            $strCountry,
-                            $strAddress,
-                            $arrSettings['apiToken'] ?: null
+                            $country,
+                            $address,
+                            $lookupService['apiToken'] ?: null
                         );
 
                     // Check if we have a result.
-                    if (!$objResult->hasError()) {
-                        $this->addToCache($strAddress, $strCountry, $objResult);
+                    if (!$result->hasError()) {
+                        $this->addToCache($address, $country, $result);
 
-                        return $objResult;
+                        return $result;
                     }
                 }
             } catch (\RuntimeException $exc) {
@@ -562,24 +562,24 @@ class Perimetersearch extends SimpleLookup
             return null;
         }
 
-        $sClass = $GLOBALS['METAMODELS']['filters']['perimetersearch']['resolve_class'][$lookupClassName];
+        $reflectionName = $GLOBALS['METAMODELS']['filters']['perimetersearch']['resolve_class'][$lookupClassName];
 
-        $oClass = new \ReflectionClass($sClass);
+        $reflection = new \ReflectionClass($reflectionName);
 
         // Fetch singleton instance.
-        if ($oClass->hasMethod('getInstance')) {
-            $getInstanceMethod = $oClass->getMethod('getInstance');
+        if ($reflection->hasMethod('getInstance')) {
+            $getInstanceMethod = $reflection->getMethod('getInstance');
 
             // Create a new instance.
             if ($getInstanceMethod->isStatic()) {
                 return $getInstanceMethod->invoke(null);
             }
 
-            return $oClass->newInstance();
+            return $reflection->newInstance();
         }
 
         // Create a normal object.
-        return $oClass->newInstance();
+        return $reflection->newInstance();
     }
 
     /**

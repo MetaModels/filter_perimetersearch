@@ -31,6 +31,14 @@ class OpenStreetMaps extends ProviderInterface
      *
      * @var string
      */
+    protected $url = 'https://nominatim.openstreetmap.org/search?q=%s&format=json&limit=1';
+    /**
+     * Open street map API call.
+     *
+     * @var string
+     *
+     * @deprecated Deprecated since 2.1 and where removed in 3.0. Use $url instead.
+     */
     protected $strUrl = 'https://nominatim.openstreetmap.org/search?q=%s&format=json&limit=1';
 
     /**
@@ -45,32 +53,32 @@ class OpenStreetMaps extends ProviderInterface
         $apiToken = null
     ) {
         // Generate a new container.
-        $objReturn = new Container();
+        $container = new Container();
 
         // Set the query string.
-        $sQuery = $this->getQueryString($street, $postal, $city, $country, $fullAddress);
-        $objReturn->setSearchParam($sQuery);
+        $query = $this->getQueryString($street, $postal, $city, $country, $fullAddress);
+        $container->setSearchParam($query);
 
-        $oRequest = new \Request();
+        $request = new \Request();
 
-        $oRequest->send(\sprintf($this->strUrl, \rawurlencode($sQuery)));
-        $aResponse   = \json_decode($oRequest->response);
-        $objResponse = $aResponse[0];
+        $request->send(\sprintf($this->url, \rawurlencode($query)));
+        $response     = \json_decode($request->response);
+        $responseItem = $response[0];
 
-        if (200 === (int) $oRequest->code) {
-            if (!empty($objResponse->place_id)) {
-                $objReturn->setLatitude($objResponse->lat);
-                $objReturn->setLongitude($objResponse->lon);
+        if (200 === (int) $request->code) {
+            if (!empty($responseItem->place_id)) {
+                $container->setLatitude($responseItem->lat);
+                $container->setLongitude($responseItem->lon);
             } else {
-                $objReturn->setError(true);
-                $objReturn->setErrorMsg('No data from OpenStreetMap for ' . $sQuery);
+                $container->setError(true);
+                $container->setErrorMsg('No data from OpenStreetMap for ' . $query);
             }
         } else {
             // Okay nothing work. So set all to Error.
-            $objReturn->setError(true);
-            $objReturn->setErrorMsg('No response from OpenStreetMap for address "' . $sQuery . '"');
+            $container->setError(true);
+            $container->setErrorMsg('No response from OpenStreetMap for address "' . $query . '"');
         }
 
-        return $objReturn;
+        return $container;
     }
 }

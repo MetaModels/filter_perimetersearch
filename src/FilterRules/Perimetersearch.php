@@ -276,7 +276,7 @@ class Perimetersearch implements IFilterRule
     protected function runSimpleQuery($idField, $tableName, $latitudeField, $longitudeField, $additionalWhere)
     {
         // Base SQL with place holders.
-        $strSelect = 'SELECT %5$s ' .
+        $select = 'SELECT %5$s ' .
             'FROM %1$s ' .
             'WHERE
                 %4$s
@@ -294,8 +294,8 @@ class Perimetersearch implements IFilterRule
 
         // First value set for save values.
         // @codingStandardsIgnoreStart
-        $strSelect = \sprintf(
-            $strSelect,
+        $select = \sprintf(
+            $select,
             $tableName, // 1
             $latitudeField, // 2
             $longitudeField, // 3
@@ -313,17 +313,17 @@ class Perimetersearch implements IFilterRule
             [$lat, $lng, $lat, $dist, $lat, $lng, $lat]
         );
 
-        $objResult = $this
+        $result = $this
             ->getDataBase()
-            ->prepare($strSelect)
+            ->prepare($select)
             ->execute($values);
 
         // Check the data.
-        if (0 === $objResult->numRows) {
+        if (0 === $result->numRows) {
             return [];
         }
 
-        return $objResult->fetchEach($idField);
+        return $result->fetchEach($idField);
     }
 
     /**

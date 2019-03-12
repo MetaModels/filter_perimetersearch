@@ -48,13 +48,13 @@ class LookupServiceListener extends Base
             return;
         }
 
-        $arrClasses = (array) $GLOBALS['METAMODELS']['filters']['perimetersearch']['resolve_class'];
+        $resolveClass = (array) $GLOBALS['METAMODELS']['filters']['perimetersearch']['resolve_class'];
 
-        $arrReturn = [];
-        foreach (\array_keys($arrClasses) as $name) {
-            $arrReturn[$name] = ($GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['perimetersearch'][$name] ?? $name);
+        $options = [];
+        foreach (\array_keys($resolveClass) as $name) {
+            $options[$name] = ($GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['perimetersearch'][$name] ?? $name);
         }
 
-        $event->setOptions($arrReturn);
+        $event->setOptions($options);
     }
 }
