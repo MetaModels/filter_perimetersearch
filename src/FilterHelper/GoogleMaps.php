@@ -21,6 +21,8 @@
 
 namespace MetaModels\FilterPerimetersearchBundle\FilterHelper;
 
+use Contao\Request;
+
 /**
  * Lookup class for google.
  */
@@ -61,7 +63,7 @@ class GoogleMaps extends ProviderInterface
         $query = $this->getQueryString($street, $postal, $city, $country, $fullAddress, $apiToken);
         $container->setSearchParam($query);
 
-        $request = new \Request();
+        $request = new Request();
 
         $apiUrlParameter = $apiToken ? '&key=' . $apiToken : '';
         $request->send(\sprintf($this->googleUrl . '%s', \rawurlencode($query), $apiUrlParameter));

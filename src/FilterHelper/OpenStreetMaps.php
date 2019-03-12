@@ -21,6 +21,8 @@
 
 namespace MetaModels\FilterPerimetersearchBundle\FilterHelper;
 
+use Contao\Request;
+
 /**
  * Lookup class for open streetmap.
  */
@@ -59,7 +61,7 @@ class OpenStreetMaps extends ProviderInterface
         $query = $this->getQueryString($street, $postal, $city, $country, $fullAddress);
         $container->setSearchParam($query);
 
-        $request = new \Request();
+        $request = new Request();
 
         $request->send(\sprintf($this->url, \rawurlencode($query)));
         $response     = \json_decode($request->response);
