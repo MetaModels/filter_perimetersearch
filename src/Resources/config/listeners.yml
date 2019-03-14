@@ -1,0 +1,67 @@
+services:
+    metamodels.filter_perimetersearch.listener.filter_setting_renderer:
+        class: MetaModels\FilterPerimetersearchBundle\EventListener\PerimeterFilterSettingTypeRendererListener
+        public: true
+        arguments:
+            - "@metamodels.filter_setting_factory"
+            - "@event_dispatcher"
+            - "@metamodels.assets.icon_builder"
+            - "@cca.dc-general.scope-matcher"
+        tags:
+            -   name: kernel.event_listener
+                event: 'dc-general.view.contao2backend.model-to-label'
+                method: modelToLabel
+
+    metamodels.dc_general.table.tl_metamodel_filtersetting.first_attr_id:
+        class: MetaModels\FilterPerimetersearchBundle\EventListener\DcGeneral\Table\FilterSetting\AttributeListener
+        public: true
+        arguments:
+            - "@metamodels.filter_setting_factory"
+        tags:
+            -   name: kernel.event_listener
+                event: dc-general.view.contao2backend.get-property-options
+                method: getOptions
+            -   name: kernel.event_listener
+                event: dc-general.view.contao2backend.decode-property-value-for-widget
+                method: decodeValue
+            -   name: kernel.event_listener
+                event: dc-general.view.contao2backend.encode-property-value-from-widget
+                method: encodeValue
+
+    metamodels.dc_general.table.tl_metamodel_filtersetting.second_attr_id:
+        class: MetaModels\FilterPerimetersearchBundle\EventListener\DcGeneral\Table\FilterSetting\AttributeListener
+        public: true
+        arguments:
+            - "@metamodels.filter_setting_factory"
+        tags:
+            -   name: kernel.event_listener
+                event: dc-general.view.contao2backend.get-property-options
+                method: getOptions
+            -   name: kernel.event_listener
+                event: dc-general.view.contao2backend.decode-property-value-for-widget
+                method: decodeValue
+            -   name: kernel.event_listener
+                event: dc-general.view.contao2backend.encode-property-value-from-widget
+                method: encodeValue
+
+    metamodels.dc_general.table.tl_metamodel_filtersetting.range_template:
+        class: MetaModels\FilterPerimetersearchBundle\EventListener\DcGeneral\Table\FilterSetting\Templates
+        public: true
+        arguments:
+            - "@metamodels.template_list"
+            - "@metamodels.filter_setting_factory"
+        tags:
+            -   name: kernel.event_listener
+                event: dc-general.view.contao2backend.get-property-options
+                method: getOptions
+
+    metamodels.dc_general.table.tl_metamodel_filtersetting.lookupservice:
+        class: MetaModels\FilterPerimetersearchBundle\EventListener\DcGeneral\Table\FilterSetting\LookupServiceListener
+        public: true
+        arguments:
+            - "@metamodels.filter_setting_factory"
+            - "@contao.translation.translator"
+        tags:
+            -   name: kernel.event_listener
+                event: men-at-work.multi-column-wizard.get-options
+                method: getOptions
