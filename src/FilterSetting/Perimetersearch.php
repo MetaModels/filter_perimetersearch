@@ -34,6 +34,7 @@ use MetaModels\Filter\Rules\StaticIdList;
 use MetaModels\Filter\Setting\ICollection;
 use MetaModels\Filter\Setting\SimpleLookup;
 use MetaModels\FilterPerimetersearchBundle\FilterHelper\Container;
+use MetaModels\FilterPerimetersearchBundle\Helper\SphericalDistance;
 use MetaModels\FrontendIntegration\FrontendFilterOptions;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -424,13 +425,11 @@ class Perimetersearch extends SimpleLookup
     protected function doSearchForAttGeolocation($container, $filter)
     {
         // Calculate distance, bearing and more between Latitude/Longitude points
-        $distanceCalculation = \sprintf(
-            'round(sqrt(' .
-            'power(2 * pi() / 360 * (%1$s - latitude) * 6371,2)' .
-            '+ power(2 * pi() / 360 * (%2$s - longitude) * 6371 * COS( 2 * pi() / 360 * (%1$s + latitude) * 0.5), 2)' .
-            '))',
+        $distanceCalculation = SphericalDistance::getHaversineFormulaAsQueryPart(
             $container->getLatitude(),
-            $container->getLongitude()
+            $container->getLongitude(),
+            'latitude',
+            'longitude'
         );
 
         $builder = $this->connection->createQueryBuilder();
@@ -467,11 +466,7 @@ class Perimetersearch extends SimpleLookup
     protected function doSearchForTwoSimpleAtt($container, $filter, $latAttribute, $longAttribute)
     {
         // Calculate distance, bearing and more between Latitude/Longitude points
-        $distanceCalculation = \sprintf(
-            'round(sqrt(' .
-            'power(2 * pi() / 360 * (%1$s - %3$s) * 6371,2)' .
-            '+ power(2 * pi() / 360 * (%2$s - %4$s) * 6371 * COS( 2 * pi() / 360 * (%1$s + %3$s) * 0.5), 2)' .
-            '))',
+        $distanceCalculation = SphericalDistance::getHaversineFormulaAsQueryPart(
             $container->getLatitude(),
             $container->getLongitude(),
             $latAttribute->getColName(),
