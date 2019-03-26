@@ -121,7 +121,7 @@ class SphericalDistance
      */
     public static function validateLatitude($latitude): bool
     {
-        if (!((-180 <= $latitude) && (180 >= $latitude) && self::validateCoordinate($latitude))) {
+        if (!((-90 <= $latitude) && (90 >= $latitude))) {
             return false;
         }
 
@@ -137,7 +137,7 @@ class SphericalDistance
      */
     public static function validateLongitude($longitude): bool
     {
-        if (!((-90 <= $longitude) && (90 >= $longitude) && self::validateCoordinate($longitude))) {
+        if (!((-180 <= $longitude) && (180 >= $longitude))) {
             return false;
         }
 
