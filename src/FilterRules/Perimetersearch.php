@@ -21,9 +21,12 @@
 
 namespace  MetaModels\FilterPerimetersearchBundle\FilterRules;
 
+use Contao\System;
+use Doctrine\DBAL\Connection;
 use MetaModels\Attribute\IAttribute;
 use MetaModels\Attribute\ISimple;
 use MetaModels\Filter\IFilterRule;
+use MetaModels\FilterPerimetersearchBundle\Helper\HaversineSphericalDistance;
 
 /**
  * Rule for perimeter search.
@@ -90,19 +93,34 @@ class Perimetersearch implements IFilterRule
     public const MODE_MULTI = 2;
 
     /**
+     * Database connection.
+     *
+     * @var Connection
+     */
+    private $connection;
+
+    /**
      * Create a new instance.
      *
-     * @param IAttribute $latitudeAttribute  The attribute to perform filtering on.
-     * @param IAttribute $longitudeAttribute The attribute to perform filtering on.
-     * @param IAttribute $singleAttribute    The attribute to perform filtering on.
-     * @param float|int  $lat                The latitude to search for.
-     * @param float|int  $long               The longitude to search for.
-     * @param int        $dist               The dist.
+     * @param IAttribute      $latitudeAttribute  The attribute to perform filtering on.
+     * @param IAttribute      $longitudeAttribute The attribute to perform filtering on.
+     * @param IAttribute      $singleAttribute    The attribute to perform filtering on.
+     * @param float|int       $lat                The latitude to search for.
+     * @param float|int       $long               The longitude to search for.
+     * @param int             $dist               The dist.
+     * @param Connection|null $connection         The database connection.
      *
      * @throws \InvalidArgumentException     If any value or attribute is not valid.
      */
-    public function __construct($latitudeAttribute, $longitudeAttribute, $singleAttribute, $lat, $long, $dist)
-    {
+    public function __construct(
+        $latitudeAttribute,
+        $longitudeAttribute,
+        $singleAttribute,
+        $lat,
+        $long,
+        $dist,
+        Connection $connection = null
+    ) {
         // Check for valid attributes and values.
         $this->checkAttributeTypes($latitudeAttribute, $longitudeAttribute, $singleAttribute);
         $this->validateValue($lat, 'Only float and numeric allowed for the latitude.');
@@ -120,21 +138,18 @@ class Perimetersearch implements IFilterRule
         $this->latitude           = $lat;
         $this->longitude          = $long;
         $this->dist               = $dist;
-    }
 
-    /**
-     * Retrieve the database.
-     *
-     * @return \Contao\Database
-     */
-    private function getDataBase()
-    {
-        $attribute = ((int) $this->mode === self::MODE_SINGLE) ? $this->singleAttribute : $this->latitudeAttribute;
+        if (null === $connection) {
+            // @codingStandardsIgnoreStart
+            @\trigger_error(
+                'Connection is not passed as constructor argument.',
+                E_USER_DEPRECATED
+            );
+            // @codingStandardsIgnoreEnd
+            $connection = System::getContainer()->get('database_connection');
+        }
 
-        return $attribute
-            ->getMetaModel()
-            ->getServiceContainer()
-            ->getDatabase();
+        $this->connection = $connection;
     }
 
     /**
@@ -265,65 +280,52 @@ class Perimetersearch implements IFilterRule
     /**
      * Build the SQL and execute it.
      *
-     * @param string $idField         Name of the id field.
-     * @param string $tableName       The name of the table.
-     * @param string $latitudeField   The name of the latitude field.
-     * @param string $longitudeField  The name of the longitude field.
-     * @param array  $additionalWhere A list with additional where information.
+     * @param string     $idField         Name of the id field.
+     * @param string     $tableName       The name of the table.
+     * @param string     $latitudeField   The name of the latitude field.
+     * @param string     $longitudeField  The name of the longitude field.
+     * @param array|null $additionalWhere A list with additional where information.
      *
      * @return array A list with ID's or an empty array.
      */
     protected function runSimpleQuery($idField, $tableName, $latitudeField, $longitudeField, $additionalWhere)
     {
-        // Base SQL with place holders.
-        $select = 'SELECT %5$s ' .
-            'FROM %1$s ' .
-            'WHERE
-                %4$s
-                round(
-                    sqrt(
-                        power( 2 * pi() / 360 * (? - %2$s) * 6371,2) +
-                        power( 2 * pi() / 360 * (? - %3$s) * 6371 * COS( 2 * pi() / 360 * (? + %2$s) * 0.5 ),2)
-                    )
-                ) <= ? ' .
-            'ORDER BY
-                round(
-                    sqrt(
-                        power(2 * pi() / 360 * (? - %2$s) * 6371,2) +
-                        power(2 * pi() / 360 * (? - %3$s) * 6371 *  COS( 2 * pi() / 360 * (? + %2$s) * 0.5 ),2)))';
-
-        // First value set for save values.
-        // @codingStandardsIgnoreStart
-        $select = \sprintf(
-            $select,
-            $tableName, // 1
-            $latitudeField, // 2
-            $longitudeField, // 3
-            $this->buildAdditionalWhere($additionalWhere), // 4
-            $idField // 5
-        );
-        // @codingStandardsIgnoreEnd
-
-        // Second value set for the database query.
-        $lat    = $this->latitude;
-        $lng    = $this->longitude;
-        $dist   = $this->dist;
-        $values = \array_merge(
-            (array) $additionalWhere,
-            [$lat, $lng, $lat, $dist, $lat, $lng, $lat]
+        $distanceCalculation = HaversineSphericalDistance::getFormulaAsQueryPart(
+            $this->latitude,
+            $this->longitude,
+            $this->connection->quoteIdentifier($latitudeField),
+            $this->connection->quoteIdentifier($longitudeField),
+            2
         );
 
-        $result = $this
-            ->getDataBase()
-            ->prepare($select)
-            ->execute($values);
+        $builder = $this->connection->createQueryBuilder();
+        $builder
+            ->select($this->connection->quoteIdentifier($idField))
+            ->from($tableName)
+            ->where($builder->expr()->lte($distanceCalculation, ':distance'))
+            ->orderBy($distanceCalculation)
+            ->setParameter('distance', $this->dist);
 
-        // Check the data.
-        if (0 === $result->numRows) {
+        if ($additionalWhere) {
+            foreach ($additionalWhere as $index => $where) {
+                if (0 === $index) {
+                    $builder->where($where);
+                }
+
+                $builder->andWhere($where);
+            }
+
+            $builder->andWhere($builder->expr()->lte($distanceCalculation, ':distance'));
+        } else {
+            $builder->where($builder->expr()->lte($distanceCalculation, ':distance'));
+        }
+
+        $statement = $builder->execute();
+        if (!$statement->rowCount()) {
             return [];
         }
 
-        return $result->fetchEach($idField);
+        return $statement->fetchAll(\PDO::FETCH_COLUMN);
     }
 
     /**
@@ -332,6 +334,8 @@ class Perimetersearch implements IFilterRule
      * @param array $additionalWhere A list with additional where information.
      *
      * @return null|string
+     *
+     * @deprecated This is deprecated since 2.1 and where remove in 3.0.
      */
     protected function buildAdditionalWhere($additionalWhere)
     {

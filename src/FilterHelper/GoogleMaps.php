@@ -44,7 +44,6 @@ class GoogleMaps extends ProviderInterface
      */
     protected $strGoogleUrl = 'https://maps.googleapis.com/maps/api/geocode/json?address=%s&sensor=false&language=de';
 
-
     /**
      * {@inheritdoc}
      */

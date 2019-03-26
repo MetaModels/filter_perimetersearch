@@ -81,7 +81,7 @@ $GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['fields']['countrymode'] = [
         'doNotSaveEmpty' => true,
         'alwaysSave'     => true,
         'submitOnChange' => true,
-        'mandatory'      => true,
+        'mandatory'      => true
     ],
     'sql'      => 'varchar(255) NOT NULL default \'\''
 ];
@@ -124,7 +124,7 @@ $GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['fields']['rangemode'] = [
         'alwaysSave'         => true,
         'submitOnChange'     => true,
         'includeBlankOption' => true,
-        'mandatory'          => true,
+        'mandatory'          => true
     ],
     'sql'      => 'varchar(255) NOT NULL default \'\''
 ];
@@ -157,8 +157,8 @@ $GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['fields']['range_selection'] = 
                     'style'     => 'width:230px',
                     'rgxp'      => 'digit'
                 ]
-            ],
-        ],
+            ]
+        ]
     ],
     'sql'      => 'text NULL'
 ];
@@ -168,7 +168,7 @@ $GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['fields']['range_label'] = [
     'exclude'   => true,
     'inputType' => 'text',
     'eval'      => [
-        'tl_class' => 'clr w50',
+        'tl_class' => 'clr w50'
     ],
     'sql'      => 'blob NULL'
 ];
@@ -210,7 +210,7 @@ $GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['fields']['datamode'] = [
         'alwaysSave'         => true,
         'submitOnChange'     => true,
         'includeBlankOption' => true,
-        'mandatory'          => true,
+        'mandatory'          => true
     ],
     'sql'      => 'varchar(255) NOT NULL default \'\''
 ];
@@ -231,19 +231,18 @@ $GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['fields']['lookupservice'] = [
                     'includeBlankOption' => true,
                     'mandatory'          => true,
                     'chosen'             => true,
-                    'style'              => 'width:250px',
+                    'style'              => 'width:250px'
                 ]
             ],
             'apiToken' => [
                 'label'     => &$GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['lookupservice']['api_token'],
                 'exclude'   => true,
                 'inputType' => 'text',
-                'eval'      =>
-                    [
+                'eval'      => [
                     'tl_class' => 'w50'
-                    ]
+                ]
             ]
-        ],
+        ]
     ],
     'explanation' => 'filter_lookupservice',
     'sql'         => 'text NULL'
