@@ -20,23 +20,13 @@
 namespace MetaModels\FilterPerimetersearchBundle\Helper;
 
 /**
- * This class provide functions for calculate spherical distance.
+ * This class provide functions for calculate haversine spherical distance.
  *
  * @see https://www.movable-type.co.uk/scripts/latlong.html
  * @see https://blog.godatadriven.com/impala-haversine.html
  */
-class SphericalDistance
+class HaversineSphericalDistance extends SphericalDistance
 {
-    /**
-     * The earth radius in kilometres.
-     */
-    public const EARTH_RADIUS_IN_KM = 6371;
-
-    /**
-     * The earth radius in miles.
-     */
-    public const EARTH_RADIUS_IN_MILE = 3956;
-
     /**
      * Get the spherical distance haversine formula for the database query part.
      *
@@ -48,11 +38,8 @@ class SphericalDistance
      * @param int          $earthRadius     The earth radius.
      *
      * @return string
-     *
-     * @deprecated This is deprecated since 2.1 and where removed in 3.0.
-     *             Use HaversineSphericalDistance::getFormulaAsQueryPart instead.
      */
-    public static function getHaversineFormulaAsQueryPart(
+    public static function getFormulaAsQueryPart(
         $firstLatitude,
         $firstLongitude,
         $secondLatitude,
@@ -80,25 +67,22 @@ class SphericalDistance
     /**
      * Calculate the spherical distance with the haversine formula.
      *
-     * @param string|float $firstLatitude   The first latitude coordinate.
-     * @param string|float $firstLongitude  The first longitude coordinate.
-     * @param string|float $secondLatitude  The second latitude coordinate.
-     * @param string|float $secondLongitude The second longitude coordinate.
-     * @param int          $digits          The number of digits after the decimal point.
-     * @param int          $earthRadius     The earth radius.
+     * @param float $firstLatitude   The first latitude coordinate.
+     * @param float $firstLongitude  The first longitude coordinate.
+     * @param float $secondLatitude  The second latitude coordinate.
+     * @param float $secondLongitude The second longitude coordinate.
+     * @param int   $digits          The number of digits after the decimal point.
+     * @param int   $earthRadius     The earth radius.
      *
      * @return float
-     *
-     * @deprecated This is deprecated since 2.1 and where removed in 3.0.
-     *             Use HaversineSphericalDistance::calculate instead.
      */
-    public static function calculateHaversine(
-        $firstLatitude,
-        $firstLongitude,
-        $secondLatitude,
-        $secondLongitude,
-        $digits = 0,
-        $earthRadius = self::EARTH_RADIUS_IN_KM
+    public static function calculate(
+        float $firstLatitude,
+        float $firstLongitude,
+        float $secondLatitude,
+        float $secondLongitude,
+        int $digits = 0,
+        int $earthRadius = self::EARTH_RADIUS_IN_KM
     ): float {
         $oneRad = ((2 * M_PI) / 360);
 
@@ -110,56 +94,5 @@ class SphericalDistance
             ),
             $digits
         );
-    }
-
-    /**
-     * Validate the latitude coordinate.
-     *
-     * @param string|float $latitude The latitude coordinate.
-     *
-     * @return bool
-     */
-    public static function validateLatitude($latitude): bool
-    {
-        if (!((-180 <= $latitude) && (180 >= $latitude) && self::validateCoordinate($latitude))) {
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
-     * Validate the longitude coordinate.
-     *
-     * @param string|float $longitude The longitude coordinate.
-     *
-     * @return bool
-     */
-    public static function validateLongitude($longitude): bool
-    {
-        if (!((-90 <= $longitude) && (90 >= $longitude) && self::validateCoordinate($longitude))) {
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
-     * Validate the coordinate.
-     *
-     * @param string|float $coordinate The latitude or longitude coordinate.
-     *
-     * @return bool
-     */
-    public static function validateCoordinate($coordinate): bool
-    {
-        if (!(is_numeric($coordinate)
-              && (3 >= \strlen((int) \abs($coordinate)))
-              && (6 >= (\strlen($coordinate) - \strlen((int) $coordinate) - 1)))
-        ) {
-            return false;
-        }
-
-        return true;
     }
 }

@@ -34,7 +34,7 @@ use MetaModels\Filter\Rules\StaticIdList;
 use MetaModels\Filter\Setting\ICollection;
 use MetaModels\Filter\Setting\SimpleLookup;
 use MetaModels\FilterPerimetersearchBundle\FilterHelper\Container;
-use MetaModels\FilterPerimetersearchBundle\Helper\SphericalDistance;
+use MetaModels\FilterPerimetersearchBundle\Helper\HaversineSphericalDistance;
 use MetaModels\FrontendIntegration\FrontendFilterOptions;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -430,7 +430,7 @@ class Perimetersearch extends SimpleLookup
     protected function doSearchForAttGeolocation($container, $filter)
     {
         // Calculate distance, bearing and more between Latitude/Longitude points
-        $distanceCalculation = SphericalDistance::getHaversineFormulaAsQueryPart(
+        $distanceCalculation = HaversineSphericalDistance::getFormulaAsQueryPart(
             $container->getLatitude(),
             $container->getLongitude(),
             'latitude',
@@ -471,7 +471,7 @@ class Perimetersearch extends SimpleLookup
     protected function doSearchForTwoSimpleAtt($container, $filter, $latAttribute, $longAttribute)
     {
         // Calculate distance, bearing and more between Latitude/Longitude points
-        $distanceCalculation = SphericalDistance::getHaversineFormulaAsQueryPart(
+        $distanceCalculation = HaversineSphericalDistance::getFormulaAsQueryPart(
             $container->getLatitude(),
             $container->getLongitude(),
             $latAttribute->getColName(),

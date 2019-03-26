@@ -26,7 +26,7 @@ use Doctrine\DBAL\Connection;
 use MetaModels\Attribute\IAttribute;
 use MetaModels\Attribute\ISimple;
 use MetaModels\Filter\IFilterRule;
-use MetaModels\FilterPerimetersearchBundle\Helper\SphericalDistance;
+use MetaModels\FilterPerimetersearchBundle\Helper\HaversineSphericalDistance;
 
 /**
  * Rule for perimeter search.
@@ -290,7 +290,7 @@ class Perimetersearch implements IFilterRule
      */
     protected function runSimpleQuery($idField, $tableName, $latitudeField, $longitudeField, $additionalWhere)
     {
-        $distanceCalculation = SphericalDistance::getHaversineFormulaAsQueryPart(
+        $distanceCalculation = HaversineSphericalDistance::getFormulaAsQueryPart(
             $this->latitude,
             $this->longitude,
             $latitudeField,
