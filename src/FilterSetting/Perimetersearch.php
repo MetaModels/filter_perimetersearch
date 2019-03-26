@@ -301,14 +301,13 @@ class Perimetersearch extends SimpleLookup
      */
     private function getSearchWidget(FrontendFilterOptions $frontendFilterOptions)
     {
-        $count  = [];
         $widget = [
             'label'     => [
                 ($this->get('label') ?: $this->getAttributeName()),
                 'GET: ' . $this->getParamName(),
             ],
             'inputType' => 'text',
-            'count'     => $count,
+            'count'     => [],
             'showCount' => $frontendFilterOptions->isShowCountValues(),
             'eval'      => [
                 'colname'     => $this->getColname(),
@@ -348,7 +347,7 @@ class Perimetersearch extends SimpleLookup
                     'includeBlankOption' => true,
                     'colname'            => $this->getColname(),
                     'urlparam'           => $this->getParamNameRange(),
-                    'template'           => $this->get('range_template'),
+                    'template'           => $this->get('range_template')
                 ]
             ];
 
@@ -359,7 +358,7 @@ class Perimetersearch extends SimpleLookup
             $rangeWidget = [
                 'label'     => [
                     ($this->get('range_label') ?: $this->getAttributeName() . ' Range '),
-                    'GET: ' . $this->getParamNameRange(),
+                    'GET: ' . $this->getParamNameRange()
                 ],
                 'inputType' => 'text',
                 'eval'      => [

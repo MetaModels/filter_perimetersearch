@@ -25,7 +25,7 @@ $GLOBALS['TL_DCA']['tl_metamodel_perimetersearch'] = [
     'config' => [
         'sql' => [
             'keys' => [
-                'id' => 'primary',
+                'id' => 'primary'
             ]
         ]
     ],
