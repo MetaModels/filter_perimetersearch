@@ -40,10 +40,10 @@ class SphericalDistance
     /**
      * Get the spherical distance haversine formula for the database query part.
      *
-     * @param string|float $firstLatitude   The first latitude coordinate.
-     * @param string|float $firstLongitude  The first longitude coordinate.
-     * @param string|float $secondLatitude  The second latitude coordinate.
-     * @param string|float $secondLongitude The second longitude coordinate.
+     * @param string|float $firstLatitude   The first latitude coordinate. You can a coordinate or a database field.
+     * @param string|float $firstLongitude  The first longitude coordinate. You can a coordinate or a database field.
+     * @param string|float $secondLatitude  The second latitude coordinate. You can a coordinate or a database field.
+     * @param string|float $secondLongitude The second longitude coordinate. You can a coordinate or a database field.
      * @param int          $digits          The number of digits after the decimal point.
      * @param int          $earthRadius     The earth radius.
      *
