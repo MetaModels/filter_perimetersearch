@@ -110,6 +110,7 @@ class Perimetersearch extends SimpleLookup
             return $this->get('urlparam');
         }
 
+        $attribute = null;
         if ('single' === $this->get('datamode')) {
             $attribute = $this
                 ->getMetaModel()
