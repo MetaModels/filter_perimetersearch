@@ -293,14 +293,14 @@ class Perimetersearch implements IFilterRule
         $distanceCalculation = HaversineSphericalDistance::getFormulaAsQueryPart(
             $this->latitude,
             $this->longitude,
-            $latitudeField,
-            $longitudeField,
+            $this->connection->quoteIdentifier($latitudeField),
+            $this->connection->quoteIdentifier($longitudeField),
             2
         );
 
         $builder = $this->connection->createQueryBuilder();
         $builder
-            ->select($idField)
+            ->select($this->connection->quoteIdentifier($idField))
             ->from($tableName)
             ->where($builder->expr()->lte($distanceCalculation, ':distance'))
             ->orderBy($distanceCalculation)

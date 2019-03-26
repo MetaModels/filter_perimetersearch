@@ -432,16 +432,16 @@ class Perimetersearch extends SimpleLookup
         $distanceCalculation = HaversineSphericalDistance::getFormulaAsQueryPart(
             $container->getLatitude(),
             $container->getLongitude(),
-            'latitude',
-            'longitude'
+            $this->connection->quoteIdentifier('latitude'),
+            $this->connection->quoteIdentifier('longitude')
         );
 
         $builder = $this->connection->createQueryBuilder();
         $builder
-            ->select('item_id')
+            ->select($this->connection->quoteIdentifier('item_id'))
             ->from('tl_metamodel_geolocation')
             ->where($builder->expr()->lte($distanceCalculation, ':distance'))
-            ->andWhere($builder->expr()->eq('att_id', ':attributeID'))
+            ->andWhere($builder->expr()->eq($this->connection->quoteIdentifier('att_id'), ':attributeID'))
             ->orderBy($distanceCalculation)
             ->setParameter('distance', $container->getDistance())
             ->setParameter('attributeID', $this->getMetaModel()->getAttribute($this->get('single_attr_id'))->get('id'));
@@ -473,14 +473,14 @@ class Perimetersearch extends SimpleLookup
         $distanceCalculation = HaversineSphericalDistance::getFormulaAsQueryPart(
             $container->getLatitude(),
             $container->getLongitude(),
-            $latAttribute->getColName(),
-            $longAttribute->getColName()
+            $this->connection->quoteIdentifier($latAttribute->getColName()),
+            $this->connection->quoteIdentifier($longAttribute->getColName())
         );
 
         $builder = $this->connection->createQueryBuilder();
         $builder
-            ->select('id')
-            ->from($this->getMetaModel()->getTableName())
+            ->select($this->connection->quoteIdentifier('id'))
+            ->from($this->connection->quoteIdentifier($this->getMetaModel()->getTableName()))
             ->where($builder->expr()->lte($distanceCalculation, ':distance'))
             ->orderBy($distanceCalculation)
             ->setParameter('distance', $container->getDistance());
@@ -607,10 +607,10 @@ class Perimetersearch extends SimpleLookup
         $this->connection->insert(
             'tl_metamodel_perimetersearch',
             [
-                'search'   => $address,
-                'country'  => $country,
-                'geo_lat'  => $result->getLatitude(),
-                'geo_long' => $result->getLongitude()
+                $this->connection->quoteIdentifier('search')   => $address,
+                $this->connection->quoteIdentifier('country')  => $country,
+                $this->connection->quoteIdentifier('geo_lat')  => $result->getLatitude(),
+                $this->connection->quoteIdentifier('geo_long') => $result->getLongitude()
             ]
         );
     }
@@ -628,9 +628,9 @@ class Perimetersearch extends SimpleLookup
         $builder = $this->connection->createQueryBuilder();
         $builder
             ->select('*')
-            ->from('tl_metamodel_perimetersearch')
-            ->where($builder->expr()->eq('search', ':search'))
-            ->andWhere($builder->expr()->eq('country', ':country'))
+            ->from($this->connection->quoteIdentifier('tl_metamodel_perimetersearch'))
+            ->where($builder->expr()->eq($this->connection->quoteIdentifier('search'), ':search'))
+            ->andWhere($builder->expr()->eq($this->connection->quoteIdentifier('country'), ':country'))
             ->setParameter('search', $address)
             ->setParameter('country', $country);
 
