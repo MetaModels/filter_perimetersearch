@@ -344,7 +344,6 @@ class Perimetersearch extends SimpleLookup
                 'inputType' => 'select',
                 'options'   => $rangeOptions,
                 'eval'      => [
-                    'includeBlankOption' => true,
                     'colname'            => $this->getColname(),
                     'urlparam'           => $this->getParamNameRange(),
                     'template'           => $this->get('range_template')
