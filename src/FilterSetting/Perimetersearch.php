@@ -265,9 +265,14 @@ class Perimetersearch extends SimpleLookup
             return [];
         }
 
-        $filterWidgets                 = [];
-        $GLOBALS['MM_FILTER_PARAMS'][] = $this->getParamName();
-        $GLOBALS['MM_FILTER_PARAMS'][] = $this->getParamNameRange();
+        $filterWidgets               = [];
+        $GLOBALS['MM_FILTER_PARAMS'] = \array_merge(
+            ($GLOBALS['MM_FILTER_PARAMS'] ?? []),
+            [
+                $this->getParamName(),
+                $this->getParamNameRange()
+            ]
+        );
 
         // Address search.
         $widgets      = $this->getSearchWidget($frontendFilterOptions);
