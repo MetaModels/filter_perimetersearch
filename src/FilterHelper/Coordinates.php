@@ -28,6 +28,10 @@ class Coordinates extends ProviderInterface
 {
     /**
      * {@inheritDoc}
+     *
+     * @throws \RuntimeException Throws exception if the value full address is empty or not type of a string.
+     * @throws \RuntimeException Throws exception if the value full address has no coordinates.
+     * @throws \RuntimeException Throws exception if the validation of the coordinates failed.
      */
     public function getCoordinates(
         $street = null,
@@ -38,19 +42,19 @@ class Coordinates extends ProviderInterface
         $apiToken = null
     ) {
         if (!$fullAddress || !\is_string($fullAddress)) {
-            return null;
+            throw new \RuntimeException('The value full address is empty or not type of a string.');
         }
 
         $coordinates = \explode(',', $fullAddress);
         if (!\count($coordinates) || (3 <= \count($coordinates))) {
-            return null;
+            throw new \RuntimeException('The value full address has no coordinates.');
         }
 
         [$latitude, $longitude] = \array_map('floatval', $coordinates);
         if (!(HaversineSphericalDistance::validateLatitude($latitude)
             && HaversineSphericalDistance::validateLongitude($longitude))
         ) {
-            return null;
+            throw new \RuntimeException('The validation of the coordinates failed.');
         }
 
         return (new Container())

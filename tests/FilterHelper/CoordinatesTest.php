@@ -33,21 +33,27 @@ class CoordinatesTest extends TestCase
 {
     public function dataProviderCoordinates()
     {
+        $exceptionMessage = [
+            'The value full address is empty or not type of a string.',
+            'The value full address has no coordinates.',
+            'The validation of the coordinates failed.'
+        ];
+
         return [
-            [null, []],
-            [null, [null, null, null, null, new \DateTime()]],
-            [null, [null, null, null, null, '0,0,0']],
-            [null, [null, null, null, null, '180,90']],
+            [[\RuntimeException::class, $exceptionMessage[0]], []],
+            [[\RuntimeException::class, $exceptionMessage[0]], [null, null, null, null, new \DateTime()]],
+            [[\RuntimeException::class, $exceptionMessage[1]], [null, null, null, null, '0,0,0']],
+            [[\RuntimeException::class, $exceptionMessage[2]], [null, null, null, null, '180,90']],
 
-            [null, [null, null, null, null, '90,181']],
-            [null, [null, null, null, null, '-90,-181']],
-            [null, [null, null, null, null, '90,-181']],
-            [null, [null, null, null, null, '-90,181']],
+            [[\RuntimeException::class, $exceptionMessage[2]], [null, null, null, null, '90,181']],
+            [[\RuntimeException::class, $exceptionMessage[2]], [null, null, null, null, '-90,-181']],
+            [[\RuntimeException::class, $exceptionMessage[2]], [null, null, null, null, '90,-181']],
+            [[\RuntimeException::class, $exceptionMessage[2]], [null, null, null, null, '-90,181']],
 
-            [null, [null, null, null, null, '91,180']],
-            [null, [null, null, null, null, '-91,-180']],
-            [null, [null, null, null, null, '91,-180']],
-            [null, [null, null, null, null, '-91,180']],
+            [[\RuntimeException::class, $exceptionMessage[2]], [null, null, null, null, '91,180']],
+            [[\RuntimeException::class, $exceptionMessage[2]], [null, null, null, null, '-91,-180']],
+            [[\RuntimeException::class, $exceptionMessage[2]], [null, null, null, null, '91,-180']],
+            [[\RuntimeException::class, $exceptionMessage[2]], [null, null, null, null, '-91,180']],
 
             [[90.0, 180.0], [null, null, null, null, '90,180']],
             [[-90.0, 180.0], [null, null, null, null, '-90,180']],
@@ -64,17 +70,23 @@ class CoordinatesTest extends TestCase
     /**
      * @dataProvider dataProviderCoordinates
      */
-    public function testGetCoordinates($expected, $params)
+    public function testGetCoordinates(array $expected, array $params)
     {
         $lookupService = new Coordinates();
 
-        /** @var \MetaModels\FilterPerimetersearchBundle\FilterHelper\Container $container */
-        $container = \call_user_func_array([$lookupService, 'getCoordinates'], $params);
-        if (null === $expected) {
-            $this->assertNull($container);
+        if (\class_exists($expected[0]) && \in_array(\Exception::class, \class_parents($expected[0]))) {
+            try {
+                \call_user_func_array([$lookupService, 'getCoordinates'], $params);
+            } catch (\Exception $exception) {
+                $this->assertInstanceOf($expected[0], $exception);
+                $this->assertSame($expected[1], $exception->getMessage());
+            }
 
             return;
         }
+
+        /** @var \MetaModels\FilterPerimetersearchBundle\FilterHelper\Container $container */
+        $container = \call_user_func_array([$lookupService, 'getCoordinates'], $params);
 
         $this->assertInstanceOf(Container::class, $container);
         $this->assertSame($container->getLatitude(), $expected[0]);
