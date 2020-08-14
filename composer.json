@@ -32,13 +32,13 @@
         "source": "https://github.com/MetaModels/filter_perimetersearch"
     },
     "require": {
-        "php": "^7.1",
+        "php": "^7.2",
         "contao-community-alliance/dc-general": "^2.1.0",
-        "contao/core-bundle": "^4.4.8",
+        "contao/core-bundle": "^4.9.0, <4.13.0",
         "menatwork/contao-multicolumnwizard-bundle": "^3.4",
         "metamodels/core": "^2.1",
-        "symfony/dependency-injection": "^3.3 || ^4.0",
-        "symfony/http-kernel": "^3.3 || ^4.0",
+        "symfony/dependency-injection": "^3.4.26 || ^4.2.7",
+        "symfony/http-kernel": "^3.4.26 || ^4.2.7",
         "ext-json": "*",
         "ext-pdo": "*"
     },
@@ -62,7 +62,7 @@
     "extra": {
         "contao-manager-plugin": "MetaModels\\FilterPerimetersearchBundle\\ContaoManager\\Plugin",
         "branch-alias": {
-            "dev-master": "2.1.x-dev"
+            "dev-feature/2.2.0": "2.2.x-dev"
         }
     },
     "config": {
