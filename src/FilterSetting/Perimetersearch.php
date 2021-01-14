@@ -3,7 +3,7 @@
 /**
  * This file is part of MetaModels/filter_perimetersearch.
  *
- * (c) 2012-2019 The MetaModels team.
+ * (c) 2012-2021 The MetaModels team.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -16,7 +16,8 @@
  * @author     Christopher Bölter <christopher@boelter.eu>
  * @author     Sven Baumann <baumann.sv@gmail.com>
  * @author     David Molineus <david.molineus@netzmacht.de>
- * @copyright  2012-2019 The MetaModels team.
+ * @author     Ingolf Steinhardt <info@e-spin.de>
+ * @copyright  2012-2021 The MetaModels team.
  * @license    https://github.com/MetaModels/filter_perimetersearch/blob/master/LICENSE LGPL-3.0-or-later
  * @filesource
  */
@@ -66,6 +67,16 @@ class Perimetersearch extends SimpleLookup
         Connection $connection = null,
         FilterUrlBuilder $filterUrlBuilder = null
     ) {
+        // FIXME: Rewrite to prepersist handling
+        if ($data['rangemode'] === 'selection') {
+            foreach ((array) unserialize($data['range_selection']) as $option) {
+                if ($option['isdefault']) {
+                    $data['defaultid'] = $option['range'];
+                    break;
+                }
+            }
+        }
+
         parent::__construct($collection, $data, $eventDispatcher, $filterUrlBuilder);
 
         if (null === $connection) {
@@ -333,7 +344,7 @@ class Perimetersearch extends SimpleLookup
             $rangeOptions = [];
 
             foreach (StringUtil::deserialize($this->get('range_selection'), true) as $rangeItem) {
-                $rangeOptions[$rangeItem['range']] = $rangeItem['range'] . 'km';
+                $rangeOptions[$rangeItem['range']] = $rangeItem['range'] . ' km';
             }
 
             $rangeWidget = [
@@ -346,8 +357,9 @@ class Perimetersearch extends SimpleLookup
                 'eval'      => [
                     'colname'            => $this->getColname(),
                     'urlparam'           => $this->getParamNameRange(),
-                    'template'           => $this->get('range_template')
-                ]
+                    'template'           => $this->get('range_template'),
+                    'default'            => $this->get('defaultid'),
+                ],
             ];
 
             return $rangeWidget;
