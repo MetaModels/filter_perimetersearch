@@ -147,7 +147,7 @@ $GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['fields']['range_selection'] = 
     'exclude'   => true,
     'inputType' => 'multiColumnWizard',
     'eval'      => [
-        'tl_class'     => 'clr',
+        'tl_class'     => 'w50',
         'columnFields' => [
             'range' => [
                 'label'     => &$GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['range_selection'],
@@ -155,7 +155,7 @@ $GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['fields']['range_selection'] = 
                 'inputType' => 'text',
                 'eval'      => [
                     'mandatory' => true,
-                    'style'     => 'width:230px',
+                    'style'     => 'width:100%',
                     'rgxp'      => 'digit'
                 ]
             ],
@@ -164,7 +164,7 @@ $GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['fields']['range_selection'] = 
                 'exclude'   => true,
                 'inputType' => 'checkbox',
                 'eval'      => [
-                    'style'     => 'width:230px',
+                    'style'     => 'width:130px',
                 ]
             ],
         ]
@@ -219,7 +219,8 @@ $GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['fields']['datamode'] = [
         'alwaysSave'         => true,
         'submitOnChange'     => true,
         'includeBlankOption' => true,
-        'mandatory'          => true
+        'mandatory'          => true,
+        'tl_class'           => 'clr w50'
     ],
     'sql'      => 'varchar(255) NOT NULL default \'\''
 ];
@@ -267,7 +268,7 @@ $GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['fields']['single_attr_id'] = [
         'submitOnChange'     => true,
         'includeBlankOption' => true,
         'mandatory'          => true,
-        'tl_class'           => 'w50',
+        'tl_class'           => 'clr w50',
         'chosen'             => true
     ],
     'sql'      => 'varchar(255) NOT NULL default \'\''
@@ -283,7 +284,7 @@ $GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['fields']['first_attr_id'] = [
         'submitOnChange'     => true,
         'includeBlankOption' => true,
         'mandatory'          => true,
-        'tl_class'           => 'w50',
+        'tl_class'           => 'clr w50',
         'chosen'             => true
     ],
     'sql'      => 'varchar(255) NOT NULL default \'\''

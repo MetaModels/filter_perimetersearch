@@ -67,16 +67,6 @@ class Perimetersearch extends SimpleLookup
         Connection $connection = null,
         FilterUrlBuilder $filterUrlBuilder = null
     ) {
-        // FIXME: Rewrite to prepersist handling
-        if ($data['rangemode'] === 'selection') {
-            foreach ((array) unserialize($data['range_selection']) as $option) {
-                if ($option['isdefault']) {
-                    $data['defaultid'] = $option['range'];
-                    break;
-                }
-            }
-        }
-
         parent::__construct($collection, $data, $eventDispatcher, $filterUrlBuilder);
 
         if (null === $connection) {
