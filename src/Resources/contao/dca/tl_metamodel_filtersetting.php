@@ -3,7 +3,7 @@
 /**
  * This file is part of MetaModels/filter_perimetersearch.
  *
- * (c) 2012-2019 The MetaModels team.
+ * (c) 2012-2021 The MetaModels team.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -15,7 +15,8 @@
  * @author     Stefan Heimes <stefan_heimes@hotmail.com>
  * @author     Christopher Bölter <christopher@boelter.eu>
  * @author     Sven Baumann <baumann.sv@gmail.com>
- * @copyright  2012-2019 The MetaModels team.
+ * @author     Ingolf Steinhardt <info@e-spin.de>
+ * @copyright  2012-2021 The MetaModels team.
  * @license    https://github.com/MetaModels/filter_perimetersearch/blob/master/LICENSE LGPL-3.0-or-later
  * @filesource
  */
@@ -146,7 +147,7 @@ $GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['fields']['range_selection'] = 
     'exclude'   => true,
     'inputType' => 'multiColumnWizard',
     'eval'      => [
-        'tl_class'     => 'clr',
+        'tl_class'     => 'w50',
         'columnFields' => [
             'range' => [
                 'label'     => &$GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['range_selection'],
@@ -154,10 +155,18 @@ $GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['fields']['range_selection'] = 
                 'inputType' => 'text',
                 'eval'      => [
                     'mandatory' => true,
-                    'style'     => 'width:230px',
+                    'style'     => 'width:100%',
                     'rgxp'      => 'digit'
                 ]
-            ]
+            ],
+            'isdefault' => [
+                'label'     => &$GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['range_selection_default'],
+                'exclude'   => true,
+                'inputType' => 'checkbox',
+                'eval'      => [
+                    'style'     => 'width:130px',
+                ]
+            ],
         ]
     ],
     'sql'      => 'text NULL'
@@ -210,7 +219,8 @@ $GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['fields']['datamode'] = [
         'alwaysSave'         => true,
         'submitOnChange'     => true,
         'includeBlankOption' => true,
-        'mandatory'          => true
+        'mandatory'          => true,
+        'tl_class'           => 'clr w50'
     ],
     'sql'      => 'varchar(255) NOT NULL default \'\''
 ];
@@ -258,7 +268,7 @@ $GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['fields']['single_attr_id'] = [
         'submitOnChange'     => true,
         'includeBlankOption' => true,
         'mandatory'          => true,
-        'tl_class'           => 'w50',
+        'tl_class'           => 'clr w50',
         'chosen'             => true
     ],
     'sql'      => 'varchar(255) NOT NULL default \'\''
@@ -274,7 +284,7 @@ $GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['fields']['first_attr_id'] = [
         'submitOnChange'     => true,
         'includeBlankOption' => true,
         'mandatory'          => true,
-        'tl_class'           => 'w50',
+        'tl_class'           => 'clr w50',
         'chosen'             => true
     ],
     'sql'      => 'varchar(255) NOT NULL default \'\''
