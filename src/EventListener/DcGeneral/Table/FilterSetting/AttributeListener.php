@@ -3,7 +3,7 @@
 /**
  * This file is part of MetaModels/filter_perimetersearch.
  *
- * (c) 2012-2019 The MetaModels team.
+ * (c) 2012-2021 The MetaModels team.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -14,7 +14,8 @@
  * @author     Christian Schiffler <c.schiffler@cyberspectrum.de>
  * @author     Stefan Heimes <stefan_heimes@hotmail.com>
  * @author     Sven Baumann <baumann.sv@gmail.com>
- * @copyright  2012-2019 The MetaModels team.
+ * @author     Ingolf Steinhardt <info@e-spin.de>
+ * @copyright  2012-2021 The MetaModels team.
  * @license    https://github.com/MetaModels/filter_perimetersearch/blob/master/LICENSE LGPL-3.0-or-later
  * @filesource
  */
@@ -31,6 +32,20 @@ use ContaoCommunityAlliance\DcGeneral\Contao\View\Contao2BackendView\Event\GetPr
 class AttributeListener extends Base
 {
     /**
+     * Allowed property names.
+     *
+     * @var string[]
+     */
+    private array $allowedProperties = ['first_attr_id', 'second_attr_id', 'single_attr_id'];
+
+    /**
+     * Allowed table name.
+     *
+     * @var string
+     */
+    private string $allowedTableName = 'tl_metamodel_filtersetting';
+
+    /**
      * Provide options for default selection.
      *
      * @param GetPropertyOptionsEvent $event The event.
@@ -40,8 +55,7 @@ class AttributeListener extends Base
     public function getOptions(GetPropertyOptionsEvent $event)
     {
         // Check the context.
-        $allowedProperties = ['first_attr_id', 'second_attr_id', 'single_attr_id'];
-        if (!$this->isAllowedProperty($event, 'tl_metamodel_filtersetting', $allowedProperties)
+        if (!$this->isAllowedProperty($event, $this->allowedTableName, $this->allowedProperties)
         ) {
             return;
         }
@@ -79,8 +93,8 @@ class AttributeListener extends Base
      */
     public function decodeValue(DecodePropertyValueForWidgetEvent $event)
     {
-        if (('attr_id' !== $event->getProperty())
-            || ('tl_metamodel_filtersetting' !== $event->getEnvironment()->getDataDefinition()->getName())
+        if (!\in_array($event->getProperty(), $this->allowedProperties)
+            || ($this->allowedTableName !== $event->getEnvironment()->getDataDefinition()->getName())
         ) {
             return;
         }
@@ -95,7 +109,7 @@ class AttributeListener extends Base
 
         $attribute = $metaModel->getAttributeById($value);
         if ($attribute) {
-            $event->setValue($metaModel->getTableName() .'_' . $attribute->getColName());
+            $event->setValue($metaModel->getTableName() . '_' . $attribute->getColName());
         }
     }
 
@@ -108,8 +122,8 @@ class AttributeListener extends Base
      */
     public function encodeValue(EncodePropertyValueFromWidgetEvent $event)
     {
-        if (('attr_id' !== $event->getProperty())
-            || ('tl_metamodel_filtersetting' !== $event->getEnvironment()->getDataDefinition()->getName())
+        if (!\in_array($event->getProperty(), $this->allowedProperties)
+            || ($this->allowedTableName !== $event->getEnvironment()->getDataDefinition()->getName())
         ) {
             return;
         }
