@@ -25,6 +25,8 @@ namespace MetaModels\FilterPerimetersearchBundle\EventListener\DcGeneral\Table\F
 use ContaoCommunityAlliance\DcGeneral\Contao\View\Contao2BackendView\Event\DecodePropertyValueForWidgetEvent;
 use ContaoCommunityAlliance\DcGeneral\Contao\View\Contao2BackendView\Event\EncodePropertyValueFromWidgetEvent;
 use ContaoCommunityAlliance\DcGeneral\Contao\View\Contao2BackendView\Event\GetPropertyOptionsEvent;
+use MetaModels\CoreBundle\Formatter\SelectAttributeOptionLabelFormatter;
+use MetaModels\Filter\Setting\IFilterSettingFactory;
 
 /**
  * This class provides the attribute options and encodes and decodes the attribute id.
@@ -36,14 +38,34 @@ class AttributeListener extends Base
      *
      * @var string[]
      */
-    private array $allowedProperties = ['first_attr_id', 'second_attr_id', 'single_attr_id'];
+    private $allowedProperties = ['first_attr_id', 'second_attr_id', 'single_attr_id'];
 
     /**
      * Allowed table name.
      *
      * @var string
      */
-    private string $allowedTableName = 'tl_metamodel_filtersetting';
+    private $allowedTableName = 'tl_metamodel_filtersetting';
+
+    /**
+     * The attribute select option label formatter.
+     *
+     * @var SelectAttributeOptionLabelFormatter
+     */
+    private $attributeLabelFormatter;
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param SelectAttributeOptionLabelFormatter $attributeLabelFormatter The attribute select option label formatter.
+     */
+    public function __construct(
+        IFilterSettingFactory $filterFactory,
+        SelectAttributeOptionLabelFormatter $attributeLabelFormatter
+    ) {
+        parent::__construct($filterFactory);
+        $this->attributeLabelFormatter = $attributeLabelFormatter;
+    }
 
     /**
      * Provide options for default selection.
@@ -78,7 +100,7 @@ class AttributeListener extends Base
             }
 
             $selectValue          = $attribute->getColName();
-            $result[$selectValue] = $attribute->getName() . ' [' . $typeName . ']';
+            $result[$selectValue] = $this->attributeLabelFormatter->formatLabel($attribute);
         }
 
         $event->setOptions($result);
