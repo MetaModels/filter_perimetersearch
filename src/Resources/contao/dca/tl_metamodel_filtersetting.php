@@ -3,7 +3,7 @@
 /**
  * This file is part of MetaModels/filter_perimetersearch.
  *
- * (c) 2012-2021 The MetaModels team.
+ * (c) 2012-2022 The MetaModels team.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -16,7 +16,7 @@
  * @author     Christopher Bölter <christopher@boelter.eu>
  * @author     Sven Baumann <baumann.sv@gmail.com>
  * @author     Ingolf Steinhardt <info@e-spin.de>
- * @copyright  2012-2021 The MetaModels team.
+ * @copyright  2012-2022 The MetaModels team.
  * @license    https://github.com/MetaModels/filter_perimetersearch/blob/master/LICENSE LGPL-3.0-or-later
  * @filesource
  */
@@ -76,7 +76,7 @@ $GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['fields']['countrymode'] = [
     'exclude'   => true,
     'inputType' => 'select',
     'options'   => ['none', 'preset', 'get'],
-    'reference' => $GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['countrymode_options'],
+    'reference' => &$GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['countrymode_options'],
     'eval'      => [
         'tl_class'       => 'w50 w50x',
         'doNotSaveEmpty' => true,
@@ -118,7 +118,7 @@ $GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['fields']['rangemode'] = [
     'exclude'   => true,
     'inputType' => 'select',
     'options'   => ['free', 'preset', 'selection'],
-    'reference' => $GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['rangemode_options'],
+    'reference' => &$GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['rangemode_options'],
     'eval'      => [
         'tl_class'           => 'w50 w50x',
         'doNotSaveEmpty'     => true,
@@ -213,7 +213,7 @@ $GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['fields']['datamode'] = [
     'exclude'   => true,
     'inputType' => 'select',
     'options'   => ['single', 'multi'],
-    'reference' => $GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['datamode_options'],
+    'reference' => &$GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['datamode_options'],
     'eval'      => [
         'doNotSaveEmpty'     => true,
         'alwaysSave'         => true,
