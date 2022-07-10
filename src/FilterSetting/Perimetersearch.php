@@ -148,8 +148,8 @@ class Perimetersearch extends SimpleLookup
         $metaModel      = $this->getMetaModel();
         $paramName      = $this->getParamName();
         $paramNameRange = $this->getParamNameRange();
-        $paramValue     = $arrFilterUrl[$paramName];
-        $distance       = (int) $arrFilterUrl[$paramNameRange];
+        $paramValue     = $arrFilterUrl[$paramName] ?? '';
+        $distance       = (int) ($arrFilterUrl[$paramNameRange] ?? 0);
 
         // Check if we have a value.
         if (empty($paramValue)) {
@@ -647,8 +647,8 @@ class Perimetersearch extends SimpleLookup
 
         // Build a new container.
         $container = new Container();
-        $container->setLatitude($result->geo_lat);
-        $container->setLongitude($result->geo_long);
+        $container->setLatitude($result['geo_lat']);
+        $container->setLongitude($result['geo_long']);
         $container->setSearchParam(
             \strtr(
                 $builder->getSQL(),
