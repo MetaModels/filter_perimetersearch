@@ -113,6 +113,8 @@ $GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['countrymode_options']['get'] 
  * Filter types
  */
 $GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['typenames']['perimetersearch'] = 'Perimetersearch';
+$GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['typedesc']['_multicolumn_']    = '%s/%s';
+$GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['typedesc']['_multiname_']      = '%s"/"%s';
 
 /**
  * Lookup names
