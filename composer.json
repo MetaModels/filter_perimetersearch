@@ -1,71 +1,75 @@
 {
-    "name": "metamodels/filter_perimetersearch",
-    "description": "MetaModels perimeter search",
-    "keywords": [
-        "contao",
-        "metamodels",
-        "perimeter",
-        "search",
-        "filter"
-    ],
-    "type": "contao-module",
-    "homepage": "http://now.metamodel.me/",
-    "license": "LGPL-3.0-or-later",
-    "authors": [
-        {
-            "name": "Christian Schiffler",
-            "email": "c.schiffler@cyberspectrum.de",
-            "homepage": "http://www.cyberspectrum.de",
-            "role": "Developer"
-        },
-        {
-            "name": "Stefan Heimes",
-            "email": "stefan_heimes@hotmail.com",
-            "role": "Developer"
-        }
-    ],
-    "support": {
-        "email": "mail@metamodel.me",
-        "issues": "https://github.com/MetaModels/filter_perimetersearch/issues",
-        "wiki": "http://de.contaowiki.org/MetaModels",
-        "irc": "irc://irc.freenode.org/contao.mm",
-        "source": "https://github.com/MetaModels/filter_perimetersearch"
+  "name" : "metamodels/filter_perimetersearch",
+  "description" : "MetaModels perimeter search",
+  "keywords" : [
+    "contao",
+    "metamodels",
+    "perimeter",
+    "search",
+    "filter"
+  ],
+  "type" : "contao-module",
+  "homepage" : "http://now.metamodel.me/",
+  "license" : "LGPL-3.0-or-later",
+  "authors" : [
+    {
+      "name" : "Christian Schiffler",
+      "email" : "c.schiffler@cyberspectrum.de",
+      "homepage" : "http://www.cyberspectrum.de",
+      "role" : "Developer"
     },
-    "require": {
-        "php": "^7.2",
-        "contao-community-alliance/dc-general": "^2.1.0",
-        "contao/core-bundle": "^4.9.0, <4.13.0",
-        "menatwork/contao-multicolumnwizard-bundle": "^3.4",
-        "metamodels/core": "^2.1",
-        "symfony/dependency-injection": "^3.4.26 || ^4.2.7",
-        "symfony/http-kernel": "^3.4.26 || ^4.2.7",
-        "ext-json": "*",
-        "ext-pdo": "*"
-    },
-    "require-dev": {
-        "contao/manager-plugin": "^2.1",
-        "phpcq/all-tasks": "^1.2"
-    },
-    "autoload": {
-        "psr-4": {
-            "MetaModels\\FilterPerimetersearchBundle\\": "src"
-        },
-        "files": [
-            "src/deprecated-autoload.php"
-        ]
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "MetaModels\\FilterPerimetersearchBundle\\Test\\": "tests"
-        }
-    },
-    "extra": {
-        "contao-manager-plugin": "MetaModels\\FilterPerimetersearchBundle\\ContaoManager\\Plugin",
-        "branch-alias": {
-            "dev-feature/2.2.0": "2.2.x-dev"
-        }
-    },
-    "config": {
-        "sort-packages": true
+    {
+      "name" : "Stefan Heimes",
+      "email" : "stefan_heimes@hotmail.com",
+      "role" : "Developer"
     }
+  ],
+  "support" : {
+    "email" : "mail@metamodel.me",
+    "issues" : "https://github.com/MetaModels/filter_perimetersearch/issues",
+    "wiki" : "http://de.contaowiki.org/MetaModels",
+    "irc" : "irc://irc.freenode.org/contao.mm",
+    "source" : "https://github.com/MetaModels/filter_perimetersearch"
+  },
+  "require" : {
+    "php" : "^7.4",
+    "contao-community-alliance/dc-general" : "^2.2",
+    "contao/core-bundle" : "^4.9.0, <4.13.0",
+    "menatwork/contao-multicolumnwizard-bundle" : "^3.4",
+    "metamodels/core" : "^2.2",
+    "symfony/dependency-injection" : "^3.4.26 || ^4.2.7",
+    "symfony/http-kernel" : "^3.4.26 || ^4.2.7",
+    "ext-json" : "*",
+    "ext-pdo" : "*"
+  },
+  "require-dev" : {
+    "contao/manager-plugin" : "^2.1",
+    "phpcq/all-tasks" : "^1.2"
+  },
+  "autoload" : {
+    "psr-4" : {
+      "MetaModels\\FilterPerimetersearchBundle\\" : "src"
+    },
+    "files" : [
+      "src/deprecated-autoload.php"
+    ]
+  },
+  "autoload-dev" : {
+    "psr-4" : {
+      "MetaModels\\FilterPerimetersearchBundle\\Test\\" : "tests"
+    }
+  },
+  "extra" : {
+    "contao-manager-plugin" : "MetaModels\\FilterPerimetersearchBundle\\ContaoManager\\Plugin",
+    "branch-alias" : {
+      "dev-feature/2.2.0" : "2.2.x-dev"
+    }
+  },
+  "config" : {
+    "allow-plugins" : {
+      "contao-components/installer" : false,
+      "contao/manager-plugin" : false
+    },
+    "sort-packages" : true
+  }
 }
