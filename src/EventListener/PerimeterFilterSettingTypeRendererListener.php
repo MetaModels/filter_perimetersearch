@@ -27,6 +27,8 @@ use MetaModels\CoreBundle\EventListener\DcGeneral\Table\FilterSetting\AbstractFi
 
 /**
  * Handles rendering of model from tl_metamodel_filtersetting.
+ *
+ * @SuppressWarnings(PHPMD.LongClassName)
  */
 class PerimeterFilterSettingTypeRendererListener extends AbstractFilterSettingTypeRenderer
 {
@@ -48,6 +50,8 @@ class PerimeterFilterSettingTypeRendererListener extends AbstractFilterSettingTy
 
     /**
      * {@inheritdoc}
+     *
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
     protected function getLabelParametersWithAttributeAndUrlParam(
         EnvironmentInterface $environment,
