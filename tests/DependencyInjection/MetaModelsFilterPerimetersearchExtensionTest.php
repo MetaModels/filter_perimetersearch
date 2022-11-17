@@ -13,6 +13,7 @@
  * @package    MetaModels/filter_perimetersearch
  * @author     Christian Schiffler <c.schiffler@cyberspectrum.de>
  * @author     Ingolf Steinhardt <info@e-spin.de>
+ * @author     Sven Baumann <baumann.sv@gmail.com>
  * @copyright  2012-2022 The MetaModels team.
  * @license    https://github.com/MetaModels/filter_perimetersearch/blob/master/LICENSE LGPL-3.0-or-later
  * @filesource
@@ -31,6 +32,7 @@ use Symfony\Component\DependencyInjection\Extension\ExtensionInterface;
  * This test case test the extension.
  *
  * @SuppressWarnings(PHPMD.LongClassName)
+ * @covers \MetaModels\FilterPerimetersearchBundle\DependencyInjection\MetaModelsFilterPerimetersearchExtension
  */
 class MetaModelsFilterPerimetersearchExtensionTest extends TestCase
 {
