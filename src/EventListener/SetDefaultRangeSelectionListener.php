@@ -31,8 +31,10 @@ class SetDefaultRangeSelectionListener
      * Set default option in range selection.
      *
      * @param PrePersistModelEvent $event The event.
+     *
+     * @return void
      */
-    public function __invoke(PrePersistModelEvent $event)
+    public function __invoke(PrePersistModelEvent $event): void
     {
         if ('tl_metamodel_filtersetting' !== $event->getEnvironment()->getDataDefinition()->getName()) {
             return;
