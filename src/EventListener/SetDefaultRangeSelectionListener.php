@@ -3,7 +3,7 @@
 /**
  * This file is part of MetaModels/filter_perimetersearch.
  *
- * (c) 2012-2021 The MetaModels team.
+ * (c) 2012-2022 The MetaModels team.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -12,7 +12,8 @@
  *
  * @package    MetaModels/filter_perimetersearch
  * @author     Ingolf Steinhardt <info@e-spin.de>
- * @copyright  2012-2021 The MetaModels team.
+ * @author     Sven Baumann <baumann.sv@gmail.com>
+ * @copyright  2012-2022 The MetaModels team.
  * @license    https://github.com/MetaModels/filter_perimetersearch/blob/master/LICENSE LGPL-3.0-or-later
  * @filesource
  */
@@ -21,14 +22,19 @@ namespace MetaModels\FilterPerimetersearchBundle\EventListener;
 
 use ContaoCommunityAlliance\DcGeneral\Event\PrePersistModelEvent;
 
+/**
+ * Handles range selection.
+ */
 class SetDefaultRangeSelectionListener
 {
     /**
      * Set default option in range selection.
      *
-     * @param PrePersistModelEvent $event
+     * @param PrePersistModelEvent $event The event.
+     *
+     * @return void
      */
-    public function __invoke(PrePersistModelEvent $event)
+    public function __invoke(PrePersistModelEvent $event): void
     {
         if ('tl_metamodel_filtersetting' !== $event->getEnvironment()->getDataDefinition()->getName()) {
             return;
