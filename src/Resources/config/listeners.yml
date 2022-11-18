@@ -17,6 +17,7 @@ services:
         public: true
         arguments:
             - "@metamodels.filter_setting_factory"
+            - '@MetaModels\CoreBundle\Formatter\SelectAttributeOptionLabelFormatter'
         tags:
             -   name: kernel.event_listener
                 event: dc-general.view.contao2backend.get-property-options
@@ -33,6 +34,7 @@ services:
         public: true
         arguments:
             - "@metamodels.filter_setting_factory"
+            - '@MetaModels\CoreBundle\Formatter\SelectAttributeOptionLabelFormatter'
         tags:
             -   name: kernel.event_listener
                 event: dc-general.view.contao2backend.get-property-options
@@ -65,3 +67,10 @@ services:
             -   name: kernel.event_listener
                 event: men-at-work.multi-column-wizard.get-options
                 method: getOptions
+
+    MetaModels\FilterPerimetersearchBundle\EventListener\SetDefaultRangeSelectionListener:
+        public: true
+        tags:
+            -   name: kernel.event_listener
+                event: dc-general.model.pre-persist
+                method: __invoke

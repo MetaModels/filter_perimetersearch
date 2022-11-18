@@ -12,3 +12,6 @@ mapping:
     - 'stefanheimes <stefan_heimes@hotmail.com>'
     - 'Stefan Heimes <cms@men-at-work.de>'
   'cboelter <christopher@boelter.eu>': 'Christopher Bölter <christopher@boelter.eu>'
+  'Ingolf Steinhardt <info@e-spin.de>':
+    - 'zonky2 <info@e-spin.de>'
+    - 'e-spin <git@e-spin.de>'
