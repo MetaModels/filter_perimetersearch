@@ -62,7 +62,7 @@
   "extra" : {
     "contao-manager-plugin" : "MetaModels\\FilterPerimetersearchBundle\\ContaoManager\\Plugin",
     "branch-alias" : {
-      "dev-hotfix/2.2.1" : "2.2.1-dev"
+      "dev-hotfix/2.2.2" : "2.2.2-dev"
     }
   },
   "config" : {
