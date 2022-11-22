@@ -2,7 +2,7 @@
 /**
  * This file is part of MetaModels/filter_perimetersearch.
  *
- * (c) 2012-2019 The MetaModels team.
+ * (c) 2012-2022 The MetaModels team.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -12,9 +12,9 @@
  * Translations are managed automatically using Transifex. To create a new translation
  * or to help to maintain an existing one, please register at transifex.com.
  *
- * Last-updated: 2019-01-21T23:09:38+01:00
+ * Last-updated: 2022-11-19T17:19:19+01:00
  *
- * @copyright 2012-2019 The MetaModels team.
+ * @copyright 2012-2022 The MetaModels team.
  * @license   https://github.com/MetaModels/filter_perimetersearch/blob/master/LICENSE LGPL-3.0-or-later
  * @link      https://www.transifex.com/metamodels/public/
  * @link      https://www.transifex.com/signup/?join_project=metamodels
@@ -42,17 +42,18 @@ $GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['lookupservice']['0']         
 $GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['lookupservice']['1']                  = 'Здесь вы можете выбрать службу поиска для разрешения адресных данных.';
 $GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['lookupservice']['api_token']['0']     = 'API токен';
 $GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['lookupservice']['api_token']['1']     = 'Здесь вы можете добавить токен API.';
+$GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['perimetersearch']['coordinates']      = 'Координаты ввода ';
 $GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['perimetersearch']['google_maps']      = 'Поиск на картах Google ';
 $GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['perimetersearch']['open_street_maps'] = 'OpenStreetMap';
 $GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['range_label']['0']                    = 'Значок диапазона';
 $GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['range_label']['1']                    = 'Показать метки диапазона вместо названия атрибута.';
 $GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['range_legend']                        = 'Настройки диапазона';
 $GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['range_placeholder']['0']              = 'Заполнитель диапазона';
-$GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['range_placeholder']['1']              = 'Показывать этот текст, если оно пустое (требуется HTML5).';
 $GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['range_preset']['0']                   = 'Предварительно заданный диапазон';
 $GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['range_preset']['1']                   = 'Вы можете добавить предварительно заданный диапазон.';
 $GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['range_selection']['0']                = 'Выбор диапазона';
 $GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['range_selection']['1']                = 'Вы можете добавить значения.';
+$GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['range_selection_default']['0']        = 'По умолчанию';
 $GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['range_template']['0']                 = 'Шаблон диапазона';
 $GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['range_template']['1']                 = 'Подшаблон для этого диапазона элемента фильтра. Стандарт: виджет формы.';
 $GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['rangemode']['0']                      = 'Режим диапазона';
