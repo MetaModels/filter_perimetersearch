@@ -3,7 +3,7 @@
 /**
  * This file is part of MetaModels/filter_perimetersearch.
  *
- * (c) 2012-2022 The MetaModels team.
+ * (c) 2012-2024 The MetaModels team.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -17,7 +17,7 @@
  * @author     Sven Baumann <baumann.sv@gmail.com>
  * @author     David Molineus <david.molineus@netzmacht.de>
  * @author     Ingolf Steinhardt <info@e-spin.de>
- * @copyright  2012-2022 The MetaModels team.
+ * @copyright  2012-2024 The MetaModels team.
  * @license    https://github.com/MetaModels/filter_perimetersearch/blob/master/LICENSE LGPL-3.0-or-later
  * @filesource
  */
@@ -40,16 +40,19 @@ use MetaModels\FrontendIntegration\FrontendFilterOptions;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
- * Filter "select field" for FE-filtering, based on filters by the meta models team.
+ * Filter "select field" for FE-filtering, based on filters by the MetaModels team.
+ *
+ * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
 class Perimetersearch extends SimpleLookup
 {
     /**
      * Database connection.
      *
-     * @var Connection
+     * @var Connection|null
      */
-    private $connection;
+    private Connection|null $connection;
 
     /**
      * Constructor - initialize the object and store the parameters.
@@ -58,7 +61,7 @@ class Perimetersearch extends SimpleLookup
      * @param array                         $data             The attributes for this filter setting.
      * @param EventDispatcherInterface|null $eventDispatcher  The event dispatcher.
      * @param Connection|null               $connection       The database connection.
-     * @param FilterUrlBuilder              $filterUrlBuilder The filter URL builder.
+     * @param FilterUrlBuilder|null         $filterUrlBuilder The filter URL builder.
      */
     public function __construct(
         ICollection $collection,
@@ -137,7 +140,7 @@ class Perimetersearch extends SimpleLookup
      */
     protected function getParamNameRange()
     {
-        return $this->getParamName() . '_range';
+        return ($this->getParamName() ?? '') . '_range';
     }
 
     /**
@@ -233,7 +236,7 @@ class Perimetersearch extends SimpleLookup
     {
         if (($paramName = $this->getParamName())) {
             return [
-                $paramName                 => ($this->get('label') ?: $this->getAttributeName()),
+                $paramName                 => ($this->get('label') ?: $this->getAttributeName()) . ' [Umkreissuche]',
                 $this->getParamNameRange() => ($this->get('label') ?: $this->getAttributeName()) . ' - Range'
             ];
         }
@@ -254,12 +257,14 @@ class Perimetersearch extends SimpleLookup
      *
      * @SuppressWarnings(PHPMD.Superglobals)
      * @SuppressWarnings(PHPMD.CamelCaseVariableName)
+     *
+     * @SuppressWarnings(PHPMD.LongVariable)
      */
     public function getParameterFilterWidgets(
-        $idList,
-        $filterUrlList,
-        $jumpToList,
-        FrontendFilterOptions $frontendFilterOptions
+        $arrIds,
+        $arrArrFilterUrl,
+        $arrJumpTo,
+        FrontendFilterOptions $objFrontendFilterOptions
     ) {
         // If defined as static, return nothing as not to be manipulated via editors.
         if (!$this->enableFEFilterWidget()) {
@@ -276,17 +281,17 @@ class Perimetersearch extends SimpleLookup
         );
 
         // Address search.
-        $widgets      = $this->getSearchWidget($frontendFilterOptions);
+        $widgets      = $this->getSearchWidget($objFrontendFilterOptions);
         $rangeWidgets = $this->getRangeWidget();
 
         // Add filter.
         $filterWidgets[$this->getParamName()] = $this
-            ->prepareFrontendFilterWidget($widgets, $filterUrlList, $jumpToList, $frontendFilterOptions);
+            ->prepareFrontendFilterWidget($widgets, $arrArrFilterUrl, $arrJumpTo, $objFrontendFilterOptions);
 
         // Add range filter if we have one.
         if ($rangeWidgets) {
             $filterWidgets[$this->getParamNameRange()] = $this
-                ->prepareFrontendFilterWidget($rangeWidgets, $filterUrlList, $jumpToList, $frontendFilterOptions);
+                ->prepareFrontendFilterWidget($rangeWidgets, $arrArrFilterUrl, $arrJumpTo, $objFrontendFilterOptions);
         }
 
         return $filterWidgets;
@@ -299,13 +304,15 @@ class Perimetersearch extends SimpleLookup
      * @param FrontendFilterOptions $frontendFilterOptions The FE options.
      *
      * @return array
+     *
+     * @SuppressWarnings(PHPMD.LongVariable)
      */
     private function getSearchWidget(FrontendFilterOptions $frontendFilterOptions)
     {
         $widget = [
             'label'     => [
                 ($this->get('label') ?: $this->getAttributeName()),
-                'GET: ' . $this->getParamName(),
+                'GET: ' . ($this->getParamName() ?? ''),
             ],
             'inputType' => 'text',
             'count'     => [],
@@ -339,7 +346,7 @@ class Perimetersearch extends SimpleLookup
 
             $rangeWidget = [
                 'label'     => [
-                    ($this->get('range_label') ?: $this->getAttributeName() . ' Range '),
+                    ($this->get('range_label') ?: ($this->getAttributeName() ?? '') . ' Range '),
                     'GET: ' . $this->getParamNameRange()
                 ],
                 'inputType' => 'select',
@@ -358,7 +365,7 @@ class Perimetersearch extends SimpleLookup
         if ('free' === $this->get('rangemode')) {
             $rangeWidget = [
                 'label'     => [
-                    ($this->get('range_label') ?: $this->getAttributeName() . ' Range '),
+                    ($this->get('range_label') ?: ($this->getAttributeName() ?? '') . ' Range '),
                     'GET: ' . $this->getParamNameRange()
                 ],
                 'inputType' => 'text',
@@ -487,7 +494,7 @@ class Perimetersearch extends SimpleLookup
             ->orderBy($distanceCalculation)
             ->setParameter('distance', $container->getDistance());
 
-        $statement = $builder->execute();
+        $statement = $builder->executeQuery();
 
         if (!$statement->rowCount()) {
             $filter->addFilterRule(new StaticIdList([]));

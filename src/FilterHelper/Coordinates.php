@@ -51,7 +51,8 @@ class Coordinates extends ProviderInterface
         }
 
         [$latitude, $longitude] = \array_map('floatval', $coordinates);
-        if (!(HaversineSphericalDistance::validateLatitude($latitude)
+        if (
+            !(HaversineSphericalDistance::validateLatitude($latitude)
             && HaversineSphericalDistance::validateLongitude($longitude))
         ) {
             throw new \RuntimeException('The validation of the coordinates failed.');

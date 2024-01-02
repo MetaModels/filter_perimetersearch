@@ -1,0 +1,16 @@
+{
+  "symbol-whitelist": [
+    "array", "bool", "false", "int", "null", "self", "static", "parent", "string", "true", "void", "mixed",
+    "ContaoCommunityAlliance\\Translator\\TranslatorInterface",
+    "Contao\\ManagerBundle\\ContaoManagerBundle",
+    "Contao\\ManagerPlugin\\Bundle\\BundlePluginInterface",
+    "Contao\\ManagerPlugin\\Bundle\\Config\\BundleConfig",
+    "Contao\\ManagerPlugin\\Bundle\\Parser\\ParserInterface",
+    "Contao\\ManagerPlugin\\Routing\\RoutingPluginInterface",
+    "Doctrine\\Bundle\\DoctrineBundle\\DoctrineBundle",
+    "Symfony\\Component\\Config\\FileLocator",
+    "Symfony\\Component\\EventDispatcher\\EventDispatcherInterface",
+    "Symfony\\Contracts\\Translation\\TranslatorInterface",
+    "tl_user_group"
+  ]
+}

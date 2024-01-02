@@ -3,7 +3,7 @@
 /**
  * This file is part of MetaModels/filter_perimetersearch.
  *
- * (c) 2012-2022 The MetaModels team.
+ * (c) 2012-2024 The MetaModels team.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -15,7 +15,7 @@
  * @author     Stefan Heimes <stefan_heimes@hotmail.com>
  * @author     Sven Baumann <baumann.sv@gmail.com>
  * @author     Ingolf Steinhardt <info@e-spin.de>
- * @copyright  2012-2022 The MetaModels team.
+ * @copyright  2012-2024 The MetaModels team.
  * @license    https://github.com/MetaModels/filter_perimetersearch/blob/master/LICENSE LGPL-3.0-or-later
  * @filesource
  */
@@ -96,9 +96,9 @@ class Perimetersearch implements IFilterRule
     /**
      * Database connection.
      *
-     * @var Connection
+     * @var Connection|null
      */
-    private $connection;
+    private Connection|null $connection;
 
     /**
      * Create a new instance.
@@ -160,7 +160,7 @@ class Perimetersearch implements IFilterRule
      */
     private function getMetaModelTableName()
     {
-        $attribute = ((int) $this->mode === self::MODE_SINGLE) ? $this->singleAttribute : $this->latitudeAttribute;
+        $attribute = ($this->mode === self::MODE_SINGLE) ? $this->singleAttribute : $this->latitudeAttribute;
 
         return $attribute
             ->getMetaModel()
@@ -259,7 +259,7 @@ class Perimetersearch implements IFilterRule
      */
     public function getMatchingIds()
     {
-        if ((int) $this->mode === self::MODE_SINGLE) {
+        if ($this->mode === self::MODE_SINGLE) {
             return $this->runSimpleQuery(
                 'item_id',
                 'tl_metamodel_geolocation',
@@ -344,7 +344,7 @@ class Perimetersearch implements IFilterRule
             return null;
         }
 
-        $sql = \implode(' AND ', \array_keys((array) $additionalWhere));
+        $sql = \implode(' AND ', \array_keys($additionalWhere));
 
         return ('' !== $sql) ? $sql . ' AND ' : null;
     }

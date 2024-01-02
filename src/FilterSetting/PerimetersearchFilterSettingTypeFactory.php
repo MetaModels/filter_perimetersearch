@@ -3,7 +3,7 @@
 /**
  * This file is part of MetaModels/filter_perimetersearch.
  *
- * (c) 2012-2019 The MetaModels team.
+ * (c) 2012-2024 The MetaModels team.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -15,7 +15,7 @@
  * @author     Stefan Heimes <stefan_heimes@hotmail.com>
  * @author     Sven Baumann <baumann.sv@gmail.com>
  * @author     David Molineus <david.molineus@netzmacht.de>
- * @copyright  2012-2019 The MetaModels team.
+ * @copyright  2012-2024 The MetaModels team.
  * @license    https://github.com/MetaModels/filter_perimetersearch/blob/master/LICENSE LGPL-3.0-or-later
  * @filesource
  */
@@ -37,21 +37,21 @@ class PerimetersearchFilterSettingTypeFactory extends AbstractFilterSettingTypeF
      *
      * @var Connection
      */
-    private $connection;
+    private Connection $connection;
 
     /**
      * The event dispatcher.
      *
      * @var EventDispatcherInterface
      */
-    private $eventDispatcher;
+    private EventDispatcherInterface $eventDispatcher;
 
     /**
      * The filter URL builder.
      *
      * @var FilterUrlBuilder
      */
-    private $filterUrlBuilder;
+    private FilterUrlBuilder $filterUrlBuilder;
 
     /**
      * Construct.
@@ -73,11 +73,13 @@ class PerimetersearchFilterSettingTypeFactory extends AbstractFilterSettingTypeF
             ->setTypeClass(Perimetersearch::class)
             ->allowAttributeTypes();
 
-        foreach ([
+        foreach (
+            [
                 'geolocation',
                 'text',
                 'decimal'
-            ] as $attribute) {
+            ] as $attribute
+        ) {
             $this->addKnownAttributeType($attribute);
         }
 
