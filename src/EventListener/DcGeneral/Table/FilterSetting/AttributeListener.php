@@ -100,9 +100,9 @@ class AttributeListener extends Base
         }
 
         foreach ($metaModel->getAttributes() as $attribute) {
-            $typeName = $attribute->get('type');
+            $typeName = (string) $attribute->get('type');
 
-            if ($typeFilter && (!\in_array($typeName, $typeFilter))) {
+            if (\is_array($typeFilter) && (!\in_array($typeName, $typeFilter))) {
                 continue;
             }
 
@@ -126,8 +126,8 @@ class AttributeListener extends Base
         assert($dataDefinition instanceof ContainerInterface);
 
         if (
-            !\in_array($event->getProperty(), $this->allowedProperties)
-            || ($this->allowedTableName !== $dataDefinition->getName())
+            ($this->allowedTableName !== $dataDefinition->getName())
+            || !\in_array($event->getProperty(), $this->allowedProperties, true)
         ) {
             return;
         }
@@ -159,8 +159,8 @@ class AttributeListener extends Base
         assert($dataDefinition instanceof ContainerInterface);
 
         if (
-            !\in_array($event->getProperty(), $this->allowedProperties)
-            || ($this->allowedTableName !== $dataDefinition->getName())
+            ($this->allowedTableName !== $dataDefinition->getName())
+            || !\in_array($event->getProperty(), $this->allowedProperties)
         ) {
             return;
         }

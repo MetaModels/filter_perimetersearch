@@ -50,9 +50,9 @@ class Perimetersearch extends SimpleLookup
     /**
      * Database connection.
      *
-     * @var Connection|null
+     * @var Connection
      */
-    private Connection|null $connection;
+    private Connection $connection;
 
     /**
      * Constructor - initialize the object and store the parameters.
@@ -75,11 +75,12 @@ class Perimetersearch extends SimpleLookup
         if (null === $connection) {
             // @codingStandardsIgnoreStart
             @\trigger_error(
-                'Connection is not passed as constructor argument.',
+                'Connection is missing. It has to be passed in the constructor. Fallback will be dropped.',
                 E_USER_DEPRECATED
             );
             // @codingStandardsIgnoreEnd
             $connection = System::getContainer()->get('database_connection');
+            assert($connection instanceof Connection);
         }
 
         $this->connection = $connection;
@@ -106,7 +107,9 @@ class Perimetersearch extends SimpleLookup
     }
 
     /**
-     * {@inheritdoc}
+     * Retrieve the filter parameter name to react on.
+     *
+     * @return string|null
      */
     protected function getParamName()
     {

@@ -76,7 +76,8 @@
   },
   "extra": {
     "branch-alias": {
-      "dev-feature/2.3.0": "2.3.x-dev"
+      "dev-feature/2.3.0": "2.3.x-dev",
+      "dev-hotfix/phpcq-2": "2.3.x-dev"
     },
     "contao-manager-plugin": "MetaModels\\FilterPerimetersearchBundle\\ContaoManager\\Plugin"
   }

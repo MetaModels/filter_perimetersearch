@@ -96,9 +96,9 @@ class Perimetersearch implements IFilterRule
     /**
      * Database connection.
      *
-     * @var Connection|null
+     * @var Connection
      */
-    private Connection|null $connection;
+    private Connection $connection;
 
     /**
      * Create a new instance.
@@ -111,7 +111,6 @@ class Perimetersearch implements IFilterRule
      * @param int             $dist               The dist.
      * @param Connection|null $connection         The database connection.
      *
-     * @throws \InvalidArgumentException     If any value or attribute is not valid.
      */
     public function __construct(
         $latitudeAttribute,
@@ -143,11 +142,12 @@ class Perimetersearch implements IFilterRule
         if (null === $connection) {
             // @codingStandardsIgnoreStart
             @\trigger_error(
-                'Connection is not passed as constructor argument.',
+                'Connection is missing. It has to be passed in the constructor. Fallback will be dropped.',
                 E_USER_DEPRECATED
             );
             // @codingStandardsIgnoreEnd
             $connection = System::getContainer()->get('database_connection');
+            assert($connection instanceof Connection);
         }
 
         $this->connection = $connection;
