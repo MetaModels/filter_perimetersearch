@@ -25,6 +25,7 @@ namespace MetaModels\FilterPerimetersearchBundle\FilterSetting;
 use Doctrine\DBAL\Connection;
 use MetaModels\Filter\FilterUrlBuilder;
 use MetaModels\Filter\Setting\AbstractFilterSettingTypeFactory;
+use MetaModels\Filter\Setting\ISimple;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
@@ -94,13 +95,19 @@ class PerimetersearchFilterSettingTypeFactory extends AbstractFilterSettingTypeF
     public function createInstance($information, $filterSettings)
     {
         $typeClass = $this->getTypeClass();
+        if ($typeClass === '' || $typeClass === null || !class_exists($typeClass)) {
+            return null;
+        }
 
-        return new $typeClass(
+        $typeObject = new $typeClass(
             $filterSettings,
             $information,
             $this->eventDispatcher,
             $this->connection,
             $this->filterUrlBuilder
         );
+        assert($typeObject instanceof ISimple);
+
+        return $typeObject;
     }
 }

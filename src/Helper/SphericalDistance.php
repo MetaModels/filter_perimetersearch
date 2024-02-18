@@ -101,7 +101,11 @@ class SphericalDistance
         $digits = 0,
         $earthRadius = self::EARTH_RADIUS_IN_KM
     ): float {
-        $oneRad = ((2 * M_PI) / 360);
+        $oneRad          = ((2 * M_PI) / 360);
+        $firstLatitude   = (float) $firstLatitude;
+        $firstLongitude  = (float) $firstLongitude;
+        $secondLatitude  = (float) $secondLatitude;
+        $secondLongitude = (float) $secondLongitude;
 
         return \round(
             \sqrt(
@@ -154,10 +158,11 @@ class SphericalDistance
      */
     public static function validateCoordinate($coordinate): bool
     {
+        $intCoordinate = (int)$coordinate;
         if (
             !(\is_numeric($coordinate)
-              && (3 >= \strlen((int) \abs($coordinate)))
-              && (6 >= (\strlen($coordinate) - \strlen((int) $coordinate) - 1)))
+              && (3 >= \strlen((string) \abs($coordinate)))
+              && (6 >= (\strlen((string) $coordinate) - \strlen((string) $intCoordinate) - 1)))
         ) {
             return false;
         }

@@ -39,7 +39,7 @@ class Perimetersearch implements IFilterRule
      *
      * @var int
      */
-    protected $mode;
+    protected $mode = self::MODE_SINGLE;
 
     /**
      * The attribute to filter on.
@@ -127,7 +127,7 @@ class Perimetersearch implements IFilterRule
         $this->validateValue($long, 'Only float and numeric allowed for the longitude.');
 
         // Check if the dist value is valid.
-        if (!\is_numeric($dist) || $dist < 0) {
+        if ($dist < 0) {
             throw new \InvalidArgumentException('The dist has to be a valid number and greater than 0.');
         }
 
@@ -187,9 +187,9 @@ class Perimetersearch implements IFilterRule
     /**
      * Check the attribute.
      *
-     * @param IAttribute $latitudeAttribute  The attribute to be checked.
-     * @param IAttribute $longitudeAttribute The attribute to be checked.
-     * @param IAttribute $singleAttribute    The attribute to be checked.
+     * @param null|IAttribute $latitudeAttribute  The attribute to be checked.
+     * @param null|IAttribute $longitudeAttribute The attribute to be checked.
+     * @param null|IAttribute $singleAttribute    The attribute to be checked.
      *
      * @return void
      *
@@ -287,7 +287,7 @@ class Perimetersearch implements IFilterRule
      * @param string     $longitudeField  The name of the longitude field.
      * @param array|null $additionalWhere A list with additional where information.
      *
-     * @return array A list with ID's or an empty array.
+     * @return list<mixed> A list with ID's or an empty array.
      */
     protected function runSimpleQuery($idField, $tableName, $latitudeField, $longitudeField, $additionalWhere)
     {
@@ -307,7 +307,7 @@ class Perimetersearch implements IFilterRule
             ->orderBy($distanceCalculation)
             ->setParameter('distance', $this->dist);
 
-        if ($additionalWhere) {
+        if (is_array($additionalWhere)) {
             foreach ($additionalWhere as $index => $where) {
                 if (0 === $index) {
                     $builder->where($where);
@@ -340,7 +340,7 @@ class Perimetersearch implements IFilterRule
      */
     protected function buildAdditionalWhere($additionalWhere)
     {
-        if (null === $additionalWhere) {
+        if (empty($additionalWhere)) {
             return null;
         }
 

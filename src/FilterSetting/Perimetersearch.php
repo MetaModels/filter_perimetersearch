@@ -28,6 +28,7 @@ use Contao\Input;
 use Contao\StringUtil;
 use Contao\System;
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Exception;
 use MetaModels\Attribute\IAttribute;
 use MetaModels\Filter\FilterUrlBuilder;
 use MetaModels\Filter\IFilter;
@@ -158,7 +159,7 @@ class Perimetersearch extends SimpleLookup
         $distance       = (int) ($arrFilterUrl[$paramNameRange] ?? 0);
 
         // Check if we have a value.
-        if (empty($paramValue)) {
+        if ($paramValue === null) {
             return;
         }
 
@@ -169,6 +170,9 @@ class Perimetersearch extends SimpleLookup
 
         // Try to get a country.
         $country = $this->getCountryInformation();
+        if ($country === null) {
+            $country = '';
+        }
 
         // Search for the geolocation.
         $container = $this->lookupGeo($paramValue, $country);
@@ -184,6 +188,9 @@ class Perimetersearch extends SimpleLookup
         if ('single' === $this->get('datamode')) {
             // Get the attribute.
             $attribute = $metaModel->getAttribute($this->get('single_attr_id'));
+            if ($attribute === null) {
+                return;
+            }
 
             // Search for the geolocation attribute.
             if ('geolocation' === $attribute->get('type')) {
@@ -193,6 +200,9 @@ class Perimetersearch extends SimpleLookup
             // Get the attributes.
             $firstAttribute  = $metaModel->getAttribute($this->get('first_attr_id'));
             $secondAttribute = $metaModel->getAttribute($this->get('second_attr_id'));
+            if ($firstAttribute === null || $secondAttribute === null) {
+                return;
+            }
 
             // Search for two simple attributes.
             $this->doSearchForTwoSimpleAtt($container, $objFilter, $firstAttribute, $secondAttribute);
@@ -237,7 +247,7 @@ class Perimetersearch extends SimpleLookup
      */
     public function getParameterFilterNames()
     {
-        if (($paramName = $this->getParamName())) {
+        if (($paramName = $this->getParamName()) !== null) {
             return [
                 $paramName                 => ($this->get('label') ?: $this->getAttributeName()) . ' [Umkreissuche]',
                 $this->getParamNameRange() => ($this->get('label') ?: $this->getAttributeName()) . ' - Range'
@@ -265,7 +275,7 @@ class Perimetersearch extends SimpleLookup
      */
     public function getParameterFilterWidgets(
         $arrIds,
-        $arrArrFilterUrl,
+        $arrFilterUrl,
         $arrJumpTo,
         FrontendFilterOptions $objFrontendFilterOptions
     ) {
@@ -284,17 +294,20 @@ class Perimetersearch extends SimpleLookup
         );
 
         // Address search.
-        $widgets      = $this->getSearchWidget($objFrontendFilterOptions);
-        $rangeWidgets = $this->getRangeWidget();
+        $widgets       = $this->getSearchWidget($objFrontendFilterOptions);
+        $rangeWidgets  = $this->getRangeWidget();
+        $paramName     = $this->getParamName();
 
         // Add filter.
-        $filterWidgets[$this->getParamName()] = $this
-            ->prepareFrontendFilterWidget($widgets, $arrArrFilterUrl, $arrJumpTo, $objFrontendFilterOptions);
+        if ($paramName !== null) {
+            $filterWidgets[$paramName] = $this
+                ->prepareFrontendFilterWidget($widgets, $arrFilterUrl, $arrJumpTo, $objFrontendFilterOptions);
+        }
 
         // Add range filter if we have one.
-        if ($rangeWidgets) {
+        if ($rangeWidgets !== null) {
             $filterWidgets[$this->getParamNameRange()] = $this
-                ->prepareFrontendFilterWidget($rangeWidgets, $arrArrFilterUrl, $arrJumpTo, $objFrontendFilterOptions);
+                ->prepareFrontendFilterWidget($rangeWidgets, $arrFilterUrl, $arrJumpTo, $objFrontendFilterOptions);
         }
 
         return $filterWidgets;
@@ -393,12 +406,12 @@ class Perimetersearch extends SimpleLookup
      */
     protected function getColname()
     {
-        if ($this->getParamName() && ('single' === $this->get('datamode'))) {
-            return $this->getMetaModel()->getAttribute($this->get('single_attr_id'))->getColname();
+        if ($this->getParamName() !== null && ('single' === $this->get('datamode'))) {
+            return $this->getMetaModel()->getAttribute($this->get('single_attr_id'))?->getColname();
         }
 
-        if ($this->getParamName() && ('multi' === $this->get('datamode'))) {
-            return $this->getMetaModel()->getAttribute($this->get('first_attr_id'))->getColname();
+        if ($this->getParamName() !== null && ('multi' === $this->get('datamode'))) {
+            return $this->getMetaModel()->getAttribute($this->get('first_attr_id'))?->getColname();
         }
 
         return null;
@@ -411,13 +424,16 @@ class Perimetersearch extends SimpleLookup
      */
     protected function getAttributeName()
     {
-        if ($this->getParamName() && ('single' === $this->get('datamode'))) {
-            return $this->getMetaModel()->getAttribute($this->get('single_attr_id'))->getName();
+        if ($this->getParamName() !== null && ('single' === $this->get('datamode'))) {
+            return $this->getMetaModel()->getAttribute($this->get('single_attr_id'))?->getName();
         }
 
-        if ($this->getParamName() && ('multi' === $this->get('datamode'))) {
+        if ($this->getParamName() !== null && ('multi' === $this->get('datamode'))) {
             $firstAttribute  = $this->getMetaModel()->getAttribute($this->get('first_attr_id'));
             $secondAttribute = $this->getMetaModel()->getAttribute($this->get('second_attr_id'));
+            if ($firstAttribute === null || $secondAttribute === null) {
+                return null;
+            }
 
             $latName = $firstAttribute->getName();
             $lngName = $secondAttribute->getName();
@@ -448,6 +464,11 @@ class Perimetersearch extends SimpleLookup
             $this->connection->quoteIdentifier('longitude')
         );
 
+        $attribute = $this->getMetaModel()->getAttribute($this->get('single_attr_id'));
+        if ($attribute === null) {
+            return;
+        }
+
         $builder = $this->connection->createQueryBuilder();
         $builder
             ->select($this->connection->quoteIdentifier('item_id'))
@@ -456,7 +477,7 @@ class Perimetersearch extends SimpleLookup
             ->andWhere($builder->expr()->eq($this->connection->quoteIdentifier('att_id'), ':attributeID'))
             ->orderBy($distanceCalculation)
             ->setParameter('distance', $container->getDistance())
-            ->setParameter('attributeID', $this->getMetaModel()->getAttribute($this->get('single_attr_id'))->get('id'));
+            ->setParameter('attributeID', $attribute->get('id'));
 
         $statement = $builder->executeQuery();
 
@@ -606,13 +627,13 @@ class Perimetersearch extends SimpleLookup
     /**
      * Add data to the cache.
      *
-     * @param string    $address The address which where use for the search.
-     * @param string    $country The country.
-     * @param Container $result  The container with all information.
+     * @param string $address The address which where use for the search.
+     * @param string $country The country.
+     * @param Container $result The container with all information.
      *
      * @return void
      *
-     * @throws \Doctrine\DBAL\DBALException When insert fails.
+     * @throws Exception If the insert fails.
      */
     protected function addToCache($address, $country, $result)
     {
@@ -654,6 +675,13 @@ class Perimetersearch extends SimpleLookup
         }
 
         $result = $statement->fetchAssociative();
+        if (
+            $result === false
+            || !array_key_exists('geo_lat', $result)
+            || !array_key_exists('geo_long', $result)
+        ) {
+            return null;
+        }
 
         // Build a new container.
         $container = new Container();
