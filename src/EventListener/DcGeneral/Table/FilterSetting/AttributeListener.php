@@ -26,6 +26,7 @@ use ContaoCommunityAlliance\DcGeneral\Contao\View\Contao2BackendView\Event\Decod
 use ContaoCommunityAlliance\DcGeneral\Contao\View\Contao2BackendView\Event\EncodePropertyValueFromWidgetEvent;
 use ContaoCommunityAlliance\DcGeneral\Contao\View\Contao2BackendView\Event\GetPropertyOptionsEvent;
 use ContaoCommunityAlliance\DcGeneral\DataDefinition\ContainerInterface;
+use MetaModels\Attribute\IAttribute;
 use MetaModels\CoreBundle\Formatter\SelectAttributeOptionLabelFormatter;
 use MetaModels\Filter\Setting\IFilterSettingFactory;
 
@@ -176,6 +177,7 @@ class AttributeListener extends Base
         $value = \substr($value, \strlen($metaModel->getTableName() . '_'));
 
         $attribute = $metaModel->getAttribute($value);
+        assert($attribute instanceof IAttribute);
 
         $event->setValue($attribute->get('id'));
     }

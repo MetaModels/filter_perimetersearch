@@ -78,7 +78,7 @@ abstract class ProviderInterface
         $fullAddress = null
     ) {
         // If we have a full address use it.
-        if ($fullAddress) {
+        if (null !== $fullAddress) {
             // If there is a country try to use the long form.
             if ((null !== $country) && (null !== ($fullCountryName = $this->getFullCountryName($country)))) {
                 return \sprintf('%s, %s', $fullAddress, $fullCountryName);
@@ -110,12 +110,12 @@ abstract class ProviderInterface
     /**
      * Find coordinates for given address.
      *
-     * @param string $street      The street.
-     * @param string $postal      The postal code.
-     * @param string $city        Name of city.
-     * @param string $country     A 2-letter country code.
-     * @param string $fullAddress Address string without specific format.
-     * @param string $apiToken    Optional the API token.
+     * @param string|null $street      The street.
+     * @param string|null $postal      The postal code.
+     * @param string|null $city        Name of city.
+     * @param string|null $country     A 2-letter country code.
+     * @param string|null $fullAddress Address string without specific format or string with two coordinates.
+     * @param string|null $apiToken    Optional the API token.
      *
      * @return Container
      */

@@ -45,6 +45,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  *
  * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
+ * @SuppressWarnings(PHPMD.CyclomaticComplexity)
  */
 class Perimetersearch extends SimpleLookup
 {

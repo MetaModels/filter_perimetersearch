@@ -60,12 +60,12 @@ class GoogleMaps extends ProviderInterface
         $container = new Container();
 
         // Set the query string.
-        $query = $this->getQueryString($street, $postal, $city, $country, $fullAddress, $apiToken);
+        $query = $this->getQueryString($street, $postal, $city, $country, $fullAddress);
         $container->setSearchParam($query);
 
         $request = new Request();
 
-        $apiUrlParameter = $apiToken ? '&key=' . $apiToken : '';
+        $apiUrlParameter = \is_string($apiToken) ? '&key=' . $apiToken : '';
         $request->send(\sprintf($this->googleUrl . '%s', \rawurlencode($query), $apiUrlParameter));
         $container->setUri(\sprintf($this->googleUrl . '%s', \rawurlencode($query), $apiUrlParameter));
 

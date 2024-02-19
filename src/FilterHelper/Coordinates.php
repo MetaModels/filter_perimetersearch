@@ -3,7 +3,7 @@
 /**
  * This file is part of MetaModels/filter_perimetersearch.
  *
- * (c) 2012-2019 The MetaModels team.
+ * (c) 2012-2024 The MetaModels team.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -12,7 +12,8 @@
  *
  * @package    MetaModels/filter_perimetersearch
  * @author     Sven Baumann <baumann.sv@gmail.com>
- * @copyright  2012-2019 The MetaModels team.
+ * @author     Ingolf Steinhardt <info@e-spin.de>
+ * @copyright  2012-2024 The MetaModels team.
  * @license    https://github.com/MetaModels/filter_perimetersearch/blob/master/LICENSE LGPL-3.0-or-later
  * @filesource
  */
@@ -41,13 +42,13 @@ class Coordinates extends ProviderInterface
         $fullAddress = null,
         $apiToken = null
     ) {
-        if (!$fullAddress || !\is_string($fullAddress)) {
+        if (null === $fullAddress || '' === $fullAddress) {
             throw new \RuntimeException('The value full address is empty or not type of a string.');
         }
 
         $coordinates = \explode(',', $fullAddress);
-        if (!\count($coordinates) || (3 <= \count($coordinates))) {
-            throw new \RuntimeException('The value full address has no coordinates.');
+        if (2 !== \count($coordinates)) {
+            throw new \RuntimeException('The value full address has no two coordinates.');
         }
 
         [$latitude, $longitude] = \array_map('floatval', $coordinates);

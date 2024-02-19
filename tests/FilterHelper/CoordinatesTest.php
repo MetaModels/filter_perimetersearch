@@ -3,7 +3,7 @@
 /**
  * This file is part of MetaModels/filter_perimetersearch.
  *
- * (c) 2012-2019 The MetaModels team.
+ * (c) 2012-2024 The MetaModels team.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -12,7 +12,8 @@
  *
  * @package    MetaModels/filter_perimetersearch
  * @author     Sven Baumann <baumann.sv@gmail.com>
- * @copyright  2012-2019 The MetaModels team.
+ * @author     Ingolf Steinhardt <info@e-spin.de>
+ * @copyright  2012-2024 The MetaModels team.
  * @license    https://github.com/MetaModels/filter_perimetersearch/blob/master/LICENSE LGPL-3.0-or-later
  * @filesource
  */
@@ -35,13 +36,14 @@ class CoordinatesTest extends TestCase
     {
         $exceptionMessage = [
             'The value full address is empty or not type of a string.',
-            'The value full address has no coordinates.',
+            'The value full address has no two coordinates.',
             'The validation of the coordinates failed.'
         ];
 
         return [
             [[\RuntimeException::class, $exceptionMessage[0]], []],
-            [[\RuntimeException::class, $exceptionMessage[0]], [null, null, null, null, new \DateTime()]],
+            [[\RuntimeException::class, $exceptionMessage[1]], [null, null, null, null, 'sample text']],
+            [[\RuntimeException::class, $exceptionMessage[1]], [null, null, null, null, '0']],
             [[\RuntimeException::class, $exceptionMessage[1]], [null, null, null, null, '0,0,0']],
             [[\RuntimeException::class, $exceptionMessage[2]], [null, null, null, null, '180,90']],
 
