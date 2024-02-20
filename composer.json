@@ -39,7 +39,7 @@
     "contao/core-bundle": "^4.13.0 <5.0",
     "doctrine/dbal": "^3.3",
     "menatwork/contao-multicolumnwizard-bundle": "^3.4",
-    "metamodels/core": "dev-feature/phpcq-2 as 2.3.0",
+    "metamodels/core": "^2.3@dev",
     "symfony/dependency-injection": "^5.4",
     "symfony/http-kernel": "^5.4"
   },
@@ -76,8 +76,7 @@
   },
   "extra": {
     "branch-alias": {
-      "dev-feature/2.3.0": "2.3.x-dev",
-      "dev-hotfix/phpcq-2": "2.3.x-dev"
+      "dev-feature/2.3.0": "2.3.x-dev"
     },
     "contao-manager-plugin": "MetaModels\\FilterPerimetersearchBundle\\ContaoManager\\Plugin"
   }
