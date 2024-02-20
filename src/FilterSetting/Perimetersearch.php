@@ -238,9 +238,13 @@ class Perimetersearch extends SimpleLookup
      */
     public function getParameters()
     {
-        return \in_array($this->get('rangemode'), ['selection', 'free']) ?
-            [$this->getParamName(), $this->getParamNameRange()]
-            : [$this->getParamName()];
+        if (null === ($paramName = $this->getParamName())) {
+            return [];
+        }
+
+        return \in_array((string) $this->get('rangemode'), ['selection', 'free'])
+            ? [$paramName, $this->getParamNameRange()]
+            : [$paramName];
     }
 
     /**
