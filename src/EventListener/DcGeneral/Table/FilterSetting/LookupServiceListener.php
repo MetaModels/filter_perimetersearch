@@ -65,7 +65,8 @@ class LookupServiceListener extends Base
     {
         // Check the context.
         $allowedProperties = array('lookupservice', 'second_attr_id', 'single_attr_id');
-        if (!$this->isAllowedProperty($event, 'tl_metamodel_filtersetting', $allowedProperties)
+        if (
+            !$this->isAllowedProperty($event, 'tl_metamodel_filtersetting', $allowedProperties)
             || 'lookupservice' !== $event->getSubPropertyName()
         ) {
             return;
