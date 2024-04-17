@@ -160,7 +160,7 @@ class Perimetersearch extends SimpleLookup
         $distance       = (int) ($arrFilterUrl[$paramNameRange] ?? 0);
 
         // Check if we have a value.
-        if ($paramValue === null) {
+        if ($paramValue === '') {
             return;
         }
 
@@ -487,7 +487,7 @@ class Perimetersearch extends SimpleLookup
         $statement = $builder->executeQuery();
 
         if (!$statement->rowCount()) {
-            $filter->addFilterRule(new StaticIdList(null));
+            $filter->addFilterRule(new StaticIdList([]));
         } else {
             $filter->addFilterRule(
                 new StaticIdList(\array_map(static fn(mixed $value) => (string) $value, $statement->fetchFirstColumn()))
@@ -528,7 +528,7 @@ class Perimetersearch extends SimpleLookup
         $statement = $builder->executeQuery();
 
         if (!$statement->rowCount()) {
-            $filter->addFilterRule(new StaticIdList(null));
+            $filter->addFilterRule(new StaticIdList([]));
         } else {
             $filter->addFilterRule(
                 new StaticIdList(\array_map(static fn(mixed $value) => (string) $value, $statement->fetchFirstColumn()))
