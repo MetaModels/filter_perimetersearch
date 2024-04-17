@@ -254,7 +254,7 @@ class Perimetersearch extends SimpleLookup
     {
         if (($paramName = $this->getParamName()) !== null) {
             return [
-                $paramName                 => ($this->get('label') ?: $this->getAttributeName()) . ' [Umkreissuche]',
+                $paramName                 => ($this->get('label') ?: $this->getAttributeName()),
                 $this->getParamNameRange() => ($this->get('label') ?: $this->getAttributeName()) . ' - Range'
             ];
         }
@@ -487,9 +487,11 @@ class Perimetersearch extends SimpleLookup
         $statement = $builder->executeQuery();
 
         if (!$statement->rowCount()) {
-            $filter->addFilterRule(new StaticIdList([]));
+            $filter->addFilterRule(new StaticIdList(null));
         } else {
-            $filter->addFilterRule(new StaticIdList($statement->fetchFirstColumn()));
+            $filter->addFilterRule(
+                new StaticIdList(\array_map(static fn(mixed $value) => (string) $value, $statement->fetchFirstColumn()))
+            );
         }
     }
 
@@ -526,9 +528,11 @@ class Perimetersearch extends SimpleLookup
         $statement = $builder->executeQuery();
 
         if (!$statement->rowCount()) {
-            $filter->addFilterRule(new StaticIdList([]));
+            $filter->addFilterRule(new StaticIdList(null));
         } else {
-            $filter->addFilterRule(new StaticIdList($statement->fetchFirstColumn()));
+            $filter->addFilterRule(
+                new StaticIdList(\array_map(static fn(mixed $value) => (string) $value, $statement->fetchFirstColumn()))
+            );
         }
     }
 

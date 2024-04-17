@@ -22,11 +22,7 @@
 
 namespace MetaModels\FilterPerimetersearchBundle\EventListener\DcGeneral\Table\FilterSetting;
 
-use ContaoCommunityAlliance\DcGeneral\Contao\View\Contao2BackendView\Event\DecodePropertyValueForWidgetEvent;
-use ContaoCommunityAlliance\DcGeneral\Contao\View\Contao2BackendView\Event\EncodePropertyValueFromWidgetEvent;
 use ContaoCommunityAlliance\DcGeneral\Contao\View\Contao2BackendView\Event\GetPropertyOptionsEvent;
-use ContaoCommunityAlliance\DcGeneral\DataDefinition\ContainerInterface;
-use MetaModels\Attribute\IAttribute;
 use MetaModels\CoreBundle\Formatter\SelectAttributeOptionLabelFormatter;
 use MetaModels\Filter\Setting\IFilterSettingFactory;
 
@@ -96,7 +92,7 @@ class AttributeListener extends Base
         $typeFactory = $this->filterFactory->getTypeFactory($model->getProperty('type'));
 
         $typeFilter = null;
-        if ($typeFactory) {
+        if (null !== $typeFactory) {
             $typeFilter = $typeFactory->getKnownAttributeTypes();
         }
 
@@ -112,73 +108,5 @@ class AttributeListener extends Base
         }
 
         $event->setOptions($result);
-    }
-
-    /**
-     * Translates an attribute id to a generated alias {@see getAttributeNames()}.
-     *
-     * @param DecodePropertyValueForWidgetEvent $event The event.
-     *
-     * @return void
-     */
-    public function decodeValue(DecodePropertyValueForWidgetEvent $event)
-    {
-        $dataDefinition = $event->getEnvironment()->getDataDefinition();
-        assert($dataDefinition instanceof ContainerInterface);
-
-        if (
-            ($this->allowedTableName !== $dataDefinition->getName())
-            || !\in_array($event->getProperty(), $this->allowedProperties, true)
-        ) {
-            return;
-        }
-
-        $model     = $event->getModel();
-        $metaModel = $this->filterFactory->createCollection($model->getProperty('fid'))->getMetaModel();
-        $value     = $event->getValue();
-
-        if (!$value) {
-            return;
-        }
-
-        $attribute = $metaModel->getAttributeById((int) $value);
-        if ($attribute) {
-            $event->setValue($metaModel->getTableName() . '_' . $attribute->getColName());
-        }
-    }
-
-    /**
-     * Translates a generated alias {@see getAttributeNames()} to the corresponding attribute id.
-     *
-     * @param EncodePropertyValueFromWidgetEvent $event The event.
-     *
-     * @return void
-     */
-    public function encodeValue(EncodePropertyValueFromWidgetEvent $event)
-    {
-        $dataDefinition = $event->getEnvironment()->getDataDefinition();
-        assert($dataDefinition instanceof ContainerInterface);
-
-        if (
-            ($this->allowedTableName !== $dataDefinition->getName())
-            || !\in_array($event->getProperty(), $this->allowedProperties)
-        ) {
-            return;
-        }
-
-        $model     = $event->getModel();
-        $metaModel = $this->filterFactory->createCollection($model->getProperty('fid'))->getMetaModel();
-        $value     = $event->getValue();
-
-        if (!$value) {
-            return;
-        }
-
-        $value = \substr($value, \strlen($metaModel->getTableName() . '_'));
-
-        $attribute = $metaModel->getAttribute($value);
-        assert($attribute instanceof IAttribute);
-
-        $event->setValue($attribute->get('id'));
     }
 }
