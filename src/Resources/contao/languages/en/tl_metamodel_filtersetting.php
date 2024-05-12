@@ -3,7 +3,7 @@
 /**
  * This file is part of MetaModels/filter_perimetersearch.
  *
- * (c) 2012-2022 The MetaModels team.
+ * (c) 2012-2024 The MetaModels team.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -16,7 +16,7 @@
  * @author     Stefan Heimes <stefan_heimes@hotmail.com>
  * @author     Sven Baumann <baumann.sv@gmail.com>
  * @author     Ingolf Steinhardt <info@e-spin.de>
- * @copyright  2012-2022 The MetaModels team.
+ * @copyright  2012-2024 The MetaModels team.
  * @license    https://github.com/MetaModels/filter_perimetersearch/blob/master/LICENSE LGPL-3.0-or-later
  * @filesource
  */
@@ -32,67 +32,67 @@ $GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['fefilter_legend']    = 'Front
 /**
  * Fields
  */
-$GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['datamode']                   = [
+$GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['datamode']                = [
     'Data mode',
     'Here you can choose if you have one single attribute or two attributes.'
 ];
-$GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['single_attr_id']             = [
+$GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['single_attr_id']          = [
     'Attribute',
     'Choose the attribute with the latitude and longitude values.'
 ];
-$GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['first_attr_id']              = [
+$GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['first_attr_id']           = [
     'Attribute - Latitude',
     'Choose the attribute for the latitude values.'
 ];
-$GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['second_attr_id']             = [
+$GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['second_attr_id']          = [
     'Attribute - Longitude',
     'Choose the attribute for the longitude values.'
 ];
-$GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['rangemode']                  = [
+$GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['rangemode']               = [
     'Range mode',
     'Here you can choose how the range will be displayed.'
 ];
-$GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['range_preset']               = [
+$GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['range_preset']            = [
     'Range preset',
     'Here you can add a preset range.'
 ];
-$GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['range_selection']            = [
+$GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['range_selection']         = [
     'Range selection',
     'Here you can add values.'
 ];
-$GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['range_selection_default']    = [
+$GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['range_selection_default'] = [
     'Default',
     'Here you can set the default value.'
 ];
-$GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['lookupservice']              = [
+$GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['lookupservice_service']   = [
     'LookUp services',
-    'Here you can choose a look up service for resolving adress data.'
+    'Here you can choose a look up service for resolving address data.'
 ];
-$GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['lookupservice']['api_token'] = [
+$GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['lookupservice_api_token'] = [
     'API token',
     'Here you can add a the API token.'
 ];
-$GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['range_label']                = [
+$GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['range_label']             = [
     'Range label',
     'Show range label instead of attribute name.'
 ];
-$GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['range_placeholder']          = [
+$GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['range_placeholder']       = [
     'Range placeholder',
     'Show this text as long as the field is empty.'
 ];
-$GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['range_template']             = [
+$GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['range_template']          = [
     'Range template',
     'Sub template for this range filter element. Standard: form widget.'
 ];
-$GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['countrymode']                = [
+$GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['countrymode']             = [
     'Country mode',
     'Here you can choose how the country will used.'
 ];
-$GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['country_preset']             = [
+$GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['country_preset']          = [
     'Country preset',
     'Here you can add a preset for the country.'
 ];
-$GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['country_get']                = [
+$GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['country_get']             = [
     'GET-Parameter for country',
     'Here you can add the GET-Parameter name for the country lookup.'
 ];

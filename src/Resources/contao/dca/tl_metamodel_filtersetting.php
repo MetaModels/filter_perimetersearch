@@ -3,7 +3,7 @@
 /**
  * This file is part of MetaModels/filter_perimetersearch.
  *
- * (c) 2012-2022 The MetaModels team.
+ * (c) 2012-2024 The MetaModels team.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -16,7 +16,7 @@
  * @author     Christopher Bölter <christopher@boelter.eu>
  * @author     Sven Baumann <baumann.sv@gmail.com>
  * @author     Ingolf Steinhardt <info@e-spin.de>
- * @copyright  2012-2022 The MetaModels team.
+ * @copyright  2012-2024 The MetaModels team.
  * @license    https://github.com/MetaModels/filter_perimetersearch/blob/master/LICENSE LGPL-3.0-or-later
  * @filesource
  */
@@ -84,7 +84,7 @@ $GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['fields']['countrymode'] = [
         'submitOnChange' => true,
         'mandatory'      => true
     ],
-    'sql'      => 'varchar(255) NOT NULL default \'\''
+    'sql'       => 'varchar(255) NOT NULL default \'\''
 ];
 
 $GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['fields']['country_preset'] = [
@@ -95,7 +95,7 @@ $GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['fields']['country_preset'] = [
         'tl_class'  => 'w50 w50x',
         'mandatory' => true
     ],
-    'sql'      => 'text NULL'
+    'sql'       => 'text NULL'
 ];
 
 $GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['fields']['country_get'] = [
@@ -106,7 +106,7 @@ $GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['fields']['country_get'] = [
         'tl_class'  => 'w50 w50x',
         'mandatory' => true
     ],
-    'sql'      => 'text NULL'
+    'sql'       => 'text NULL'
 ];
 
 /*
@@ -127,7 +127,7 @@ $GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['fields']['rangemode'] = [
         'includeBlankOption' => true,
         'mandatory'          => true
     ],
-    'sql'      => 'varchar(255) NOT NULL default \'\''
+    'sql'       => 'varchar(255) NOT NULL default \'\''
 ];
 
 $GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['fields']['range_preset'] = [
@@ -139,7 +139,7 @@ $GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['fields']['range_preset'] = [
         'mandatory' => true,
         'rgxp'      => 'digit'
     ],
-    'sql'      => 'int(10) unsigned NOT NULL default \'0\''
+    'sql'       => 'int(10) unsigned NOT NULL default \'0\''
 ];
 
 $GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['fields']['range_selection'] = [
@@ -149,7 +149,7 @@ $GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['fields']['range_selection'] = 
     'eval'      => [
         'tl_class'     => 'w50',
         'columnFields' => [
-            'range' => [
+            'range'     => [
                 'label'     => &$GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['range_selection'],
                 'exclude'   => true,
                 'inputType' => 'text',
@@ -164,12 +164,12 @@ $GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['fields']['range_selection'] = 
                 'exclude'   => true,
                 'inputType' => 'checkbox',
                 'eval'      => [
-                    'style'     => 'width:130px',
+                    'style' => 'width:130px',
                 ]
             ],
         ]
     ],
-    'sql'      => 'text NULL'
+    'sql'       => 'text NULL'
 ];
 
 $GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['fields']['range_label'] = [
@@ -179,7 +179,7 @@ $GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['fields']['range_label'] = [
     'eval'      => [
         'tl_class' => 'clr w50'
     ],
-    'sql'      => 'blob NULL'
+    'sql'       => 'blob NULL'
 ];
 
 $GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['fields']['range_placeholder'] = [
@@ -189,7 +189,7 @@ $GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['fields']['range_placeholder'] 
     'eval'      => [
         'tl_class' => 'w50'
     ],
-    'sql'      => 'varchar(255) NOT NULL default \'\''
+    'sql'       => 'varchar(255) NOT NULL default \'\''
 ];
 
 $GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['fields']['range_template'] = [
@@ -201,7 +201,7 @@ $GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['fields']['range_template'] = [
         'tl_class' => 'w50',
         'chosen'   => true
     ],
-    'sql'      => 'varchar(64) NOT NULL default \'\''
+    'sql'       => 'varchar(64) NOT NULL default \'\''
 ];
 
 /*
@@ -222,19 +222,19 @@ $GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['fields']['datamode'] = [
         'mandatory'          => true,
         'tl_class'           => 'clr w50'
     ],
-    'sql'      => 'varchar(255) NOT NULL default \'\''
+    'sql'       => 'varchar(255) NOT NULL default \'\''
 ];
 
 $GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['fields']['lookupservice'] = [
-    'label'     => &$GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['lookupservice'],
-    'exclude'   => true,
-    'inputType' => 'multiColumnWizard',
-    'eval'      => [
+    'label'       => &$GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['lookupservice'],
+    'exclude'     => true,
+    'inputType'   => 'multiColumnWizard',
+    'eval'        => [
         'tl_class'     => 'clr',
         'helpwizard'   => true,
         'columnFields' => [
             'lookupservice' => [
-                'label'     => &$GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['lookupservice'],
+                'label'     => &$GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['lookupservice_service'],
                 'exclude'   => true,
                 'inputType' => 'select',
                 'eval'      => [
@@ -244,8 +244,8 @@ $GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['fields']['lookupservice'] = [
                     'style'              => 'width:250px'
                 ]
             ],
-            'apiToken' => [
-                'label'     => &$GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['lookupservice']['api_token'],
+            'apiToken'      => [
+                'label'     => &$GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['lookupservice_api_token'],
                 'exclude'   => true,
                 'inputType' => 'text',
                 'eval'      => [
@@ -271,7 +271,7 @@ $GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['fields']['single_attr_id'] = [
         'tl_class'           => 'clr w50',
         'chosen'             => true
     ],
-    'sql'      => 'varchar(255) NOT NULL default \'\''
+    'sql'       => 'varchar(255) NOT NULL default \'\''
 ];
 
 $GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['fields']['first_attr_id'] = [
@@ -287,7 +287,7 @@ $GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['fields']['first_attr_id'] = [
         'tl_class'           => 'clr w50',
         'chosen'             => true
     ],
-    'sql'      => 'varchar(255) NOT NULL default \'\''
+    'sql'       => 'varchar(255) NOT NULL default \'\''
 ];
 
 $GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['fields']['second_attr_id'] = [
@@ -303,7 +303,7 @@ $GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['fields']['second_attr_id'] = [
         'tl_class'           => 'w50',
         'chosen'             => true
     ],
-    'sql'      => 'varchar(255) NOT NULL default \'\''
+    'sql'       => 'varchar(255) NOT NULL default \'\''
 ];
 
 /*
@@ -317,5 +317,5 @@ $GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['fields']['placeholder'] = [
     'eval'      => [
         'tl_class' => 'w50'
     ],
-    'sql'      => 'varchar(255) NOT NULL default \'\''
+    'sql'       => 'varchar(255) NOT NULL default \'\''
 ];
