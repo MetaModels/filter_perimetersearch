@@ -47,12 +47,6 @@
     "contao/manager-plugin": "^2.1",
     "phpcq/runner-bootstrap": "^1.0@dev"
   },
-  "repositories": [
-    {
-      "type": "composer",
-      "url": "https://packages.cyberspectrum.de/r"
-    }
-  ],
   "autoload": {
     "psr-4": {
       "MetaModels\\FilterPerimetersearchBundle\\": "src"
