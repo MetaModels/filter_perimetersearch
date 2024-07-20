@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext"
+        original="src/Resources/translations/tl_metamodel_filtersetting.en.xlf">
+    <body>
+      <trans-unit id="typenames.perimetersearch" resname="typenames.perimetersearch">
+        <source>Perimetersearch</source>
+      </trans-unit>
+      <trans-unit id="typedesc._multicolumn_" resname="typedesc._multicolumn_">
+        <source>%s/%s</source>
+      </trans-unit>
+      <trans-unit id="typedesc._multiname_" resname="typedesc._multiname_">
+        <source>%s"/"%s</source>
+      </trans-unit>
+      <trans-unit id="geolocation_legend" resname="geolocation_legend">
+        <source>Geolocation settings</source>
+      </trans-unit>
+      <trans-unit id="range_legend" resname="range_legend">
+        <source>Range settings</source>
+      </trans-unit>
+      <trans-unit id="country_legend" resname="country_legend">
+        <source>Country settings</source>
+      </trans-unit>
+      <trans-unit id="fefilter_legend" resname="fefilter_legend">
+        <source>Frontendfilter settings</source>
+      </trans-unit>
+      <trans-unit id="datamode.label" resname="datamode.label">
+        <source>Data mode</source>
+      </trans-unit>
+      <trans-unit id="datamode.description" resname="datamode.description">
+        <source>Here you can choose if you have one single attribute or two attributes.</source>
+      </trans-unit>
+      <trans-unit id="single_attr_id.label" resname="single_attr_id.label">
+        <source>Attribute</source>
+      </trans-unit>
+      <trans-unit id="single_attr_id.description" resname="single_attr_id.description">
+        <source>Choose the attribute with the latitude and longitude values.</source>
+      </trans-unit>
+      <trans-unit id="first_attr_id.label" resname="first_attr_id.label">
+        <source>Attribute - Latitude</source>
+      </trans-unit>
+      <trans-unit id="first_attr_id.description" resname="first_attr_id.description">
+        <source>Choose the attribute for the latitude values.</source>
+      </trans-unit>
+      <trans-unit id="second_attr_id.label" resname="second_attr_id.label">
+        <source>Attribute - Longitude</source>
+      </trans-unit>
+      <trans-unit id="second_attr_id.description" resname="second_attr_id.description">
+        <source>Choose the attribute for the longitude values.</source>
+      </trans-unit>
+      <trans-unit id="rangemode.label" resname="rangemode.label">
+        <source>Range mode</source>
+      </trans-unit>
+      <trans-unit id="rangemode.description" resname="rangemode.description">
+        <source>Here you can choose how the range will be displayed.</source>
+      </trans-unit>
+      <trans-unit id="range_preset.label" resname="range_preset.label">
+        <source>Range preset</source>
+      </trans-unit>
+      <trans-unit id="range_preset.description" resname="range_preset.description">
+        <source>Here you can add a preset range.</source>
+      </trans-unit>
+      <trans-unit id="range_selection.label" resname="range_selection.label">
+        <source>Range selection</source>
+      </trans-unit>
+      <trans-unit id="range_selection.description" resname="range_selection.description">
+        <source>Here you can add values.</source>
+      </trans-unit>
+      <trans-unit id="range_selection_default.label" resname="range_selection_default.label">
+        <source>Default</source>
+      </trans-unit>
+      <trans-unit id="range_selection_default.description" resname="range_selection_default.description">
+        <source>Here you can set the default value.</source>
+      </trans-unit>
+      <trans-unit id="lookupservice.label" resname="lookupservice.label">
+        <source>LookUp services</source>
+      </trans-unit>
+      <trans-unit id="lookupservice.description" resname="lookupservice.description">
+        <source>Here you can choose a look up service for resolving address data.</source>
+      </trans-unit>
+      <trans-unit id="lookupservice_service.label" resname="lookupservice_service.label">
+        <source>LookUp services</source>
+      </trans-unit>
+      <trans-unit id="lookupservice_service.description" resname="lookupservice_service.description">
+        <source>Here you can choose a look up service for resolving address data.</source>
+      </trans-unit>
+      <trans-unit id="lookupservice_api_token.label" resname="lookupservice_api_token.label">
+        <source>API token</source>
+      </trans-unit>
+      <trans-unit id="lookupservice_api_token.description" resname="lookupservice_api_token.description">
+        <source>Here you can add a the API token.</source>
+      </trans-unit>
+      <trans-unit id="range_label.label" resname="range_label.label">
+        <source>Range label</source>
+      </trans-unit>
+      <trans-unit id="range_label.description" resname="range_label.description">
+        <source>Show range label instead of attribute name.</source>
+      </trans-unit>
+      <trans-unit id="range_placeholder.label" resname="range_placeholder.label">
+        <source>Range placeholder</source>
+      </trans-unit>
+      <trans-unit id="range_placeholder.description" resname="range_placeholder.description">
+        <source>Show this text as long as the field is empty.</source>
+      </trans-unit>
+      <trans-unit id="range_template.label" resname="range_template.label">
+        <source>Range template</source>
+      </trans-unit>
+      <trans-unit id="range_template.description" resname="range_template.description">
+        <source>Sub template for this range filter element. Standard: form widget.</source>
+      </trans-unit>
+      <trans-unit id="countrymode.label" resname="countrymode.label">
+        <source>Country mode</source>
+      </trans-unit>
+      <trans-unit id="countrymode.description" resname="countrymode.description">
+        <source>Here you can choose how the country will used.</source>
+      </trans-unit>
+      <trans-unit id="country_preset.label" resname="country_preset.label">
+        <source>Country preset</source>
+      </trans-unit>
+      <trans-unit id="country_preset.description" resname="country_preset.description">
+        <source>Here you can add a preset for the country.</source>
+      </trans-unit>
+      <trans-unit id="country_get.label" resname="country_get.label">
+        <source>GET-Parameter for country</source>
+      </trans-unit>
+      <trans-unit id="country_get.description" resname="country_get.description">
+        <source>Here you can add the GET-Parameter name for the country lookup.</source>
+      </trans-unit>
+      <trans-unit id="datamode_options.single" resname="datamode_options.single">
+        <source>Single Mode - One attribute</source>
+      </trans-unit>
+      <trans-unit id="datamode_options.multi" resname="datamode_options.multi">
+        <source>Multi Mode - Two attributes</source>
+      </trans-unit>
+      <trans-unit id="rangemode_options.free" resname="rangemode_options.free">
+        <source>Free input mode</source>
+      </trans-unit>
+      <trans-unit id="rangemode_options.preset" resname="rangemode_options.preset">
+        <source>Preset by system</source>
+      </trans-unit>
+      <trans-unit id="rangemode_options.selection" resname="rangemode_options.selection">
+        <source>Selection mode</source>
+      </trans-unit>
+      <trans-unit id="countrymode_options.none" resname="countrymode_options.none">
+        <source>None</source>
+      </trans-unit>
+      <trans-unit id="countrymode_options.preset" resname="countrymode_options.preset">
+        <source>Preset by system</source>
+      </trans-unit>
+      <trans-unit id="countrymode_options.get" resname="countrymode_options.get">
+        <source>Use GET-Parameter</source>
+      </trans-unit>
+      <trans-unit id="perimetersearch.coordinates" resname="perimetersearch.coordinates">
+        <source>Coordinates input</source>
+      </trans-unit>
+      <trans-unit id="perimetersearch.google_maps" resname="perimetersearch.google_maps">
+        <source>GoogleMaps Lookup</source>
+      </trans-unit>
+      <trans-unit id="perimetersearch.open_street_maps" resname="perimetersearch.open_street_maps">
+        <source>OpenStreetMap Lookup</source>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

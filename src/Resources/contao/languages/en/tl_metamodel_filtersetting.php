@@ -121,4 +121,4 @@ $GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['typedesc']['_multiname_']    
  */
 $GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['perimetersearch']['coordinates']      = 'Coordinates input';
 $GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['perimetersearch']['google_maps']      = 'GoogleMaps Lookup';
-$GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['perimetersearch']['open_street_maps'] = 'OpenStreetMap';
+$GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['perimetersearch']['open_street_maps'] = 'OpenStreetMap Lookup';
