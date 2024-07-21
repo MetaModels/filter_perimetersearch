@@ -108,16 +108,21 @@ class PerimeterFilterSettingTypeRendererListener extends AbstractFilterSettingTy
         return [
             $this->getLabelImage($model),
             $this->getLabelText($translator, $model),
-            \sprintf(
-                $translator->translate('typedesc._attribute_', 'tl_metamodel_filtersetting'),
-                $attributeColumnName,
-                $attributeName
+            $translator->translate(
+                'typedesc._attribute_',
+                'tl_metamodel_filtersetting',
+                ['%colName%' => $attributeColumnName, '%name%' => $attributeName],
             ),
             $this->getLabelComment($model, $translator),
-            \sprintf(
-                $translator->translate('typedesc._url_', 'tl_metamodel_filtersetting'),
-                ($model->getProperty('urlparam') ? $model->getProperty('urlparam') : $urlParam)
-            )
+            $translator->translate(
+                'typedesc._url_',
+                'tl_metamodel_filtersetting',
+                [
+                    '%urlparam%' => ($model->getProperty('urlparam')
+                        ? $model->getProperty('urlparam')
+                        : $attributeColumnName)
+                ]
+            ),
         ];
     }
 }
