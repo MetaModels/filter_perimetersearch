@@ -95,7 +95,7 @@ class PerimetersearchFilterSettingTypeFactory extends AbstractFilterSettingTypeF
     public function createInstance($information, $filterSettings)
     {
         $typeClass = $this->getTypeClass();
-        if ($typeClass === '' || $typeClass === null || !class_exists($typeClass)) {
+        if ($typeClass === null || !class_exists($typeClass)) {
             return null;
         }
 

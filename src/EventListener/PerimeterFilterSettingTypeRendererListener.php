@@ -120,7 +120,7 @@ class PerimeterFilterSettingTypeRendererListener extends AbstractFilterSettingTy
                 [
                     '%urlparam%' => ($model->getProperty('urlparam')
                         ? $model->getProperty('urlparam')
-                        : $attributeColumnName)
+                        : $urlParam)
                 ]
             ),
         ];
