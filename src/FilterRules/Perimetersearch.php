@@ -345,7 +345,7 @@ class Perimetersearch implements IFilterRule
         }
 
         $sql = \implode(' AND ', \array_keys($additionalWhere));
-
+        /** @psalm-suppress DocblockTypeContradiction */
         return ('' !== $sql) ? $sql . ' AND ' : null;
     }
 }
