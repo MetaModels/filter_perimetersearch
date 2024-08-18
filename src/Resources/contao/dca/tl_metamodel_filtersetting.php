@@ -80,7 +80,7 @@ $GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['fields']['countrymode'] = [
     'reference'   => [
         'none'   => 'countrymode_options.none',
         'preset' => 'countrymode_options.preset',
-        'get'    => 'countrymode_options.get'
+        'get'    => 'countrymode_options.get',
     ],
     'eval'        => [
         'tl_class'       => 'w50 w50x',
@@ -125,7 +125,11 @@ $GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['fields']['rangemode'] = [
     'exclude'     => true,
     'inputType'   => 'select',
     'options'     => ['free', 'preset', 'selection'],
-    'reference'   => &$GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['rangemode_options'],
+    'reference'   => [
+        'free'      => 'rangemode_options.free',
+        'preset'    => 'rangemode_options.preset',
+        'selection' => 'rangemode_options.selection',
+    ],
     'eval'        => [
         'tl_class'           => 'w50 w50x',
         'doNotSaveEmpty'     => true,
@@ -226,7 +230,10 @@ $GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['fields']['datamode'] = [
     'exclude'     => true,
     'inputType'   => 'select',
     'options'     => ['single', 'multi'],
-    'reference'   => &$GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['datamode_options'],
+    'reference'   => [
+        'single' => 'datamode_options.single',
+        'multi'  => 'datamode_options.multi',
+    ],
     'eval'        => [
         'doNotSaveEmpty'     => true,
         'alwaysSave'         => true,
@@ -257,7 +264,7 @@ $GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['fields']['lookupservice'] = [
                     'includeBlankOption' => true,
                     'mandatory'          => true,
                     'chosen'             => true,
-                    'style'              => 'width:250px'
+                    'style'              => 'width:100%'
                 ]
             ],
             'apiToken'      => [
