@@ -299,9 +299,9 @@ class Perimetersearch extends SimpleLookup
         );
 
         // Address search.
-        $widgets       = $this->getSearchWidget($objFrontendFilterOptions);
-        $rangeWidgets  = $this->getRangeWidget();
-        $paramName     = $this->getParamName();
+        $widgets      = $this->getSearchWidget($objFrontendFilterOptions);
+        $rangeWidgets = $this->getRangeWidget();
+        $paramName    = $this->getParamName();
 
         // Add filter.
         if ($paramName !== null) {
@@ -330,6 +330,8 @@ class Perimetersearch extends SimpleLookup
      */
     private function getSearchWidget(FrontendFilterOptions $frontendFilterOptions)
     {
+        $cssID = StringUtil::deserialize($this->get('cssID'), true);
+
         $widget = [
             'label'     => [
                 ($this->get('label') ?: $this->getAttributeName()),
@@ -342,7 +344,10 @@ class Perimetersearch extends SimpleLookup
                 'colname'     => $this->getColname(),
                 'urlparam'    => $this->getParamName(),
                 'template'    => $this->get('template'),
-                'placeholder' => $this->get('placeholder')
+                'placeholder' => $this->get('placeholder'),
+                'hide_label'  => $this->get('hide_label'),
+                'cssID'       => !empty($cssID[0]) ? ' id="' . $cssID[0] . '"' : '',
+                'class'       => !empty($cssID[1]) ? ' ' . $cssID[1] : '',
             ]
         ];
 
@@ -357,6 +362,8 @@ class Perimetersearch extends SimpleLookup
      */
     private function getRangeWidget()
     {
+        $cssID = StringUtil::deserialize($this->get('cssID'), true);
+
         if ('selection' === $this->get('rangemode')) {
             // Get all range options.
             $rangeOptions = [];
@@ -373,10 +380,13 @@ class Perimetersearch extends SimpleLookup
                 'inputType' => 'select',
                 'options'   => $rangeOptions,
                 'eval'      => [
-                    'colname'            => $this->getColname(),
-                    'urlparam'           => $this->getParamNameRange(),
-                    'template'           => $this->get('range_template'),
-                    'default'            => $this->get('defaultid'),
+                    'colname'    => $this->getColname(),
+                    'urlparam'   => $this->getParamNameRange(),
+                    'template'   => $this->get('range_template'),
+                    'default'    => $this->get('defaultid'),
+                    'hide_label' => $this->get('hide_label'),
+                    'cssID'      => !empty($cssID[0]) ? ' id="' . $cssID[0] . '_range"' : '',
+                    'class'      => !empty($cssID[1]) ? ' ' . $cssID[1] : '',
                 ],
             ];
 
@@ -394,7 +404,10 @@ class Perimetersearch extends SimpleLookup
                     'colname'     => $this->getColname(),
                     'urlparam'    => $this->getParamNameRange(),
                     'template'    => $this->get('range_template'),
-                    'placeholder' => $this->get('range_placeholder')
+                    'placeholder' => $this->get('range_placeholder'),
+                    'hide_label'  => $this->get('hide_label'),
+                    'cssID'       => !empty($cssID[0]) ? ' id="' . $cssID[0] . '_range"' : '',
+                    'class'       => !empty($cssID[1]) ? ' ' . $cssID[1] : '',
                 ]
             ];
 
@@ -636,9 +649,9 @@ class Perimetersearch extends SimpleLookup
     /**
      * Add data to the cache.
      *
-     * @param string $address The address which where use for the search.
-     * @param string $country The country.
-     * @param Container $result The container with all information.
+     * @param string    $address The address which where use for the search.
+     * @param string    $country The country.
+     * @param Container $result  The container with all information.
      *
      * @return void
      *
