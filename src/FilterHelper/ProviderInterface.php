@@ -3,7 +3,7 @@
 /**
  * This file is part of MetaModels/filter_perimetersearch.
  *
- * (c) 2012-2019 The MetaModels team.
+ * (c) 2012-2024 The MetaModels team.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -14,7 +14,8 @@
  * @author     Christian Schiffler <c.schiffler@cyberspectrum.de>
  * @author     Stefan Heimes <stefan_heimes@hotmail.com>
  * @author     Sven Baumann <baumann.sv@gmail.com>
- * @copyright  2012-2019 The MetaModels team.
+ * @author     Ingolf Steinhardt <info@e-spin.de>
+ * @copyright  2012-2024 The MetaModels team.
  * @license    https://github.com/MetaModels/filter_perimetersearch/blob/master/LICENSE LGPL-3.0-or-later
  * @filesource
  */
@@ -30,7 +31,6 @@ use Contao\Controller;
  */
 abstract class ProviderInterface
 {
-
     /**
      * Get a list with all countries.
      *
@@ -38,6 +38,7 @@ abstract class ProviderInterface
      */
     public function getCountries()
     {
+        /** @psalm-suppress DeprecatedMethod */
         return Controller::getCountries();
     }
 
@@ -77,7 +78,7 @@ abstract class ProviderInterface
         $fullAddress = null
     ) {
         // If we have a full address use it.
-        if ($fullAddress) {
+        if (null !== $fullAddress) {
             // If there is a country try to use the long form.
             if ((null !== $country) && (null !== ($fullCountryName = $this->getFullCountryName($country)))) {
                 return \sprintf('%s, %s', $fullAddress, $fullCountryName);
@@ -99,22 +100,22 @@ abstract class ProviderInterface
 
         return \sprintf(
             '%s, %s %s, %s',
-            $street,
-            $postal,
-            $city,
-            $country
+            $street ?? '',
+            $postal ?? '',
+            $city ?? '',
+            $country ?? ''
         );
     }
 
     /**
      * Find coordinates for given address.
      *
-     * @param string $street      The street.
-     * @param string $postal      The postal code.
-     * @param string $city        Name of city.
-     * @param string $country     A 2-letter country code.
-     * @param string $fullAddress Address string without specific format.
-     * @param string $apiToken    Optional the API token.
+     * @param string|null $street      The street.
+     * @param string|null $postal      The postal code.
+     * @param string|null $city        Name of city.
+     * @param string|null $country     A 2-letter country code.
+     * @param string|null $fullAddress Address string without specific format or string with two coordinates.
+     * @param string|null $apiToken    Optional the API token.
      *
      * @return Container
      */

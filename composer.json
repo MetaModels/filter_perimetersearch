@@ -1,75 +1,76 @@
 {
-  "name" : "metamodels/filter_perimetersearch",
-  "description" : "MetaModels perimeter search",
-  "keywords" : [
+  "name": "metamodels/filter_perimetersearch",
+  "description": "MetaModels perimeter search",
+  "license": "LGPL-3.0-or-later",
+  "type": "contao-module",
+  "keywords": [
     "contao",
     "metamodels",
     "perimeter",
     "search",
     "filter"
   ],
-  "type" : "contao-module",
-  "homepage" : "https://now.metamodel.me/",
-  "license" : "LGPL-3.0-or-later",
-  "authors" : [
+  "authors": [
     {
-      "name" : "Christian Schiffler",
-      "email" : "c.schiffler@cyberspectrum.de",
-      "homepage" : "https://www.cyberspectrum.de",
-      "role" : "Developer"
+      "name": "Christian Schiffler",
+      "email": "c.schiffler@cyberspectrum.de",
+      "homepage": "https://www.cyberspectrum.de",
+      "role": "Developer"
     },
     {
-      "name" : "Stefan Heimes",
-      "email" : "stefan_heimes@hotmail.com",
-      "role" : "Developer"
+      "name": "Stefan Heimes",
+      "email": "stefan_heimes@hotmail.com",
+      "role": "Developer"
     }
   ],
-  "support" : {
-    "email" : "mail@metamodel.me",
-    "issues" : "https://github.com/MetaModels/filter_perimetersearch/issues",
-    "wiki" : "https://de.contaowiki.org/MetaModels",
-    "irc" : "irc://irc.freenode.org/contao.mm",
-    "source" : "https://github.com/MetaModels/filter_perimetersearch"
+  "homepage": "https://now.metamodel.me/",
+  "support": {
+    "email": "mail@metamodel.me",
+    "issues": "https://github.com/MetaModels/filter_perimetersearch/issues",
+    "wiki": "https://de.contaowiki.org/MetaModels",
+    "source": "https://github.com/MetaModels/filter_perimetersearch"
   },
-  "require" : {
-    "php" : "^7.4",
-    "ext-json" : "*",
-    "ext-pdo" : "*",
-    "contao-community-alliance/dc-general" : "^2.2",
-    "contao/core-bundle" : "^4.9.0, <4.13.0",
-    "menatwork/contao-multicolumnwizard-bundle" : "^3.4",
-    "metamodels/core" : "^2.2",
-    "symfony/dependency-injection" : "^4.4.6",
-    "symfony/http-kernel" : "~4.4.13"
+  "require": {
+    "php": "^8.1",
+    "ext-json": "*",
+    "ext-pdo": "*",
+    "contao-community-alliance/dc-general": "^2.3",
+    "contao/core-bundle": "^4.13.0 <5.0",
+    "doctrine/dbal": "^3.3",
+    "menatwork/contao-multicolumnwizard-bundle": "^3.4",
+    "metamodels/core": "^2.3",
+    "symfony/dependency-injection": "^5.4",
+    "symfony/http-kernel": "^5.4"
   },
-  "require-dev" : {
-    "contao/manager-plugin" : "^2.1",
-    "phpcq/all-tasks" : "^1.2"
+  "require-dev": {
+    "contao/manager-plugin": "^2.1",
+    "phpcq/runner-bootstrap": "^1.0@dev"
   },
-  "autoload" : {
-    "psr-4" : {
-      "MetaModels\\FilterPerimetersearchBundle\\" : "src"
+  "autoload": {
+    "psr-4": {
+      "MetaModels\\FilterPerimetersearchBundle\\": "src"
     },
-    "files" : [
+    "files": [
       "src/deprecated-autoload.php"
     ]
   },
-  "autoload-dev" : {
-    "psr-4" : {
-      "MetaModels\\FilterPerimetersearchBundle\\Test\\" : "tests"
+  "autoload-dev": {
+    "psr-4": {
+      "MetaModels\\FilterPerimetersearchBundle\\Test\\": "tests"
     }
   },
-  "extra" : {
-    "contao-manager-plugin" : "MetaModels\\FilterPerimetersearchBundle\\ContaoManager\\Plugin",
-    "branch-alias" : {
-      "dev-hotfix/2.2.1" : "2.2.1-dev"
-    }
-  },
-  "config" : {
-    "allow-plugins" : {
-      "contao-components/installer" : false,
-      "contao/manager-plugin" : false
+  "config": {
+    "allow-plugins": {
+      "contao-components/installer": false,
+      "contao/manager-plugin": false,
+      "php-http/discovery": true
     },
-    "sort-packages" : true
+    "sort-packages": true
+  },
+  "extra": {
+    "branch-alias": {
+      "dev-feature/2.3.0": "2.3.x-dev"
+    },
+    "contao-manager-plugin": "MetaModels\\FilterPerimetersearchBundle\\ContaoManager\\Plugin"
   }
 }

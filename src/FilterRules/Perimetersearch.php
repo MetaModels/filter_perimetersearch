@@ -3,7 +3,7 @@
 /**
  * This file is part of MetaModels/filter_perimetersearch.
  *
- * (c) 2012-2019 The MetaModels team.
+ * (c) 2012-2024 The MetaModels team.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -14,7 +14,8 @@
  * @author     Christian Schiffler <c.schiffler@cyberspectrum.de>
  * @author     Stefan Heimes <stefan_heimes@hotmail.com>
  * @author     Sven Baumann <baumann.sv@gmail.com>
- * @copyright  2012-2019 The MetaModels team.
+ * @author     Ingolf Steinhardt <info@e-spin.de>
+ * @copyright  2012-2024 The MetaModels team.
  * @license    https://github.com/MetaModels/filter_perimetersearch/blob/master/LICENSE LGPL-3.0-or-later
  * @filesource
  */
@@ -38,7 +39,7 @@ class Perimetersearch implements IFilterRule
      *
      * @var int
      */
-    protected $mode;
+    protected $mode = self::MODE_SINGLE;
 
     /**
      * The attribute to filter on.
@@ -97,7 +98,7 @@ class Perimetersearch implements IFilterRule
      *
      * @var Connection
      */
-    private $connection;
+    private Connection $connection;
 
     /**
      * Create a new instance.
@@ -110,7 +111,6 @@ class Perimetersearch implements IFilterRule
      * @param int             $dist               The dist.
      * @param Connection|null $connection         The database connection.
      *
-     * @throws \InvalidArgumentException     If any value or attribute is not valid.
      */
     public function __construct(
         $latitudeAttribute,
@@ -127,7 +127,7 @@ class Perimetersearch implements IFilterRule
         $this->validateValue($long, 'Only float and numeric allowed for the longitude.');
 
         // Check if the dist value is valid.
-        if (!\is_numeric($dist) || $dist < 0) {
+        if ($dist < 0) {
             throw new \InvalidArgumentException('The dist has to be a valid number and greater than 0.');
         }
 
@@ -142,11 +142,12 @@ class Perimetersearch implements IFilterRule
         if (null === $connection) {
             // @codingStandardsIgnoreStart
             @\trigger_error(
-                'Connection is not passed as constructor argument.',
+                'Connection is missing. It has to be passed in the constructor. Fallback will be dropped.',
                 E_USER_DEPRECATED
             );
             // @codingStandardsIgnoreEnd
             $connection = System::getContainer()->get('database_connection');
+            assert($connection instanceof Connection);
         }
 
         $this->connection = $connection;
@@ -159,7 +160,7 @@ class Perimetersearch implements IFilterRule
      */
     private function getMetaModelTableName()
     {
-        $attribute = ((int) $this->mode === self::MODE_SINGLE) ? $this->singleAttribute : $this->latitudeAttribute;
+        $attribute = ($this->mode === self::MODE_SINGLE) ? $this->singleAttribute : $this->latitudeAttribute;
 
         return $attribute
             ->getMetaModel()
@@ -186,9 +187,9 @@ class Perimetersearch implements IFilterRule
     /**
      * Check the attribute.
      *
-     * @param IAttribute $latitudeAttribute  The attribute to be checked.
-     * @param IAttribute $longitudeAttribute The attribute to be checked.
-     * @param IAttribute $singleAttribute    The attribute to be checked.
+     * @param null|IAttribute $latitudeAttribute  The attribute to be checked.
+     * @param null|IAttribute $longitudeAttribute The attribute to be checked.
+     * @param null|IAttribute $singleAttribute    The attribute to be checked.
      *
      * @return void
      *
@@ -258,7 +259,7 @@ class Perimetersearch implements IFilterRule
      */
     public function getMatchingIds()
     {
-        if ((int) $this->mode === self::MODE_SINGLE) {
+        if ($this->mode === self::MODE_SINGLE) {
             return $this->runSimpleQuery(
                 'item_id',
                 'tl_metamodel_geolocation',
@@ -286,7 +287,7 @@ class Perimetersearch implements IFilterRule
      * @param string     $longitudeField  The name of the longitude field.
      * @param array|null $additionalWhere A list with additional where information.
      *
-     * @return array A list with ID's or an empty array.
+     * @return list<mixed> A list with ID's or an empty array.
      */
     protected function runSimpleQuery($idField, $tableName, $latitudeField, $longitudeField, $additionalWhere)
     {
@@ -306,7 +307,7 @@ class Perimetersearch implements IFilterRule
             ->orderBy($distanceCalculation)
             ->setParameter('distance', $this->dist);
 
-        if ($additionalWhere) {
+        if (is_array($additionalWhere)) {
             foreach ($additionalWhere as $index => $where) {
                 if (0 === $index) {
                     $builder->where($where);
@@ -320,12 +321,12 @@ class Perimetersearch implements IFilterRule
             $builder->where($builder->expr()->lte($distanceCalculation, ':distance'));
         }
 
-        $statement = $builder->execute();
+        $statement = $builder->executeQuery();
         if (!$statement->rowCount()) {
             return [];
         }
 
-        return $statement->fetchAll(\PDO::FETCH_COLUMN);
+        return $statement->fetchFirstColumn();
     }
 
     /**
@@ -339,12 +340,12 @@ class Perimetersearch implements IFilterRule
      */
     protected function buildAdditionalWhere($additionalWhere)
     {
-        if (null === $additionalWhere) {
+        if (empty($additionalWhere)) {
             return null;
         }
 
-        $sql = \implode(' AND ', \array_keys((array) $additionalWhere));
-
+        $sql = \implode(' AND ', \array_keys($additionalWhere));
+        /** @psalm-suppress DocblockTypeContradiction */
         return ('' !== $sql) ? $sql . ' AND ' : null;
     }
 }

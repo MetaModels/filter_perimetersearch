@@ -3,7 +3,7 @@
 /**
  * This file is part of MetaModels/filter_perimetersearch.
  *
- * (c) 2012-2019 The MetaModels team.
+ * (c) 2012-2024 The MetaModels team.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -12,7 +12,8 @@
  *
  * @package    MetaModels/filter_perimetersearch
  * @author     Sven Baumann <baumann.sv@gmail.com>
- * @copyright  2012-2019 The MetaModels team.
+ * @author     Ingolf Steinhardt <info@e-spin.de>
+ * @copyright  2012-2024 The MetaModels team.
  * @license    https://github.com/MetaModels/filter_perimetersearch/blob/master/LICENSE LGPL-3.0-or-later
  * @filesource
  */
@@ -63,8 +64,8 @@ class SphericalDistance
         return \sprintf(
             'ROUND(
                 SQRT(
-                    POWER(2 * PI() / 360 * (CAST(%1$s AS DECIMAL(9,6)) - CAST(%3$s AS DECIMAL(9,6))) * %6$s, 2) 
-                    + POWER(2 * PI() / 360 * (CAST(%2$s AS DECIMAL(9,6)) - CAST(%4$s AS DECIMAL(9,6))) * %6$s 
+                    POWER(2 * PI() / 360 * (CAST(%1$s AS DECIMAL(9,6)) - CAST(%3$s AS DECIMAL(9,6))) * %6$s, 2)
+                    + POWER(2 * PI() / 360 * (CAST(%2$s AS DECIMAL(9,6)) - CAST(%4$s AS DECIMAL(9,6))) * %6$s
                         * COS(2 * PI() / 360 * (CAST(%1$s AS DECIMAL(9,6)) + CAST(%3$s AS DECIMAL(9,6))) * 0.5), 2)
                 ), %5$s
             )',
@@ -100,7 +101,11 @@ class SphericalDistance
         $digits = 0,
         $earthRadius = self::EARTH_RADIUS_IN_KM
     ): float {
-        $oneRad = ((2 * M_PI) / 360);
+        $oneRad          = ((2 * M_PI) / 360);
+        $firstLatitude   = (float) $firstLatitude;
+        $firstLongitude  = (float) $firstLongitude;
+        $secondLatitude  = (float) $secondLatitude;
+        $secondLongitude = (float) $secondLongitude;
 
         return \round(
             \sqrt(
@@ -153,9 +158,11 @@ class SphericalDistance
      */
     public static function validateCoordinate($coordinate): bool
     {
-        if (!(is_numeric($coordinate)
-              && (3 >= \strlen((int) \abs($coordinate)))
-              && (6 >= (\strlen($coordinate) - \strlen((int) $coordinate) - 1)))
+        $intCoordinate = (int)$coordinate;
+        if (
+            !(\is_numeric($coordinate)
+              && (3 >= \strlen((string) \abs($coordinate)))
+              && (6 >= (\strlen((string) $coordinate) - \strlen((string) $intCoordinate) - 1)))
         ) {
             return false;
         }

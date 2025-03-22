@@ -3,7 +3,7 @@
 /**
  * This file is part of MetaModels/filter_perimetersearch.
  *
- * (c) 2012-2022 The MetaModels team.
+ * (c) 2012-2024 The MetaModels team.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -14,7 +14,7 @@
  * @author     Christian Schiffler <c.schiffler@cyberspectrum.de>
  * @author     Stefan Heimes <stefan_heimes@hotmail.com>
  * @author     Ingolf Steinhardt <info@e-spin.de>
- * @copyright  2012-2022 The MetaModels team.
+ * @copyright  2012-2024 The MetaModels team.
  * @license    https://github.com/MetaModels/filter_perimetersearch/blob/master/LICENSE LGPL-3.0-or-later
  * @filesource
  */
@@ -23,6 +23,7 @@ namespace MetaModels\FilterPerimetersearchBundle\EventListener;
 
 use ContaoCommunityAlliance\DcGeneral\Data\ModelInterface;
 use ContaoCommunityAlliance\DcGeneral\EnvironmentInterface;
+use ContaoCommunityAlliance\Translator\TranslatorInterface;
 use MetaModels\CoreBundle\EventListener\DcGeneral\Table\FilterSetting\AbstractFilterSettingTypeRenderer;
 
 /**
@@ -58,10 +59,11 @@ class PerimeterFilterSettingTypeRendererListener extends AbstractFilterSettingTy
         ModelInterface $model
     ) {
         $translator = $environment->getTranslator();
-        $metamodel  = $this->getMetaModel($model);
+        assert($translator instanceof TranslatorInterface);
+        $metaModel = $this->getMetaModel($model);
 
         if ('single' === $model->getProperty('datamode')) {
-            $attribute = $metamodel->getAttribute($model->getProperty('single_attr_id'));
+            $attribute = $metaModel->getAttribute($model->getProperty('single_attr_id'));
 
             if ($attribute) {
                 $attributeColumnName = $attribute->getColName();
@@ -73,8 +75,8 @@ class PerimeterFilterSettingTypeRendererListener extends AbstractFilterSettingTy
                 $urlParam            = 'filter_attr_' . $model->getProperty('id');
             }
         } elseif ('multi' === $model->getProperty('datamode')) {
-            $attribute1 = $metamodel->getAttribute($model->getProperty('first_attr_id'));
-            $attribute2 = $metamodel->getAttribute($model->getProperty('second_attr_id'));
+            $attribute1 = $metaModel->getAttribute($model->getProperty('first_attr_id'));
+            $attribute2 = $metaModel->getAttribute($model->getProperty('second_attr_id'));
 
             $attributeColumnName = \sprintf(
                 $translator->translate('typedesc._multicolumn_', 'tl_metamodel_filtersetting'),
@@ -90,7 +92,7 @@ class PerimeterFilterSettingTypeRendererListener extends AbstractFilterSettingTy
 
             $urlParam = $attribute1 ? $attribute1->getColName() : 'filter_attr_' . $model->getProperty('id');
         } else {
-            $attribute = $metamodel->getAttributeById((int) $model->getProperty('attr_id'));
+            $attribute = $metaModel->getAttributeById((int) $model->getProperty('attr_id'));
 
             if ($attribute) {
                 $attributeColumnName = $attribute->getColName();
@@ -106,16 +108,21 @@ class PerimeterFilterSettingTypeRendererListener extends AbstractFilterSettingTy
         return [
             $this->getLabelImage($model),
             $this->getLabelText($translator, $model),
-            \sprintf(
-                $translator->translate('typedesc._attribute_', 'tl_metamodel_filtersetting'),
-                $attributeColumnName,
-                $attributeName
+            $translator->translate(
+                'typedesc._attribute_',
+                'tl_metamodel_filtersetting',
+                ['%colName%' => $attributeColumnName, '%name%' => $attributeName],
             ),
             $this->getLabelComment($model, $translator),
-            \sprintf(
-                $translator->translate('typedesc._url_', 'tl_metamodel_filtersetting'),
-                ($model->getProperty('urlparam') ? $model->getProperty('urlparam') : $urlParam)
-            )
+            $translator->translate(
+                'typedesc._url_',
+                'tl_metamodel_filtersetting',
+                [
+                    '%urlparam%' => ($model->getProperty('urlparam')
+                        ? $model->getProperty('urlparam')
+                        : $urlParam)
+                ]
+            ),
         ];
     }
 }

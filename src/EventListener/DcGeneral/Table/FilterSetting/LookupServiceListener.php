@@ -3,7 +3,7 @@
 /**
  * This file is part of MetaModels/filter_perimetersearch.
  *
- * (c) 2012-2019 The MetaModels team.
+ * (c) 2012-2024 The MetaModels team.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -14,7 +14,8 @@
  * @author     Christian Schiffler <c.schiffler@cyberspectrum.de>
  * @author     Stefan Heimes <stefan_heimes@hotmail.com>
  * @author     Sven Baumann <baumann.sv@gmail.com>
- * @copyright  2012-2019 The MetaModels team.
+ * @author     Ingolf Steinhardt <info@e-spin.de>
+ * @copyright  2012-2024 The MetaModels team.
  * @license    https://github.com/MetaModels/filter_perimetersearch/blob/master/LICENSE LGPL-3.0-or-later
  * @filesource
  */
@@ -23,7 +24,7 @@ namespace MetaModels\FilterPerimetersearchBundle\EventListener\DcGeneral\Table\F
 
 use MenAtWork\MultiColumnWizardBundle\Event\GetOptionsEvent;
 use MetaModels\Filter\Setting\IFilterSettingFactory;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * This class provides the attribute options and encodes and decodes the attribute id.
@@ -35,7 +36,7 @@ class LookupServiceListener extends Base
      *
      * @var TranslatorInterface
      */
-    private $translator;
+    private TranslatorInterface $translator;
 
     /**
      * The constructor.
@@ -64,7 +65,8 @@ class LookupServiceListener extends Base
     {
         // Check the context.
         $allowedProperties = array('lookupservice', 'second_attr_id', 'single_attr_id');
-        if (!$this->isAllowedProperty($event, 'tl_metamodel_filtersetting', $allowedProperties)
+        if (
+            !$this->isAllowedProperty($event, 'tl_metamodel_filtersetting', $allowedProperties)
             || 'lookupservice' !== $event->getSubPropertyName()
         ) {
             return;
@@ -72,10 +74,9 @@ class LookupServiceListener extends Base
 
         $resolveClass = (array) $GLOBALS['METAMODELS']['filters']['perimetersearch']['resolve_class'];
 
-        $domain  = 'tl_metamodel_filtersetting';
         $options = [];
         foreach (\array_keys($resolveClass) as $name) {
-            $options[$name] = $this->translator->trans($domain . '.perimetersearch.' . $name, [], 'contao_' . $domain);
+            $options[$name] = $this->translator->trans('perimetersearch.' . $name, [], 'tl_metamodel_filtersetting');
         }
 
         $event->setOptions($options);

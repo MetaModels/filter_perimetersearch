@@ -12,8 +12,7 @@ services:
                 event: 'dc-general.view.contao2backend.model-to-label'
                 method: modelToLabel
 
-    metamodels.dc_general.table.tl_metamodel_filtersetting.first_attr_id:
-        class: MetaModels\FilterPerimetersearchBundle\EventListener\DcGeneral\Table\FilterSetting\AttributeListener
+    MetaModels\FilterPerimetersearchBundle\EventListener\DcGeneral\Table\FilterSetting\AttributeListener:
         public: true
         arguments:
             - "@metamodels.filter_setting_factory"
@@ -22,29 +21,6 @@ services:
             -   name: kernel.event_listener
                 event: dc-general.view.contao2backend.get-property-options
                 method: getOptions
-            -   name: kernel.event_listener
-                event: dc-general.view.contao2backend.decode-property-value-for-widget
-                method: decodeValue
-            -   name: kernel.event_listener
-                event: dc-general.view.contao2backend.encode-property-value-from-widget
-                method: encodeValue
-
-    metamodels.dc_general.table.tl_metamodel_filtersetting.second_attr_id:
-        class: MetaModels\FilterPerimetersearchBundle\EventListener\DcGeneral\Table\FilterSetting\AttributeListener
-        public: true
-        arguments:
-            - "@metamodels.filter_setting_factory"
-            - '@MetaModels\CoreBundle\Formatter\SelectAttributeOptionLabelFormatter'
-        tags:
-            -   name: kernel.event_listener
-                event: dc-general.view.contao2backend.get-property-options
-                method: getOptions
-            -   name: kernel.event_listener
-                event: dc-general.view.contao2backend.decode-property-value-for-widget
-                method: decodeValue
-            -   name: kernel.event_listener
-                event: dc-general.view.contao2backend.encode-property-value-from-widget
-                method: encodeValue
 
     metamodels.dc_general.table.tl_metamodel_filtersetting.range_template:
         class: MetaModels\FilterPerimetersearchBundle\EventListener\DcGeneral\Table\FilterSetting\Templates

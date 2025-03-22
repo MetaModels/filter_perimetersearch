@@ -24,7 +24,7 @@ namespace MetaModels\FilterPerimetersearchBundle\FilterHelper;
 use Contao\Request;
 
 /**
- * Lookup class for open streetmap.
+ * Lookup class for OpenStreetMap API.
  */
 class OpenStreetMaps extends ProviderInterface
 {
@@ -67,7 +67,7 @@ class OpenStreetMaps extends ProviderInterface
         $response     = \json_decode($request->response);
         $responseItem = $response[0];
 
-        if (200 === (int) $request->code) {
+        if (200 === $request->code) {
             if (!empty($responseItem->place_id)) {
                 $container->setLatitude($responseItem->lat);
                 $container->setLongitude($responseItem->lon);
