@@ -38,7 +38,7 @@
     "contao/core-bundle": "^4.13.0 <5.0",
     "doctrine/dbal": "^3.3",
     "menatwork/contao-multicolumnwizard-bundle": "^3.4",
-    "metamodels/core": "^2.3@dev",
+    "metamodels/core": "^2.3",
     "symfony/dependency-injection": "^5.4",
     "symfony/http-kernel": "^5.4"
   },
